@@ -7,7 +7,6 @@
 //============================================================================
 
 #include <iostream>
-//using namespace std;
 
 int main() {
 	std::cout << "C++ Journey Begin, Wow!" << std::endl;
