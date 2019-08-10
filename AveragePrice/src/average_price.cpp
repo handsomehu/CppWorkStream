@@ -6,9 +6,14 @@
 // Description : C++ Journey Begin, Wow!
 //============================================================================
 
-#include <iostream>
+
+#include "mdWrapper.h"
+
 
 int main() {
-	std::cout << "C++ Journey Begin, Wow!" << std::endl;
+	std::cout << "C++ CTP Journey Begin, Wow!" << std::endl;
+	std::shared_ptr<CmdWrapper> mdApi = std::make_shared<CmdWrapper>();
+	mdApi->connect();
+
 	return 0;
 }

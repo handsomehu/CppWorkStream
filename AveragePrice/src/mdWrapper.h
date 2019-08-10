@@ -4,8 +4,11 @@
  *  Created on: Aug 10, 2019
  *      Author: leon
  */
-#include "./libhead/ThostFtdcMdApi.h"
+#include <iostream>
 #include "stdio.h"
+#include "string.h"
+#include "memory"
+#include "./libhead/ThostFtdcMdApi.h"
 
 #ifndef SRC_MDWRAPPER_H_
 #define SRC_MDWRAPPER_H_
@@ -18,7 +21,10 @@ public:
 	CmdWrapper();
 	virtual ~CmdWrapper();
 	void connect();
-	int ReqAuthenticate();
+	///客户端认证请求
+	//virtual int ReqAuthenticate(CThostFtdcReqAuthenticateField *pReqAuthenticateField, int nRequestID) = 0;
+	///客户端认证响应
+	//virtual void OnRspAuthenticate(CThostFtdcRspAuthenticateField *pRspAuthenticateField, CThostFtdcRspInfoField *pRspInfo, int nRequestID, bool bIsLast) ;
 	int ReqUserLogin();
 	///当客户端与交易后台建立起通信连接时（还未登录前），该方法被调用。
 	virtual void OnFrontConnected();
