@@ -14,6 +14,8 @@ int main() {
 	std::cout << "C++ CTP Journey Begin, Wow!" << std::endl;
 	std::shared_ptr<CmdWrapper> mdApi = std::make_shared<CmdWrapper>();
 	mdApi->connect();
+	mdApi->apijoin();
+	mdApi->apirelease();
 
 	return 0;
 }

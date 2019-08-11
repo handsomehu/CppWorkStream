@@ -24,6 +24,20 @@ void CmdWrapper::connect(){
 
 }
 
+int CmdWrapper::apijoin()
+{
+	if (m_mdApi != nullptr)
+		return m_mdApi->Join();
+	else
+		return 0;
+}
+
+void CmdWrapper::apirelease()
+{
+	if (m_mdApi != nullptr)
+		m_mdApi->Release();
+
+}
 /*
 int CmdWrapper::ReqAuthenticate(CThostFtdcReqAuthenticateField *pReqAuthenticateField, int nRequestID)
 {
@@ -89,4 +103,9 @@ int CmdWrapper::ReqUserLogin()
 		std::cerr << "--->>>发送登录请求失败" << std::endl;
     return rt;
 	//return m_pUserApi->ReqUserLogin(&reqUserLogin, ++RequestID);
+}
+
+void CmdWrapper::OnRspUserLogin(CThostFtdcRspUserLoginField *pRspUserLogin, CThostFtdcRspInfoField *pRspInfo, int nRequestID, bool bIsLast)
+{
+
 }
