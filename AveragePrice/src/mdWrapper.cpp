@@ -16,6 +16,7 @@ CmdWrapper::~CmdWrapper() {
 	// TODO Auto-generated destructor stub
 }
 
+
 void CmdWrapper::connect(){
 	m_mdApi = CThostFtdcMdApi::CreateFtdcMdApi(".//temp_md/", true, true);
 	m_mdApi->RegisterSpi(this);
@@ -23,7 +24,10 @@ void CmdWrapper::connect(){
 	m_mdApi->Init();
 
 }
-
+bool CmdWrapper::getloginstatus()
+{
+	return loginstatus;
+}
 int CmdWrapper::apijoin()
 {
 	if (m_mdApi != nullptr)
@@ -64,7 +68,23 @@ void CmdWrapper::OnFrontConnected()
     {
     	static const char *version = m_mdApi->GetApiVersion();
     	std::cout << "------Current Version：" << version << " ------" << std::endl;
-    	ReqUserLogin();
+    	static int cnt = 0;
+    	while(cnt < 5)
+    	{
+    		if (ReqUserLogin() != 0)
+    		{
+    			std::this_thread::sleep_for(std::chrono::milliseconds(1000));
+    			cnt++;
+    		}
+    		else
+    		{
+    			loginstatus = true;
+    			cnt = 5; //exit the loop
+    		}
+
+
+
+    	}
 
     }
 
@@ -109,3 +129,26 @@ void CmdWrapper::OnRspUserLogin(CThostFtdcRspUserLoginField *pRspUserLogin, CTho
 {
 
 }
+//订阅行情
+
+void CmdWrapper::subscribe(std::vector<std::string>* symbols)
+{
+
+	const char *instid[];
+    for(auto symbol:*symbols)
+    {
+    	if (m_mdApi != nullptr)
+		{
+    		*instid = symbol;
+			while (m_mdApi->SubscribeMarketData(instid, 1)!=0)
+				std::this_thread::sleep_for(std::chrono::milliseconds(1000));
+		}
+
+    }
+}
+
+void CmdWrapper::OnRtnDepthMarketData(CThostFtdcDepthMarketDataField *pDepthMarketData)
+{
+	std::cout << pDepthMarketData->ClosePrice  << pDepthMarketData->UpdateTime <<pDepthMarketData->Volume << std::endl;
+}
+
