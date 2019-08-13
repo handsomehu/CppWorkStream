@@ -13,7 +13,7 @@
 int main() {
 	static int trycnt = 0;
 	static bool loginOK = false;
-	std::vector<std::string> symbollist = {"rb1910","ru2001"};
+	std::vector<char*> symbollist = {"rb1910","ru2001"};
 	std::cout << "C++ CTP Journey Begin, Wow!" << std::endl;
 	std::shared_ptr<CmdWrapper> mdApi = std::make_shared<CmdWrapper>();
 	mdApi->connect();
@@ -23,9 +23,9 @@ int main() {
 		if (!loginOK)
 		{
 			std::this_thread::sleep_for(std::chrono::milliseconds(1000));
+			trycnt ++;
 			std::cout <<"Tried to login times:";
 			std::cout << trycnt <<std::endl;
-			trycnt ++;
 		}
 		else
 			break;
@@ -33,7 +33,7 @@ int main() {
 
 	if (loginOK)
 	{
-		mdApi->subscribe(&symbollist);
+		mdApi->subscribe(symbollist);
 		mdApi->apijoin();
 		mdApi->apirelease();
 

@@ -33,7 +33,7 @@ public:
 	///客户端认证响应
 	//virtual void OnRspAuthenticate(CThostFtdcRspAuthenticateField *pRspAuthenticateField, CThostFtdcRspInfoField *pRspInfo, int nRequestID, bool bIsLast) ;
 	int ReqUserLogin();
-	void subscribe(std::vector<std::string>* symbols);
+	void subscribe(std::vector<char*>symbols);
 	///当客户端与交易后台建立起通信连接时（还未登录前），该方法被调用。
 	virtual void OnFrontConnected();
 

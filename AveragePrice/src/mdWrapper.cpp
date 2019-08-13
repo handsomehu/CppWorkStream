@@ -20,7 +20,8 @@ CmdWrapper::~CmdWrapper() {
 void CmdWrapper::connect(){
 	m_mdApi = CThostFtdcMdApi::CreateFtdcMdApi(".//temp_md/", true, true);
 	m_mdApi->RegisterSpi(this);
-	m_mdApi->RegisterFront("tcp://180.168.146.187:10111");
+	char* pstr = (char*)"tcp://180.168.146.187:10111";
+	m_mdApi->RegisterFront(pstr);
 	m_mdApi->Init();
 
 }
@@ -112,7 +113,7 @@ int CmdWrapper::ReqUserLogin()
     strcpy(reqUserLogin.BrokerID, "9999");
     strcpy(reqUserLogin.UserID, "118907");
     strcpy(reqUserLogin.Password, "");
-    strcpy(reqUserLogin.TradingDay, "20190809");
+    //strcpy(reqUserLogin.TradingDay, "20190813");
     static int requestID = 0; // 请求编号
     static int rt;
 	if (m_mdApi != nullptr)
@@ -131,24 +132,18 @@ void CmdWrapper::OnRspUserLogin(CThostFtdcRspUserLoginField *pRspUserLogin, CTho
 }
 //订阅行情
 
-void CmdWrapper::subscribe(std::vector<std::string>* symbols)
+void CmdWrapper::subscribe(std::vector<char*>symbols)
 {
-
-	const char *instid[];
-    for(auto symbol:*symbols)
-    {
-    	if (m_mdApi != nullptr)
-		{
-    		*instid = symbol;
-			while (m_mdApi->SubscribeMarketData(instid, 1)!=0)
-				std::this_thread::sleep_for(std::chrono::milliseconds(1000));
-		}
-
-    }
+	static int symbolcnt = symbols.size();
+	if (m_mdApi != nullptr)
+	{
+		while (m_mdApi->SubscribeMarketData(symbols.data(), symbolcnt)!=0)
+			std::this_thread::sleep_for(std::chrono::milliseconds(1000));
+	}
 }
 
 void CmdWrapper::OnRtnDepthMarketData(CThostFtdcDepthMarketDataField *pDepthMarketData)
 {
-	std::cout << pDepthMarketData->ClosePrice  << pDepthMarketData->UpdateTime <<pDepthMarketData->Volume << std::endl;
+	std::cout <<  pDepthMarketData->InstrumentID <<"\t" << pDepthMarketData->ClosePrice <<"\t" << pDepthMarketData->UpdateTime <<"\t" <<pDepthMarketData->Volume  << std::endl;
 }
 
