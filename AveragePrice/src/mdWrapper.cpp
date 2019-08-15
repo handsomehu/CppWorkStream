@@ -144,6 +144,5 @@ void CmdWrapper::subscribe(std::vector<char*>symbols)
 
 void CmdWrapper::OnRtnDepthMarketData(CThostFtdcDepthMarketDataField *pDepthMarketData)
 {
-	std::cout <<  pDepthMarketData->InstrumentID <<"\t" << pDepthMarketData->ClosePrice <<"\t" << pDepthMarketData->UpdateTime <<"\t" <<pDepthMarketData->Volume  << std::endl;
+	std::cout <<  pDepthMarketData->InstrumentID <<"\t" << std::setprecision(8) << pDepthMarketData->ClosePrice <<"\t" << pDepthMarketData->UpdateTime <<"\t" <<pDepthMarketData->Volume  << std::endl;
 }
-
