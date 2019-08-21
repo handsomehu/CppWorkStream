@@ -20,7 +20,7 @@ CmdWrapper::~CmdWrapper() {
 void CmdWrapper::connect(){
 	m_mdApi = CThostFtdcMdApi::CreateFtdcMdApi(".//temp_md/", true, true);
 	m_mdApi->RegisterSpi(this);
-	char* pstr = (char*)"tcp://180.168.146.187:10111";
+	char* pstr = (char*)"tcp://180.168.146.187:10131";
 	m_mdApi->RegisterFront(pstr);
 	m_mdApi->Init();
 
@@ -141,8 +141,51 @@ void CmdWrapper::subscribe(std::vector<char*>symbols)
 			std::this_thread::sleep_for(std::chrono::milliseconds(1000));
 	}
 }
-
+void CmdWrapper::SaveTaskToQueue(CThostFtdcDepthMarketDataField pDepthMarketData)
+{
+    std::unique_lock<std::mutex> locker(g_lockqueue);
+    g_tasks.push(pDepthMarketData);
+    g_notified = true;
+    g_queuecheck.notify_one();
+}
 void CmdWrapper::OnRtnDepthMarketData(CThostFtdcDepthMarketDataField *pDepthMarketData)
 {
-	std::cout <<  pDepthMarketData->InstrumentID <<"\t" << std::setprecision(8) << pDepthMarketData->ClosePrice <<"\t" << pDepthMarketData->UpdateTime <<"\t" <<pDepthMarketData->Volume  << std::endl;
+	SaveTaskToQueue(*pDepthMarketData);
+	//std::cout <<  pDepthMarketData->InstrumentID <<"\t" << std::setprecision(8) << pDepthMarketData->ClosePrice <<"\t" << pDepthMarketData->UpdateTime <<"\t" <<pDepthMarketData->Volume  << std::endl;
+}
+
+///订阅行情应答
+void CmdWrapper::OnRspSubMarketData(CThostFtdcSpecificInstrumentField *pSpecificInstrument, CThostFtdcRspInfoField *pRspInfo, int nRequestID, bool bIsLast)
+{
+    if (pRspInfo->ErrorID  == 0)
+    {
+    	//SaveTaskToqueue(*pDepthMarketData);
+    	std::cout <<  "Subscribe Instrument:" << pSpecificInstrument->InstrumentID << "succeed!" <<std::endl;
+    }
+}
+
+
+void CmdWrapper::ProcessTaskFromQueue()
+{
+	CThostFtdcDepthMarketDataField content;
+    while(!g_done)
+    {
+        std::unique_lock<std::mutex> locker(g_lockqueue);
+
+        g_queuecheck.wait(locker, [&](){return !g_tasks.empty();});
+
+        // if there are error codes in the queue process them
+        while(!g_tasks.empty())
+        {
+            content = g_tasks.front();
+            g_tasks.pop();
+            std::cout <<  "Pop queue:\t"  <<content.InstrumentID << "\t"  << std::setprecision(8) << content.ClosePrice <<"\t" << content.UpdateTime <<"\t" <<content.Volume  << std::endl;
+        }
+    }
+}
+
+void CmdWrapper::SetComplete()
+{
+	std::this_thread::sleep_for(std::chrono::milliseconds(1000*60));
+	g_done = true;
 }

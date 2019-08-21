@@ -12,6 +12,9 @@
 #include <vector>
 #include <chrono>
 #include <thread>
+#include <mutex>
+#include <condition_variable>
+#include <queue>
 #include "./libhead/ThostFtdcMdApi.h"
 
 #ifndef SRC_MDWRAPPER_H_
@@ -22,6 +25,12 @@ class CmdWrapper : public CThostFtdcMdSpi{
 private:
     CThostFtdcMdApi *m_mdApi = nullptr;
     bool loginstatus = false;
+    std::mutex              g_lockprint;
+    std::mutex              g_lockqueue;
+    std::condition_variable g_queuecheck;
+    std::queue<CThostFtdcDepthMarketDataField> g_tasks;
+    bool                    g_done = false;
+    bool                    g_notified;
 public:
 	CmdWrapper();
 	virtual ~CmdWrapper();
@@ -62,7 +71,7 @@ public:
 	virtual void OnRspError(CThostFtdcRspInfoField *pRspInfo, int nRequestID, bool bIsLast) {};
 
 	///订阅行情应答
-	virtual void OnRspSubMarketData(CThostFtdcSpecificInstrumentField *pSpecificInstrument, CThostFtdcRspInfoField *pRspInfo, int nRequestID, bool bIsLast) {};
+	virtual void OnRspSubMarketData(CThostFtdcSpecificInstrumentField *pSpecificInstrument, CThostFtdcRspInfoField *pRspInfo, int nRequestID, bool bIsLast);
 
 	///取消订阅行情应答
 	virtual void OnRspUnSubMarketData(CThostFtdcSpecificInstrumentField *pSpecificInstrument, CThostFtdcRspInfoField *pRspInfo, int nRequestID, bool bIsLast) {};
@@ -78,6 +87,9 @@ public:
 
 	///询价通知
 	virtual void OnRtnForQuoteRsp(CThostFtdcForQuoteRspField *pForQuoteRsp) {};
+	void SaveTaskToQueue(CThostFtdcDepthMarketDataField pDepthMarketData);
+	void ProcessTaskFromQueue();
+	void SetComplete();
 };
 
 #endif /* SRC_MDWRAPPER_H_ */

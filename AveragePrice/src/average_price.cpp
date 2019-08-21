@@ -34,7 +34,12 @@ int main() {
 	if (loginOK)
 	{
 		mdApi->subscribe(symbollist);
-		mdApi->apijoin();
+		std::thread processqueue(&CmdWrapper::ProcessTaskFromQueue,mdApi);
+		std::thread setfin(&CmdWrapper::SetComplete,mdApi);
+
+		setfin.join();
+		//mdApi->apijoin();  //will continue run if uncommented
+							 //will terminate and have dump if commented out
 		mdApi->apirelease();
 
 	}

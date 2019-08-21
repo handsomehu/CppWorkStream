@@ -41,6 +41,7 @@
 									<listOptionValue builtIn="false" value="thostmduserapi_se"/>
 									<listOptionValue builtIn="false" value="thosttraderapi_se"/>
 								</option>
+								<option id="gnu.cpp.link.option.flags.1390777664" name="Linker flags" superClass="gnu.cpp.link.option.flags" useByScannerDiscovery="false" value="" valueType="string"/>
 								<inputType id="cdt.managedbuild.tool.gnu.cpp.linker.input.1010912652" superClass="cdt.managedbuild.tool.gnu.cpp.linker.input">
 									<additionalInput kind="additionalinputdependency" paths="$(USER_OBJS)"/>
 									<additionalInput kind="additionalinput" paths="$(LIBS)"/>
