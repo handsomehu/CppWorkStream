@@ -190,7 +190,7 @@ TThostFtdcInstrumentIDType *adjusted_Instrument_name = new TThostFtdcInstrumentI
 memcpy(adjusted_Instrument_name,&InstrumentName2,sizeof(TThostFtdcInstrumentIDType)*Count);
 
 
-for (int i=0;i=0;i++)
+for (int i=0;i<2;i++)
 {
 //cout<<"sizeof(InstrumentName2)"<<sizeof(InstrumentName2)<<endl;
 //cout<<"sizeof(TThostFtdcInstrumentIDType)"<<sizeof(TThostFtdcInstrumentIDType)<<endl;

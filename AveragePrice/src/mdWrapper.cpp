@@ -146,6 +146,9 @@ void CmdWrapper::SaveTaskToQueue(CThostFtdcDepthMarketDataField pDepthMarketData
     std::unique_lock<std::mutex> locker(g_lockqueue);
     g_tasks.push(pDepthMarketData);
     g_notified = true;
+    // may be a little beteer to unlock the object before notify
+    //since it is still lock when notify.
+    locker.unlock();
     g_queuecheck.notify_one();
 }
 void CmdWrapper::OnRtnDepthMarketData(CThostFtdcDepthMarketDataField *pDepthMarketData)
@@ -179,6 +182,8 @@ void CmdWrapper::ProcessTaskFromQueue()
         {
             content = g_tasks.front();
             g_tasks.pop();
+            //the cout is expensive, so I unlock first
+            locker.unlock();
             std::cout <<  "Pop queue:\t"  <<content.InstrumentID << "\t"  << std::setprecision(8) << content.ClosePrice <<"\t" << content.UpdateTime <<"\t" <<content.Volume  << std::endl;
         }
     }
