@@ -15,6 +15,7 @@
 #include <mutex>
 #include <condition_variable>
 #include <queue>
+#include <unordered_map>
 #include "./libhead/ThostFtdcMdApi.h"
 
 #ifndef SRC_MDWRAPPER_H_
@@ -24,6 +25,11 @@
 class CmdWrapper : public CThostFtdcMdSpi{
 private:
     CThostFtdcMdApi *m_mdApi = nullptr;
+    double curPrice = 0;
+    int curVolumn = 0;
+    int totalvol = 0;
+    double avgprice = 0;
+    std::unordered_map<std::string,double> vwaps;
     bool loginstatus = false;
     std::mutex              g_lockprint;
     std::mutex              g_lockqueue;
@@ -90,6 +96,7 @@ public:
 	void SaveTaskToQueue(CThostFtdcDepthMarketDataField pDepthMarketData);
 	void ProcessTaskFromQueue();
 	void SetComplete();
+	void UpdateVwap(std::string inID,double price, int vol);
 };
 
 #endif /* SRC_MDWRAPPER_H_ */

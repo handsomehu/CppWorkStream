@@ -20,7 +20,7 @@ CmdWrapper::~CmdWrapper() {
 void CmdWrapper::connect(){
 	m_mdApi = CThostFtdcMdApi::CreateFtdcMdApi(".//temp_md/", true, true);
 	m_mdApi->RegisterSpi(this);
-	char* pstr = (char*)"tcp://180.168.146.187:10131";
+	char* pstr = (char*)"tcp://180.168.146.187:10110";
 	m_mdApi->RegisterFront(pstr);
 	m_mdApi->Init();
 
@@ -180,17 +180,38 @@ void CmdWrapper::ProcessTaskFromQueue()
         // if there are error codes in the queue process them
         while(!g_tasks.empty())
         {
+        	std::cout << g_tasks.size();
             content = g_tasks.front();
             g_tasks.pop();
             //the cout is expensive, so I unlock first
             locker.unlock();
-            std::cout <<  "Pop queue:\t"  <<content.InstrumentID << "\t"  << std::setprecision(8) << content.ClosePrice <<"\t" << content.UpdateTime <<"\t" <<content.Volume  << std::endl;
+            totalvol = content.Volume;
+            curPrice = content.LastPrice;
+            //UpdateVwap(content.InstrumentID ,curPrice,totalvol);
+            std::cout << "ttt" << std::endl;
+            std::cout <<  "Pop queue:\t"  << content.InstrumentID << std::endl;
+            //std::cout <<  "Pop queue:\t"  <<content.InstrumentID << "\t"  << std::setprecision(8) << content.ClosePrice <<"\t" << content.UpdateTime <<"\t" <<content.Volume  << std::endl;
         }
     }
 }
 
+void CmdWrapper::UpdateVwap(std::string inID, double curprice, int curvol)
+{
+
+		//totalvol = vwap.at(inID)
+		std::cout << "test " << std::endl;
+		avgprice = totalvol * avgprice + curprice *curvol;
+		totalvol = totalvol + curvol;
+		avgprice = avgprice / totalvol;
+		//vwaps.at(inID) = avgprice;
+		std::cout << "test1 " << std::endl;
+		vwaps[inID] = avgprice;
+		std::cout << "test2 " << std::endl;
+		std::cout << avgprice << std::endl;
+
+}
 void CmdWrapper::SetComplete()
 {
 	std::this_thread::sleep_for(std::chrono::milliseconds(1000*60));
-	g_done = true;
+	//g_done = true;
 }

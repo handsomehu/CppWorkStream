@@ -13,7 +13,7 @@
 int main() {
 	static int trycnt = 0;
 	static bool loginOK = false;
-	std::vector<char*> symbollist = {"rb1910","ru2001"};
+	std::vector<char*> symbollist = {"rb1910","ru2001","T1912"};
 	std::cout << "C++ CTP Journey Begin, Wow!" << std::endl;
 	std::shared_ptr<CmdWrapper> mdApi = std::make_shared<CmdWrapper>();
 	mdApi->connect();
@@ -37,8 +37,8 @@ int main() {
 		std::thread processqueue(&CmdWrapper::ProcessTaskFromQueue,mdApi);
 		std::thread setfin(&CmdWrapper::SetComplete,mdApi);
 
-		setfin.join();
-		//mdApi->apijoin();  //will continue run if uncommented
+		//setfin.join();
+		mdApi->apijoin();  //will continue run if uncommented
 							 //will terminate and have dump if commented out
 		mdApi->apirelease();
 
