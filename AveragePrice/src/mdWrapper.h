@@ -17,11 +17,17 @@
 #include <queue>
 #include <unordered_map>
 #include "./libhead/ThostFtdcMdApi.h"
+//#include "./libhead/nlohmann/json.hpp"
+//#include "./libhead/nlohmann/json.hpp"
 
 #ifndef SRC_MDWRAPPER_H_
 #define SRC_MDWRAPPER_H_
 
-
+struct thevwap
+{
+    double avgprice;
+    int vol;
+};
 class CmdWrapper : public CThostFtdcMdSpi{
 private:
     CThostFtdcMdApi *m_mdApi = nullptr;
@@ -29,7 +35,9 @@ private:
     int curVolumn = 0;
     int totalvol = 0;
     double avgprice = 0;
-    std::unordered_map<std::string,double> vwaps;
+    thevwap lastvwap;
+    thevwap newvwap;
+    std::unordered_map<std::string,thevwap> vwaps;
     bool loginstatus = false;
     std::mutex              g_lockprint;
     std::mutex              g_lockqueue;
@@ -40,6 +48,8 @@ private:
 public:
 	CmdWrapper();
 	virtual ~CmdWrapper();
+	void getavg();
+	void persistvwap();
 	void connect();
 	bool getloginstatus();
 	int apijoin();

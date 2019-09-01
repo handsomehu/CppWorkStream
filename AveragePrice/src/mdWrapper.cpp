@@ -18,9 +18,10 @@ CmdWrapper::~CmdWrapper() {
 
 
 void CmdWrapper::connect(){
-	m_mdApi = CThostFtdcMdApi::CreateFtdcMdApi(".//temp_md/", true, true);
+
+	m_mdApi = CThostFtdcMdApi::CreateFtdcMdApi("./temp_md", true, true);
 	m_mdApi->RegisterSpi(this);
-	char* pstr = (char*)"tcp://180.168.146.187:10110";
+	char* pstr = (char*)"tcp://180.168.146.187:10131";
 	m_mdApi->RegisterFront(pstr);
 	m_mdApi->Init();
 
@@ -139,22 +140,30 @@ void CmdWrapper::subscribe(std::vector<char*>symbols)
 	{
 		while (m_mdApi->SubscribeMarketData(symbols.data(), symbolcnt)!=0)
 			std::this_thread::sleep_for(std::chrono::milliseconds(1000));
+		newvwap.avgprice = 0;
+		newvwap.vol =0 ;
+		for (char* v:symbols)
+			vwaps[v] = newvwap;
 	}
 }
 void CmdWrapper::SaveTaskToQueue(CThostFtdcDepthMarketDataField pDepthMarketData)
 {
     std::unique_lock<std::mutex> locker(g_lockqueue);
+    //locker.lock();
     g_tasks.push(pDepthMarketData);
-    g_notified = true;
+
     // may be a little beteer to unlock the object before notify
     //since it is still lock when notify.
     locker.unlock();
     g_queuecheck.notify_one();
+    g_notified = true;
+    //std::cout << pDepthMarketData.InstrumentID << std::endl;
 }
 void CmdWrapper::OnRtnDepthMarketData(CThostFtdcDepthMarketDataField *pDepthMarketData)
 {
 	SaveTaskToQueue(*pDepthMarketData);
-	//std::cout <<  pDepthMarketData->InstrumentID <<"\t" << std::setprecision(8) << pDepthMarketData->ClosePrice <<"\t" << pDepthMarketData->UpdateTime <<"\t" <<pDepthMarketData->Volume  << std::endl;
+
+	//std::cout <<  pDepthMarketData->InstrumentID << std::endl;
 }
 
 ///订阅行情应答
@@ -178,40 +187,78 @@ void CmdWrapper::ProcessTaskFromQueue()
         g_queuecheck.wait(locker, [&](){return !g_tasks.empty();});
 
         // if there are error codes in the queue process them
-        while(!g_tasks.empty())
-        {
-        	std::cout << g_tasks.size();
+        //while(!g_tasks.empty())
+        //std::cout << g_tasks.size();
+        	//locker.lock();
             content = g_tasks.front();
             g_tasks.pop();
             //the cout is expensive, so I unlock first
-            locker.unlock();
             totalvol = content.Volume;
             curPrice = content.LastPrice;
-            //UpdateVwap(content.InstrumentID ,curPrice,totalvol);
-            std::cout << "ttt" << std::endl;
-            std::cout <<  "Pop queue:\t"  << content.InstrumentID << std::endl;
+            UpdateVwap(content.InstrumentID ,curPrice,totalvol);
+            locker.unlock();
+            //std::cout << g_tasks.size();
+            //std::cout << "ttt" << std::endl;
+            //std::cout <<  "Pop queue:\t"  << content.InstrumentID << std::endl;
             //std::cout <<  "Pop queue:\t"  <<content.InstrumentID << "\t"  << std::setprecision(8) << content.ClosePrice <<"\t" << content.UpdateTime <<"\t" <<content.Volume  << std::endl;
-        }
+        //}
     }
+
+}
+void CmdWrapper::persistvwap()
+{
+
+	//nlohmann::json myj;
+	std::unordered_map<std::string,thevwap>::iterator iter;
+	int repeattime = 10;
+	while (repeattime > 0)
+	{
+		--repeattime;
+		std::this_thread::sleep_for(std::chrono::milliseconds(10000));
+	    for (iter = vwaps.begin(); iter != vwaps.end(); ++iter)
+	    	{
+	    		newvwap = iter->second;
+	    		std::cout << "(" << iter->first << ", " << newvwap.avgprice << ")" << " "<<std::endl;
+	    	}
+
+	}
 }
 
+void CmdWrapper::getavg()
+{
+	std::cout << avgprice << std::endl;
+}
 void CmdWrapper::UpdateVwap(std::string inID, double curprice, int curvol)
 {
 
 		//totalvol = vwap.at(inID)
-		std::cout << "test " << std::endl;
-		avgprice = totalvol * avgprice + curprice *curvol;
-		totalvol = totalvol + curvol;
-		avgprice = avgprice / totalvol;
+		//std::cout << "test " << std::endl;
+		lastvwap = vwaps[inID];
+		std::cout << "before update" <<lastvwap.avgprice << std::endl;
+		if (lastvwap.avgprice != 0)
+		{
+
+			avgprice = lastvwap.avgprice + curprice *curvol;
+			totalvol = totalvol + lastvwap.vol;
+			avgprice = avgprice / totalvol;
+			lastvwap.avgprice = avgprice;
+			lastvwap.vol = totalvol;
+		}
+		else
+		{
+			lastvwap.avgprice = curprice;
+			lastvwap.vol = curvol;
+		}
 		//vwaps.at(inID) = avgprice;
-		std::cout << "test1 " << std::endl;
-		vwaps[inID] = avgprice;
-		std::cout << "test2 " << std::endl;
-		std::cout << avgprice << std::endl;
+		//std::cout << "test1 " << std::endl;
+		vwaps[inID] = lastvwap;
+		std::cout << "after update" << lastvwap.avgprice  << std::endl;
+		//std::cout << "test2 " << std::endl;
+		//std::cout << inID << "\t" << avgprice << std::endl;
 
 }
 void CmdWrapper::SetComplete()
 {
-	std::this_thread::sleep_for(std::chrono::milliseconds(1000*60));
-	//g_done = true;
+	std::this_thread::sleep_for(std::chrono::milliseconds(1000*60*20));
+	g_done = true;
 }
