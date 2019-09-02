@@ -17,7 +17,7 @@
 #include <queue>
 #include <unordered_map>
 #include "./libhead/ThostFtdcMdApi.h"
-//#include "./libhead/nlohmann/json.hpp"
+#include "./libhead/json.hpp"
 //#include "./libhead/nlohmann/json.hpp"
 
 #ifndef SRC_MDWRAPPER_H_

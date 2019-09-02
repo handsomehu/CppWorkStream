@@ -58,5 +58,12 @@ int main() {
 	else
 		std::cout << "Cannot login to the system, please check!" << std::endl;
 
+	/*
+    nlohmann::json jtest;
+    jtest["hello"] = "World";
+    jtest["url"] = "github.com";
+    std::ofstream file("key.json");
+    file << jtest;
+	 */
 	return 0;
 }
