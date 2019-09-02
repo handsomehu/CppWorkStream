@@ -234,11 +234,11 @@ void CmdWrapper::UpdateVwap(std::string inID, double curprice, int curvol)
 		//totalvol = vwap.at(inID)
 		//std::cout << "test " << std::endl;
 		lastvwap = vwaps[inID];
-		std::cout << "before update" <<lastvwap.avgprice << std::endl;
+		//std::cout << "before update" <<lastvwap.avgprice << std::endl;
 		if (lastvwap.avgprice != 0)
 		{
 
-			avgprice = lastvwap.avgprice + curprice *curvol;
+			avgprice = lastvwap.avgprice*lastvwap.vol + curprice *curvol;
 			totalvol = totalvol + lastvwap.vol;
 			avgprice = avgprice / totalvol;
 			lastvwap.avgprice = avgprice;
@@ -252,7 +252,7 @@ void CmdWrapper::UpdateVwap(std::string inID, double curprice, int curvol)
 		//vwaps.at(inID) = avgprice;
 		//std::cout << "test1 " << std::endl;
 		vwaps[inID] = lastvwap;
-		std::cout << "after update" << lastvwap.avgprice  << std::endl;
+		//std::cout << "after update" << lastvwap.avgprice  << std::endl;
 		//std::cout << "test2 " << std::endl;
 		//std::cout << inID << "\t" << avgprice << std::endl;
 
