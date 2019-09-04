@@ -8,6 +8,7 @@
 
 
 #include "mdWrapper.h"
+#include "DbHelper.h"
 /*
 #include <limits.h>
 #include <unistd.h>
@@ -19,6 +20,12 @@ std::string getexepath()
 }
 */
 int main() {
+
+	{
+		DbHelper dh;
+		int ret = dh.PersistVwap("20190804","rb2001",3420,1000);
+		std::cout << ret << std::endl;
+	}
 	static int trycnt = 0;
 	static bool loginOK = false;
 	std::vector<char*> symbollist = {"rb1910","ru2001","T1912"};
@@ -65,6 +72,7 @@ int main() {
     std::ofstream file("key.json");
     file << jtest;
 	 */
+
 	return 0;
 }
 
