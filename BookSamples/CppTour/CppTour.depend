@@ -1,0 +1,9 @@
+# depslib dependency file v1.0
+1567666080 source:/home/leon/CppJourney/CppWorkStream/BookSamples/CppTour/main.cpp
+	<iostream>
+	"vector.cpp"
+
+1567666870 source:/home/leon/CppJourney/CppWorkStream/BookSamples/CppTour/vector.cpp
+
+1567666870 /home/leon/CppJourney/CppWorkStream/BookSamples/CppTour/vector.cpp
+
