@@ -23,6 +23,18 @@ void fffa(Entry* pe)
     if(pe->t == num)
        int i = pe->v.i;
 };
+
+void fte(Vector& v)
+{
+    try
+    {
+        v[v.size()]= 7;
+    }
+    catch (std::out_of_range & err)
+    {
+        std::cerr << err.what() << "\n";
+    }
+}
 double read_and_sum(int s)
 {
 	Vector v(s);
@@ -31,6 +43,8 @@ double read_and_sum(int s)
 	double sum = 0;
 	for (int i = 0; i != v.size();++i)
 		sum+= v[i];
+    //Vector& r=v;
+    fte(v);
 	return sum;
 
 }
@@ -45,6 +59,8 @@ switch(t)
     case Traffic_light::red: return t = Traffic_light::green;
     }
 }
+
+
 
 int main()
 {
