@@ -1,4 +1,5 @@
 #include <iostream>
+#include <istream>
 #include "./vector.h"
 
 class Node {};
@@ -69,6 +70,38 @@ switch(t)
 }
 
 
+int& bad()
+{
+int x = 10;
+return x;
+}
+
+struct Entry123 //Le'ts pretend Matrix123 is a matrix.
+{
+std::string name;
+int value;
+};
+Entry123 read_entry123(std::istream& is)
+{
+    std::string s;
+    int i;
+    is >> s >> i ;
+    return {s,i};
+};
+
+/*
+map<string,int> m;
+// ... fill m ...
+for (const auto [key,value] : m)
+      cout << "{" << key "," << value << "}\n";
+void incr(map<string,int>& m)     // increment the value of each element of m
+{
+     for (auto& [key,value] : m)
+           ++value;
+}
+read and write map
+*/
+
 
 int main()
 {
@@ -88,5 +121,13 @@ int main()
     testfunc(v1,v1);
     std::cout << v1[1] << "\t" << v1[2] << std::endl;
 
+    //int rx = bad(); //complier did not consider this as error.
+                    // B.St book said most complier will find this problem.
+    //std::cout << rx << std::endl;
+    auto e = read_entry123(std::cin);
+
+    std::cout << e.name << e.value << std::endl;
+    //auto [n,v] = read_entry123(std::cin); //not working in c++14 yet.
+    //std::cout << n << v << std::endl;
     return 0;
 }

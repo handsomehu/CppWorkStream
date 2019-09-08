@@ -3,6 +3,7 @@
 #include <stdexcept>
 #include <assert.h>
 #include <vector>
+
 class Vector {
 public:
      Vector(int s);
