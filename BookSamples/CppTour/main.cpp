@@ -48,6 +48,14 @@ double read_and_sum(int s)
 	return sum;
 
 }
+
+int sum_v(const std::vector<int>& v)
+{
+    int sum = 0;
+    for(int single:v)
+        sum+= single;
+    return sum;
+}
 enum class Color { red, blue, green };
 enum class Traffic_light { green, yellow, red };
 Traffic_light& operator++(Traffic_light& t)
@@ -72,6 +80,13 @@ int main()
     Traffic_light light = Traffic_light::red;
     ++light;
     std::cout << (int)light << std::endl;
+    static_assert(4<=sizeof(int),"Int size does not match");
+
+    std::vector<int> v1 = {1,2,3,5,8,13,21};
+    static int sv = sum_v(v1);
+    std::cout << sv << std::endl;
+    testfunc(v1,v1);
+    std::cout << v1[1] << "\t" << v1[2] << std::endl;
 
     return 0;
 }

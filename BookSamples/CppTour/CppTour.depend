@@ -1,13 +1,14 @@
 # depslib dependency file v1.0
-1567737615 source:/home/leon/CppJourney/CppWorkStream/BookSamples/CppTour/main.cpp
+1567863641 source:/home/leon/CppJourney/CppWorkStream/BookSamples/CppTour/main.cpp
 	<iostream>
 	"./vector.h"
 
-1567862578 source:/home/leon/CppJourney/CppWorkStream/BookSamples/CppTour/vector.cpp
+1567910292 source:/home/leon/CppJourney/CppWorkStream/BookSamples/CppTour/vector.cpp
 	"./vector.h"
 
 1567666870 /home/leon/CppJourney/CppWorkStream/BookSamples/CppTour/vector.cpp
 
-1567862530 /home/leon/CppJourney/CppWorkStream/BookSamples/CppTour/vector.h
+1567910410 /home/leon/CppJourney/CppWorkStream/BookSamples/CppTour/vector.h
 	<stdexcept>
+	<assert.h>
 
