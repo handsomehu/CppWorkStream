@@ -1,6 +1,7 @@
 #include <iostream>
 #include <istream>
 #include "./vector.h"
+#include "udclass.cpp"
 
 class Node {};
 enum Type { ptr, num };
@@ -101,12 +102,40 @@ void incr(map<string,int>& m)     // increment the value of each element of m
 }
 read and write map
 */
+    bool operator==(complex a, complex b) // equal
+    {
+    return a.real()==b.real() && a.imag()==b.imag();
+    }
+    bool operator!=(complex a, complex b) // not equal
+    {
+    return !(a==b);
+    }
+    complex sqrt(complex);
+    complex operator+(complex a, complex b) { return a+=b; }
+    complex operator-(complex a, complex b) { return a-=b; }
+    complex operator-(complex a) { return {-a.real(), -a.imag()}; }
+    // unary minus
+    //complex operator*(complex a, complex b) { return a*=b; }
+    //complex operator/(complex a, complex b) { return a/=b; }
 
+
+void testcomplex()
+{
+    complex z = {1,0};
+    const complex cz {1,3};
+    z = cz;
+    const complex cy(2,4);
+    //cz = z;
+    double x = z.real();
+    bool eq = (z == cz);
+    std::cout << "complex"  << x << std::endl;
+    std::cout << "complex equal:" << eq << std::endl;
+}
 
 int main()
 {
     std::cout << "Hello world!" << std::endl;
-    std::cout << "Sum until 3 is :" << read_and_sum(3) << std::endl;
+    //std::cout << "Sum until 3 is :" << read_and_sum(3) << std::endl;
 
 
     Color col = Color::green;
@@ -129,5 +158,6 @@ int main()
     std::cout << e.name << e.value << std::endl;
     //auto [n,v] = read_entry123(std::cin); //not working in c++14 yet.
     //std::cout << n << v << std::endl;
+    testcomplex();
     return 0;
-}
+};
