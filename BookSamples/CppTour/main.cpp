@@ -135,7 +135,7 @@ void testcomplex()
 int main()
 {
     std::cout << "Hello world!" << std::endl;
-    //std::cout << "Sum until 3 is :" << read_and_sum(3) << std::endl;
+    std::cout << "Sum until 3 is :" << read_and_sum(3) << std::endl;
 
 
     Color col = Color::green;
