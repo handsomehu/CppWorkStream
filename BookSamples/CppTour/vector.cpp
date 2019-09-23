@@ -22,7 +22,7 @@ double& Vector::operator[](int i)
         assert(i< size());
         return elem[i];
     }
-int Vector::size()
+int Vector::size() const
 	{return sz;}
 
 
@@ -49,4 +49,30 @@ void Vector1::push_back(double f)
 
     //increase size
     sz += 1;
+}
+
+Vector_container::Vector_container(int s):v(s)
+{}
+Vector_container::~Vector_container(){}
+double&  Vector_container::operator[](int i)
+{
+    return v[i];
+}
+
+int  Vector_container::size() const
+{
+    return v.size();
+}
+
+void use(Container& c)
+{
+
+    const int sc = c.size();
+    for (int i = 0;i!= sc;++i)
+        std::cout << c[i] << std::endl;
+}
+void ggg()
+{
+    Vector_container vc(10);
+    use(vc);
 }

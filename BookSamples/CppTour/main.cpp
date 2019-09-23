@@ -131,7 +131,7 @@ void testcomplex()
     std::cout << "complex"  << x << std::endl;
     std::cout << "complex equal:" << eq << std::endl;
 }
-
+//extern void ggg();
 int main()
 {
     std::cout << "Hello world!" << std::endl;
@@ -160,5 +160,6 @@ int main()
     //std::cout << n << v << std::endl;
     testcomplex();
     std::cout << "test cb";
+    ggg();
     return 0;
 };
