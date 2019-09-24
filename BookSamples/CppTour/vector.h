@@ -4,11 +4,14 @@
 #include <assert.h>
 #include <vector>
 #include <iostream>
+#include <list>
 
 class Vector {
 public:
      Vector(int s);
      ~Vector();
+     Vector(const Vector& a);               // copy constructor
+     Vector& operator=(const Vector& a);    // copy assignment
      double& operator[](int i);
      int size() const;
 private:
@@ -48,4 +51,20 @@ private:
 
 };
 void ggg();
+
+class List_container:public Container
+{
+public:
+    List_container();
+    //List_container(std::initializer_list<double> il);
+    List_container(std::initializer_list<double> il);
+    ~List_container();
+    double& operator[](int i) override;
+    int size() const override;
+private:
+std::list<double> ld;
+};
+
+void bad_copy(Vector v1);
+
 #endif // VECTOR_H_INCLUDED

@@ -9,6 +9,22 @@ Vector::Vector(int s)
             elem[i] = 0;
          sz =s;
 	}
+Vector::Vector(const Vector &a): elem{new double[a.sz]}, sz{a.sz}
+	{
+     for (int i=0; i!=sz; ++i)    // copy elements
+           elem[i] = a.elem[i];
+	}
+
+Vector& Vector::operator=(const Vector& a)   // copy assignment
+{
+    double * p = new double[a.sz];
+    for (int i = 0;i!=a.sz;++i)
+        p[i]=a.elem[i];
+    delete[] elem; // why not directly new elem[size]?why delete it? not understand
+    elem = p;
+    sz = a.sz;
+    return *this;
+}
 Vector::~Vector()
 {
     delete[] elem;
@@ -62,8 +78,31 @@ double&  Vector_container::operator[](int i)
 int  Vector_container::size() const
 {
     return v.size();
-}
+};
 
+
+
+
+List_container::List_container(){};
+//List_container::List_container(std::initializer_list il) : ld{il} {} //what the f*k?
+List_container::List_container(std::initializer_list<double> il) :ld{il} {}
+List_container::~List_container(){};
+double& List_container::operator[](int i)
+{
+    for(auto& x:ld)
+    {
+
+        if (i==0)
+            return x;
+        --i;
+    }
+    throw std::out_of_range{"List container!"};
+};
+
+int List_container::size() const
+{
+    return ld.size();
+};
 void use(Container& c)
 {
 
@@ -75,4 +114,14 @@ void ggg()
 {
     Vector_container vc(10);
     use(vc);
+    List_container lc={12,20.0,11.4};
+    use(lc);
+}
+
+void bad_copy(Vector v1)
+{
+    Vector v2 = v1; //copy v1's representation into v2
+    v1[0] = 2;         // v2[0] is now also 2!
+    v2[1] = 3;         // v1[1] is now also 3!
+    //default copy constructure is very bad for resource handle
 }
