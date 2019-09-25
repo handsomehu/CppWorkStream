@@ -14,6 +14,14 @@ Vector::Vector(const Vector &a): elem{new double[a.sz]}, sz{a.sz}
      for (int i=0; i!=sz; ++i)    // copy elements
            elem[i] = a.elem[i];
 	}
+//move constructor
+//still got a bit confuse about rvalue and reference of rvalue
+//anyway it works.
+Vector::Vector(Vector&& a):elem{a.elem},sz{a.sz}
+{
+    a.elem = nullptr;
+    a.sz = 0;
+}
 
 Vector& Vector::operator=(const Vector& a)   // copy assignment
 {
@@ -124,4 +132,16 @@ void bad_copy(Vector v1)
     v1[0] = 2;         // v2[0] is now also 2!
     v2[1] = 3;         // v1[1] is now also 3!
     //default copy constructure is very bad for resource handle
+}
+
+Vector test_move()
+{
+    Vector x(20);
+    Vector y(30);
+    Vector z(40);
+
+    z = x; //copy x to z
+    y = std::move(x); // move assignment, should not use x any more
+    return z; //move z is ready to gone
+
 }

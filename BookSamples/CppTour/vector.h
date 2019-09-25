@@ -12,6 +12,7 @@ public:
      ~Vector();
      Vector(const Vector& a);               // copy constructor
      Vector& operator=(const Vector& a);    // copy assignment
+     Vector(Vector&& a); //move constructor
      double& operator[](int i);
      int size() const;
 private:
@@ -67,4 +68,5 @@ std::list<double> ld;
 
 void bad_copy(Vector v1);
 
+Vector test_move();
 #endif // VECTOR_H_INCLUDED

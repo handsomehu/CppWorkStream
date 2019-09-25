@@ -19,6 +19,7 @@ std::string getexepath()
   return std::string( result, (count > 0) ? count : 0 );
 }
 */
+
 int main() {
 
 	{
@@ -26,6 +27,16 @@ int main() {
 		int ret = dh.PersistVwap("20190804","rb2001",3420,1000);
 		std::cout << ret << std::endl;
 	}
+
+	// Create a std::promise object
+	std::promise<void> exitSignal;
+
+	//Fetch std::future object associated with promise
+	std::future<void> futureObj = exitSignal.get_future();
+
+	// Starting Thread & move the future object in lambda function by reference
+	//std::thread th(&threadFunction, std::move(futureObj));
+
 	static int trycnt = 0;
 	static bool loginOK = false;
 	std::vector<char*> symbollist = {"rb1910","ru2001","T1912"};
@@ -47,19 +58,28 @@ int main() {
 			break;
 	}
 
+
 	if (loginOK)
 	{
 		mdApi->subscribe(symbollist);
-		std::thread processqueue(&CmdWrapper::ProcessTaskFromQueue,mdApi);
-		std::thread setfin(&CmdWrapper::SetComplete,mdApi);
+		std::thread processqueue(&CmdWrapper::ProcessTaskFromQueue,mdApi,std::move(futureObj));
+		//std::thread setfin(&CmdWrapper::SetComplete,mdApi);
 		std::thread printvwap(&CmdWrapper::persistvwap,mdApi);
 		//void CmdWrapper::persistvwap()
 
+		//send stop signal:
+		mdApi->SetComplete();
+		exitSignal.set_value();
+		processqueue.join();
+		std::cout << "process queue joined" << std::endl;
 		//setfin.join();
 		mdApi->apijoin();  //will continue run if uncommented
 							 //will terminate and have dump if commented out
 		//mdApi->getavg() ;
+		std::cout << "exit, next cmd is apirelease to terminate" << std::endl;
+		std::this_thread::sleep_for(std::chrono::milliseconds(1000*60*2));
 		mdApi->apirelease();
+
 
 	}
 	else

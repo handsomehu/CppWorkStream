@@ -16,6 +16,7 @@
 #include <condition_variable>
 #include <queue>
 #include <unordered_map>
+#include <future>
 #include "./libhead/ThostFtdcMdApi.h"
 #include "./libhead/json.hpp"
 //#include "./libhead/nlohmann/json.hpp"
@@ -45,6 +46,7 @@ private:
     std::queue<CThostFtdcDepthMarketDataField> g_tasks;
     bool                    g_done = false;
     bool                    g_notified;
+    bool                    g_setcomplete = false;
 public:
 	CmdWrapper();
 	virtual ~CmdWrapper();
@@ -104,7 +106,7 @@ public:
 	///询价通知
 	virtual void OnRtnForQuoteRsp(CThostFtdcForQuoteRspField *pForQuoteRsp) {};
 	void SaveTaskToQueue(CThostFtdcDepthMarketDataField pDepthMarketData);
-	void ProcessTaskFromQueue();
+	void ProcessTaskFromQueue(std::future<void> futureObj);
 	void SetComplete();
 	void UpdateVwap(std::string inID,double price, int vol);
 };

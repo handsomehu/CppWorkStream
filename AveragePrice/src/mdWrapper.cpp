@@ -177,10 +177,10 @@ void CmdWrapper::OnRspSubMarketData(CThostFtdcSpecificInstrumentField *pSpecific
 }
 
 
-void CmdWrapper::ProcessTaskFromQueue()
+void CmdWrapper::ProcessTaskFromQueue(std::future<void> futureObj)
 {
 	CThostFtdcDepthMarketDataField content;
-    while(!g_done)
+    while(!g_done && (futureObj.wait_for(std::chrono::milliseconds(1)) == std::future_status::timeout))
     {
         std::unique_lock<std::mutex> locker(g_lockqueue);
 
@@ -203,6 +203,7 @@ void CmdWrapper::ProcessTaskFromQueue()
             //std::cout <<  "Pop queue:\t"  <<content.InstrumentID << "\t"  << std::setprecision(8) << content.ClosePrice <<"\t" << content.UpdateTime <<"\t" <<content.Volume  << std::endl;
         //}
     }
+    std::cout << "process queue stoped!" << std::endl;
 
 }
 void CmdWrapper::persistvwap()
@@ -259,6 +260,8 @@ void CmdWrapper::UpdateVwap(std::string inID, double curprice, int curvol)
 }
 void CmdWrapper::SetComplete()
 {
-	std::this_thread::sleep_for(std::chrono::milliseconds(1000*60*20));
+	std::this_thread::sleep_for(std::chrono::milliseconds(1000*60*1));
 	g_done = true;
+	std::cout << "We have send stop signal, please stop!" << std::endl;
+	//g_setcomplete = true;
 }

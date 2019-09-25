@@ -161,5 +161,7 @@ int main()
     testcomplex();
     std::cout << "test cb";
     ggg();
+    Vector ddd = test_move();
+
     return 0;
 };

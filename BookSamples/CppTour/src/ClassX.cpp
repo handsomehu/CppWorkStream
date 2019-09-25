@@ -1,4 +1,4 @@
-#include "ClassX.h"
+#include "../include/ClassX.h"
 
 ClassX::ClassX()
 {

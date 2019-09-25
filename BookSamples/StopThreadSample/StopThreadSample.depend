@@ -1,0 +1,8 @@
+# depslib dependency file v1.0
+1569393389 source:/home/leon/CppJourney/CppWorkStream/BookSamples/StopThreadSample/main.cpp
+	<thread>
+	<iostream>
+	<assert.h>
+	<chrono>
+	<future>
+
