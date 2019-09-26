@@ -26,7 +26,7 @@ void fffa(Entry* pe)
        int i = pe->v.i;
 };
 
-void fte(Vector& v)
+void fte(Vector<double>& v)
 {
     try
     {
@@ -39,7 +39,7 @@ void fte(Vector& v)
 }
 double read_and_sum(int s)
 {
-	Vector v(s);
+	Vector<double> v(s);
 	for (int i = 0; i != v.size();++i)
 		std::cin >> v[i];
 	double sum = 0;
@@ -161,7 +161,7 @@ int main()
     testcomplex();
     std::cout << "test cb";
     ggg();
-    Vector ddd = test_move();
+    Vector<double> ddd = test_move();
 
     return 0;
 };

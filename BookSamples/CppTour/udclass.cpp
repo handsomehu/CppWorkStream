@@ -27,3 +27,10 @@ public:
     complex& operator/=(complex);
 
 };
+
+/*
+constexpr complex<double> operator""i(long double arg)
+{
+    return {0,arg};
+}
+*/

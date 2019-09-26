@@ -1,0 +1,40 @@
+template<typename T> Vector::Vector(int s)
+	{
+        if(s<0)
+            throw std::length_error{"Vector Constructor: Nagetive value!"};
+         elem = new T[s];
+         for(int i =0;i!=s;++i)
+            elem[i] = 0;
+         sz =s;
+	}
+template<typename T>
+Vector::Vector(const Vector &a): elem{new T[a.sz]}, sz{a.sz}
+	{
+     for (int i=0; i!=sz; ++i)    // copy elements
+           elem[i] = a.elem[i];
+	}
+//move constructor
+//still got a bit confuse about rvalue and reference of rvalue
+//anyway it works.
+
+Vector::Vector(Vector&& a):elem{a.elem},sz{a.sz}
+{
+    a.elem = nullptr;
+    a.sz = 0;
+}
+template<typename T>
+Vector& Vector::operator=(const Vector& a)   // copy assignment
+{
+    T * p = new T[a.sz];
+    for (int i = 0;i!=a.sz;++i)
+        p[i]=a.elem[i];
+    delete[] elem; // why not directly new elem[size]?why delete it? not understand
+    elem = p;
+    sz = a.sz;
+    return *this;
+}
+Vector::~Vector()
+{
+    delete[] elem;
+}
+
