@@ -94,3 +94,8 @@ Vector<double> test_move()
     return z; //move z is ready to gone
 
 }
+void use_sum123(Vector<int> vi)
+{
+    int ri = sum(vi,0);
+    std::cout << ri << std::endl;
+}

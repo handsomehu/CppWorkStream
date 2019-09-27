@@ -162,6 +162,9 @@ int main()
     std::cout << "test cb";
     ggg();
     Vector<double> ddd = test_move();
-
+    Vector<int> v111(3);
+    v111[0] = 1;
+    v111[1] = 2;
+    use_sum123(v111);
     return 0;
 };

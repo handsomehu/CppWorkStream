@@ -55,10 +55,45 @@ public:
 
      int size() const
      {return sz;}
+     T* begin(Vector<T>& x )
+     {
+        return x.size()?&x[0]:nullptr;
+     }
+     T* begin()
+     {
+        return size()?&elem[0]:nullptr;
+     }
+     T* end(Vector<T>& x)
+     {
+        return x.size()?&x[0]+x.size():nullptr;
+     }
+     T* end()
+     {
+        return size()?&elem[0]+size():nullptr;
+     }
 private:
      T* elem;      // elem points to an array of sz doubles
      int sz;
 };
+//C++20 feature, not supported by my compiler
+/*
+template<typename TT, int N>
+struct Buffer
+{
+    using value_type = TT;
+    constexpr int size() {return N;}
+    TT[N];
+};
+*/
+template<typename Sequence, typename Value>
+Value sum(Sequence& s, Value v)
+{
+    for(auto x:s)
+        v+= x;
+    return v;
+}
+
+void use_sum123(Vector<int> vi);
 
 class Vector1  //
 {
