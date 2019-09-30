@@ -50,6 +50,19 @@ double read_and_sum(int s)
 	return sum;
 
 }
+void test_functor()
+{
+    Less_Than<int> t{5};
+    std::cout<< "is 8 less than 5:" << t(8) << std::endl;
+    Vector<int> v(5);
+    v[0] = 3;
+    v[1] = 4;
+    v[2] = 5;
+    v[3] = 6;
+    v[4] = 7;
+    int rv = count(v,t);
+    std::cout << "number of less than 5:" << rv << std::endl;
+}
 
 int sum_v(const std::vector<int>& v)
 {
@@ -166,5 +179,7 @@ int main()
     v111[0] = 1;
     v111[1] = 2;
     use_sum123(v111);
+    test_functor();
+    test_lambda();
     return 0;
 };

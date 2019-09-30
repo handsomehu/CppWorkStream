@@ -13,8 +13,8 @@ public:
         if(s<0)
             throw std::length_error{"Vector Constructor: Nagetive value!"};
          elem = new T[s];
-         for(int i =0;i!=s;++i)
-            elem[i] = 0;
+         //for(int i =0;i!=s;++i)
+         //   elem[i] = 0;
          sz =s;
 	 }
      ~Vector()
@@ -59,7 +59,7 @@ public:
      {
         return x.size()?&x[0]:nullptr;
      }
-     T* begin()
+     T* begin() const
      {
         return size()?&elem[0]:nullptr;
      }
@@ -67,7 +67,7 @@ public:
      {
         return x.size()?&x[0]+x.size():nullptr;
      }
-     T* end()
+     T* end() const
      {
         return size()?&elem[0]+size():nullptr;
      }
@@ -85,15 +85,31 @@ struct Buffer
     TT[N];
 };
 */
+// Function Templates
+// A function template can be a member function(of a class),
+//but not a virtual member.
 template<typename Sequence, typename Value>
-Value sum(Sequence& s, Value v)
+Value sum(const Sequence& s, Value v)
 {
     for(auto x:s)
         v+= x;
     return v;
 }
 
-void use_sum123(Vector<int> vi);
+//Functor or Function objects example
+template<typename T>
+class Less_Than
+{
+const T val;
+
+public:
+    Less_Than(const T& v): val{v}{}
+    bool operator()(const T& x) const
+    {
+        return x < val;
+    }
+};
+void use_sum123(Vector<int>& vi);
 
 class Vector1  //
 {
@@ -145,5 +161,18 @@ void bad_copy(Vector<double> v1);
 
 Vector<double> test_move();
 
+template<typename C,typename P>
+int count(const C& c, P pred)
+//requires Sequence<C> && Callable<P,Value_type<P>>
+//Function objects used to specify the meaning of key operations of a general algorithm
+//(such as Less_than for count()) are often referred to as policy objects.
+{
+    int cnt = 0;
+    for(const auto &x:c)
+        if(pred(x))
+            ++cnt;
+    return cnt;
 
+}
+void test_lambda();
 #endif // VECTOR_H_INCLUDED

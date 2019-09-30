@@ -94,8 +94,37 @@ Vector<double> test_move()
     return z; //move z is ready to gone
 
 }
-void use_sum123(Vector<int> vi)
+void use_sum123(Vector<int>& vi)
 {
     int ri = sum(vi,0);
     std::cout << ri << std::endl;
+}
+
+void test_lambda()
+{
+    //compare int
+    Vector<int> v1(4);
+    v1[0] = 0;
+    v1[1] = 1;
+    v1[2] = 2;
+    v1[3] = 3;
+    int x = 3;
+    int x1 = 3;
+    int x2 = 3;
+
+    std::cout << "Number less than 3:" << count(v1, [&](int a ){return a < x;}) << std::endl;
+    //std::cout << "Number less than 3(=x1):" << count(v1, [=x1](int a ){return a < x1;}) << std::endl;
+    std::cout << "Number less than 3(value x1):" << count(v1,[x1](int a){return a < x1;}) << std::endl;
+    std::cout << "Number less than 3(&x2):" << count(v1, [&x2](int a ){return a < x2;}) << std::endl;
+    //compare string
+    Vector<std::string> s1(4);
+    s1[0] = "s0";
+    s1[1] = "s1";
+    s1[2] = "s2";
+    s1[3] = "s3";
+    std::string y = "s3";
+    std::cout << "String Less than s3:" << count(s1,[&y](const std::string& a){return a <y;}) <<std::endl;
+
+
+
 }
