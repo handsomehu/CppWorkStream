@@ -2,7 +2,7 @@
 #include <istream>
 #include "./vector.h"
 #include "udclass.cpp"
-
+#include "./src/stdtest.h"
 class Node {};
 enum Type { ptr, num };
 union Value {
@@ -144,9 +144,18 @@ void testcomplex()
     std::cout << "complex"  << x << std::endl;
     std::cout << "complex equal:" << eq << std::endl;
 }
+
+void test_stdtest()
+{
+    auto dm = compose("handsomehu","github.com");
+    std::cout << dm << std::endl;
+    testprint(dm);
+
+}
 //extern void ggg();
 int main()
 {
+    test_stdtest();
     std::cout << "Hello world!" << std::endl;
     std::cout << "Sum until 3 is :" << read_and_sum(3) << std::endl;
 

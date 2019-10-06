@@ -35,6 +35,8 @@
 		<Unit filename="include/ClassX.h" />
 		<Unit filename="main.cpp" />
 		<Unit filename="src/ClassX.cpp" />
+		<Unit filename="src/stdtest.h" />
+		<Unit filename="stdtest.cpp" />
 		<Unit filename="vector.cpp" />
 		<Unit filename="vector.h" />
 		<Extensions>

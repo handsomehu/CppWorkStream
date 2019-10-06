@@ -1,16 +1,17 @@
 # depslib dependency file v1.0
-1569813332 source:/home/leon/CppJourney/CppWorkStream/BookSamples/CppTour/main.cpp
+1570367635 source:/home/leon/CppJourney/CppWorkStream/BookSamples/CppTour/main.cpp
 	<iostream>
 	<istream>
 	"./vector.h"
 	"udclass.cpp"
+	"./src/stdtest.h"
 
-1569810344 source:/home/leon/CppJourney/CppWorkStream/BookSamples/CppTour/vector.cpp
+1569819321 source:/home/leon/CppJourney/CppWorkStream/BookSamples/CppTour/vector.cpp
 	"./vector.h"
 
 1567666870 /home/leon/CppJourney/CppWorkStream/BookSamples/CppTour/vector.cpp
 
-1569813402 /home/leon/CppJourney/CppWorkStream/BookSamples/CppTour/vector.h
+1569814431 /home/leon/CppJourney/CppWorkStream/BookSamples/CppTour/vector.h
 	<stdexcept>
 	<assert.h>
 	<vector>
@@ -23,4 +24,7 @@
 	"../include/ClassX.h"
 
 1569314608 /home/leon/CppJourney/CppWorkStream/BookSamples/CppTour/include/ClassX.h
+
+1570368912 /home/leon/CppJourney/CppWorkStream/BookSamples/CppTour/src/stdtest.h
+	<iostream>
 
