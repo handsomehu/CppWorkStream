@@ -25,6 +25,10 @@
 
 1569314608 /home/leon/CppJourney/CppWorkStream/BookSamples/CppTour/include/ClassX.h
 
-1570368912 /home/leon/CppJourney/CppWorkStream/BookSamples/CppTour/src/stdtest.h
+1570371594 /home/leon/CppJourney/CppWorkStream/BookSamples/CppTour/src/stdtest.h
+	<string>
 	<iostream>
+
+1570370066 source:/home/leon/CppJourney/CppWorkStream/BookSamples/CppTour/stdtest.cpp
+	"./src/stdtest.h"
 

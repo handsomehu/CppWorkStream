@@ -150,6 +150,7 @@ void test_stdtest()
     auto dm = compose("handsomehu","github.com");
     std::cout << dm << std::endl;
     testprint(dm);
+    testreg();
 
 }
 //extern void ggg();
