@@ -40,6 +40,7 @@ void fte(Vector<double>& v)
 double read_and_sum(int s)
 {
 	Vector<double> v(s);
+	std::cout << s << std::endl;
 	for (int i = 0; i != v.size();++i)
 		std::cin >> v[i];
 	double sum = 0;
@@ -151,6 +152,8 @@ void test_stdtest()
     std::cout << dm << std::endl;
     testprint(dm);
     testreg();
+    std::cout << "before io push back run."<< std::endl;
+    testio();
 
 }
 //extern void ggg();

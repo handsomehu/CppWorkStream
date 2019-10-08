@@ -1,5 +1,5 @@
 # depslib dependency file v1.0
-1570367635 source:/home/leon/CppJourney/CppWorkStream/BookSamples/CppTour/main.cpp
+1570541956 source:/home/leon/CppJourney/CppWorkStream/BookSamples/CppTour/main.cpp
 	<iostream>
 	<istream>
 	"./vector.h"
@@ -25,10 +25,12 @@
 
 1569314608 /home/leon/CppJourney/CppWorkStream/BookSamples/CppTour/include/ClassX.h
 
-1570371594 /home/leon/CppJourney/CppWorkStream/BookSamples/CppTour/src/stdtest.h
+1570542546 /home/leon/CppJourney/CppWorkStream/BookSamples/CppTour/src/stdtest.h
 	<string>
 	<iostream>
+	<regex>
+	<fstream>
 
-1570370066 source:/home/leon/CppJourney/CppWorkStream/BookSamples/CppTour/stdtest.cpp
+1570542547 source:/home/leon/CppJourney/CppWorkStream/BookSamples/CppTour/stdtest.cpp
 	"./src/stdtest.h"
 

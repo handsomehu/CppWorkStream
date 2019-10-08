@@ -46,4 +46,39 @@ void testreg()
            std::cout << (*p)[1] << '\n';
 }
 
+std::ostream& operator<<(std::ostream& os, const namecard& e)
+{
+return os << "{" << e.name << ,  << e.number << "}";
+}
+std::vector<int> read_ints(std::istream& is,const std::string& terminator)
+{
+    std::vector<int> res;
+    for(int i; is >> i; )
+
+        res.push_back(i);
+    if (is.eof())
+        return res;
+    if (is.fail())
+        {
+            is.clear(); // reset the state to good()
+            is.unget(); // put the non-digit back into the stream
+            std::string s;
+            if (std::cin>>s && s==terminator)
+                return res;
+            std::cin.setstate(std::ios_base::failbit); // add fail() to cin's state
+        }
+        return res;
+}
+void testio()
+{
+    //std::istream tempis = std::cin;//could not copy;
+    std::vector<int> vi = read_ints(std::cin,"stop");
+    std::cout << "test io:" << vi.size() << std::endl;
+    namecard nc{"Leon",123456789};
+    std::cout << nc;
+
+
+}
+
+
 

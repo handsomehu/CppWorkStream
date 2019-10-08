@@ -11,4 +11,12 @@ void testprint(const std::string& s);
 
 //std::string cat(std::string_view sv1, std::stringview sv2);
 void testreg();
+std::vector<int> read_ints(std::istream& is);
+struct namecard
+{
+    std::string name;
+    int number;
+}
+std::ostream& operator<<(std::ostream& os, const namecard& e);
+void testio();
 #endif // STDTEST_H_INCLUDED
