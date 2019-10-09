@@ -211,6 +211,7 @@ DIST          = ../../../../Qt/5.12.5/gcc_64/mkspecs/features/spec_pre.prf \
 		../../../../Qt/5.12.5/gcc_64/mkspecs/features/qt_config.prf \
 		../../../../Qt/5.12.5/gcc_64/mkspecs/linux-g++/qmake.conf \
 		../../../../Qt/5.12.5/gcc_64/mkspecs/features/spec_post.prf \
+		../qt5test/.qmake.stash \
 		../../../../Qt/5.12.5/gcc_64/mkspecs/features/exclusive_builds.prf \
 		../../../../Qt/5.12.5/gcc_64/mkspecs/features/toolchain.prf \
 		../../../../Qt/5.12.5/gcc_64/mkspecs/features/default_pre.prf \
@@ -397,6 +398,7 @@ Makefile: ../qt5test/qt5test.pro ../../../../Qt/5.12.5/gcc_64/mkspecs/linux-g++/
 		../../../../Qt/5.12.5/gcc_64/mkspecs/features/qt_config.prf \
 		../../../../Qt/5.12.5/gcc_64/mkspecs/linux-g++/qmake.conf \
 		../../../../Qt/5.12.5/gcc_64/mkspecs/features/spec_post.prf \
+		.qmake.stash \
 		../../../../Qt/5.12.5/gcc_64/mkspecs/features/exclusive_builds.prf \
 		../../../../Qt/5.12.5/gcc_64/mkspecs/features/toolchain.prf \
 		../../../../Qt/5.12.5/gcc_64/mkspecs/features/default_pre.prf \
@@ -573,6 +575,7 @@ Makefile: ../qt5test/qt5test.pro ../../../../Qt/5.12.5/gcc_64/mkspecs/linux-g++/
 ../../../../Qt/5.12.5/gcc_64/mkspecs/features/qt_config.prf:
 ../../../../Qt/5.12.5/gcc_64/mkspecs/linux-g++/qmake.conf:
 ../../../../Qt/5.12.5/gcc_64/mkspecs/features/spec_post.prf:
+.qmake.stash:
 ../../../../Qt/5.12.5/gcc_64/mkspecs/features/exclusive_builds.prf:
 ../../../../Qt/5.12.5/gcc_64/mkspecs/features/toolchain.prf:
 ../../../../Qt/5.12.5/gcc_64/mkspecs/features/default_pre.prf:

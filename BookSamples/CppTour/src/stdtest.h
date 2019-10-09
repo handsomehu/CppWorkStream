@@ -16,7 +16,8 @@ struct namecard
 {
     std::string name;
     int number;
-}
+};
 std::ostream& operator<<(std::ostream& os, const namecard& e);
+std::istream& operator>>(std::istream& is, const namecard& e);
 void testio();
 #endif // STDTEST_H_INCLUDED
