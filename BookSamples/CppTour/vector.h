@@ -181,6 +181,17 @@ struct Rhash
 bool has_c(const std::string& s, char c);
 std::vector<std::string::iterator> find_all(std::string& s, char c);
 //
+struct Greater_Than
+{
+    int val;
+    Greater_Than(int i):val{i}
+    {
+    }
+    bool operator()(const std::pair<std::string,int>& r) const
+    {
+        return r.second > val;
+    }
+};
 void ggg();
 
 class List_container:public Container

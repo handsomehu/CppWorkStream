@@ -1,6 +1,7 @@
 #include <iostream>
 #include <istream>
 #include "./vector.h"
+#include <algorithm>
 #include "udclass.cpp"
 #include "./src/stdtest.h"
 class Node {};
@@ -165,8 +166,38 @@ void test_vi123()
            if (*p!='a')
                  std::cerr << "a bug!\n";
 }
+
+void test_streamiterator()
+{
+    std::ostream_iterator<std::string> oo{std::cout};
+    *oo = "Hello";
+    ++oo;
+    *oo = " World!\n";
+    std::string from;
+    std::string to;
+    std::cin >> from >> to;
+    std::ifstream is{from};
+    std::istream_iterator<std::string> ii{is};
+    std::istream_iterator<std::string> eof{};
+    std::ofstream os{to};
+    std::ostream_iterator<std::string> ooo{os,"\n"};
+    std::vector<std::string> b{ii,eof};
+    std::sort(b.begin(),b.end());
+    std::unique_copy(b.begin(),b.end(),ooo);
+    int rst = (!is.eof() || !os);
+    std::cout << rst << std::endl;
+
+
+
+
+}
+void f1231(std::map<std::string,int>& m)
+{
+auto p = std::find_if(m.begin(),m.end(),Greater_Than{42});//Greater_Than is a functor;
+}
 int main()
 {
+    test_streamiterator();
     test_stdtest();
     std::cout << "Hello world!" << std::endl;
     std::cout << "Sum until 3 is :" << read_and_sum(3) << std::endl;
