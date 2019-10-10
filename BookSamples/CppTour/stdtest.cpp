@@ -19,7 +19,7 @@ void testprint(const std::string& s)
     printf("For people who like printf: %s\n",s.c_str());
     std::cout << "For people who like streams: " << s << '\n';
     auto sss = "Cat"s;//a std::string
-    auto p = "Dog";//a C-style string: a const char*
+    //auto p = "Dog";//a C-style string: a const char*
 };
 void testreg()
 {

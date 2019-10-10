@@ -157,6 +157,14 @@ void test_stdtest()
 
 }
 //extern void ggg();
+
+void test_vi123()
+{
+     std::string m {"Mary had a little lamb"};
+     for (auto p : find_all(m,'a'))
+           if (*p!='a')
+                 std::cerr << "a bug!\n";
+}
 int main()
 {
     test_stdtest();
@@ -194,5 +202,11 @@ int main()
     use_sum123(v111);
     test_functor();
     test_lambda();
+    std::unordered_set<Record,Rhash> my_set;
+    Record r1={"Leon",123};
+    Record r2={"Zhao",456};
+    bool abc = (r1 < r2);
+    std::cout << "compare Record:" << abc << std::endl;
+    test_vi123();
     return 0;
 };

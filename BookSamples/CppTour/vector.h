@@ -5,6 +5,8 @@
 #include <vector>
 #include <iostream>
 #include <list>
+#include <unordered_set>
+#include <algorithm>
 template<typename T>
 class Vector {
 public:
@@ -59,6 +61,19 @@ public:
      {
         return x.size()?&x[0]:nullptr;
      }
+     int capacity();
+     void reserve(int newsz);
+     void push_back(const T& t)  //copy t to the vector
+     {
+        if (capacity()< size()+1)
+            reserve(size() ==0?8:2*size());
+        new(space) T{t};// initialize *space to t
+                        //this is placement new, not totally understand
+                        //placement new seperate allocate memory and constructor data within it
+                        //it constructor data at pre-allocated memory.
+        space++;
+     }
+     void push_back(T&& t);       //move t to the vector
      T* begin() const
      {
         return size()?&elem[0]:nullptr;
@@ -73,6 +88,8 @@ public:
      }
 private:
      T* elem;      // elem points to an array of sz doubles
+     T* space;
+     T* last;
      int sz;
 };
 //C++20 feature, not supported by my compiler
@@ -142,6 +159,28 @@ private:
     Vector<double> v;
 
 };
+
+struct Record
+{
+    std::string name;
+    int product_code;
+    bool operator<(const Record& rhs)   // less than
+    {
+         return this->name < rhs.name;       // order Entries by their names
+    }
+};
+struct Rhash
+{
+    std::size_t operator()(const Record& r) const
+    {
+        return std::hash<std::string>()(r.name) ^ std::hash<int>()(r.product_code);
+    }
+
+};
+
+bool has_c(const std::string& s, char c);
+std::vector<std::string::iterator> find_all(std::string& s, char c);
+//
 void ggg();
 
 class List_container:public Container

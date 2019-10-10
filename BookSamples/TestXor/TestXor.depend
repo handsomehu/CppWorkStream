@@ -1,0 +1,5 @@
+# depslib dependency file v1.0
+1570692072 source:/home/leon/CppJourney/CppWorkStream/BookSamples/TestXor/main.cpp
+	<string>
+	<iostream>
+

@@ -67,6 +67,23 @@ void use(Container& c)
     for (int i = 0;i!= sc;++i)
         std::cout << c[i] << std::endl;
 }
+
+bool has_c(const std::string& s, char c)
+{
+    auto p = std::find(s.begin(),s.end(),c);
+    if(p!= s.end())
+        return true;
+    else
+        return false;
+}
+std::vector<std::string::iterator> find_all(std::string& s, char c)
+{
+    std::vector<std::string::iterator> res;
+    for(auto p = s.begin();p!=s.end();p++)
+        if (*p ==c)
+            res.push_back(p);
+    return res;
+}
 void ggg()
 {
     Vector_container vc(10);
