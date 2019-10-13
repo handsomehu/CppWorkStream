@@ -7,6 +7,8 @@
 #include <list>
 #include <unordered_set>
 #include <algorithm>
+#include <random>
+
 template<typename T>
 class Vector {
 public:
@@ -168,6 +170,12 @@ struct Record
     {
          return this->name < rhs.name;       // order Entries by their names
     }
+};
+
+struct Record_nocomp
+{
+    std::string name;
+    int product_code;
 };
 struct Rhash
 {

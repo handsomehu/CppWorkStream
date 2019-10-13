@@ -4,6 +4,7 @@
 #include <algorithm>
 #include "udclass.cpp"
 #include "./src/stdtest.h"
+#include <random>
 class Node {};
 enum Type { ptr, num };
 union Value {
@@ -146,7 +147,16 @@ void testcomplex()
     std::cout << "complex"  << x << std::endl;
     std::cout << "complex equal:" << eq << std::endl;
 }
+void test_random()
+{
+    std::default_random_engine myen {};
+    std::uniform_int_distribution<int> mydistr{1,10};
+    //td::default_r
 
+    //Rand_int rt{1,10};
+    int i =mydistr(myen);
+    std::cout << i << std::endl;
+}
 void test_stdtest()
 {
     auto dm = compose("handsomehu","github.com");
@@ -194,6 +204,16 @@ void test_streamiterator()
 void f1231(std::map<std::string,int>& m)
 {
 auto p = std::find_if(m.begin(),m.end(),Greater_Than{42});//Greater_Than is a functor;
+}
+void test_pare(const std::vector<Record_nocomp> & v)
+{
+    auto less = [](const Record_nocomp &r1,const Record_nocomp& r2){return r1.name < r2.name;};
+    auto er = std::equal_range(v.begin(),v.end(),Record_nocomp{"Reg"},less);
+    for(auto p= er.first; p!= er.second;++p)//// print all equal records
+        std::cout << "found " ;//*p;
+    std::tuple<std::string,int,double> t1 {"Shark",123,3.14};
+    int iii = std::get<1>(t1);
+
 }
 int main()
 {
