@@ -1,10 +1,28 @@
 #include <iostream>
+#include "Sales_item.h"
 
-int main()
+int main ()
 {
-    std::cout << "Enter two numbers:" << std::endl;
-    int n1=0,n2=0;
-    std::cin >> n1 >> n2;
-    std::cout << "The sum of n1 and n2 is:" << n1+n2 << std::endl;
+    Sales_item total;
+    if(std::cin >> total)
+    {
+        Sales_item trans;
+        while(std::cin >> trans)
+        {
+            if(total.isbn()==trans.isbn())
+                total += trans;
+            else
+            {
+                std::cout << total << std::endl;
+                total = trans;
+            }
+        }
+        std::cout << total << std::endl;
+    }
+    else
+    {
+        std::cerr << "No Data?!" << std::endl;
+        return -1;
+    }
     return 0;
 }

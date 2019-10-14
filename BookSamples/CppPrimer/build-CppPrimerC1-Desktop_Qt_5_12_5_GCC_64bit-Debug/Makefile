@@ -211,6 +211,7 @@ DIST          = /home/leon/Qt/5.12.5/gcc_64/mkspecs/features/spec_pre.prf \
 		/home/leon/Qt/5.12.5/gcc_64/mkspecs/features/qt_config.prf \
 		/home/leon/Qt/5.12.5/gcc_64/mkspecs/linux-g++/qmake.conf \
 		/home/leon/Qt/5.12.5/gcc_64/mkspecs/features/spec_post.prf \
+		../CppPrimerC1/.qmake.stash \
 		/home/leon/Qt/5.12.5/gcc_64/mkspecs/features/exclusive_builds.prf \
 		/home/leon/Qt/5.12.5/gcc_64/mkspecs/features/toolchain.prf \
 		/home/leon/Qt/5.12.5/gcc_64/mkspecs/features/default_pre.prf \
@@ -224,7 +225,7 @@ DIST          = /home/leon/Qt/5.12.5/gcc_64/mkspecs/features/spec_pre.prf \
 		/home/leon/Qt/5.12.5/gcc_64/mkspecs/features/exceptions.prf \
 		/home/leon/Qt/5.12.5/gcc_64/mkspecs/features/yacc.prf \
 		/home/leon/Qt/5.12.5/gcc_64/mkspecs/features/lex.prf \
-		../CppPrimerC1/CppPrimerC1.pro  ../CppPrimerC1/main.cpp
+		../CppPrimerC1/CppPrimerC1.pro Sales_item.h ../CppPrimerC1/main.cpp
 QMAKE_TARGET  = CppPrimerC1
 DESTDIR       = 
 TARGET        = CppPrimerC1
@@ -393,6 +394,7 @@ Makefile: ../CppPrimerC1/CppPrimerC1.pro /home/leon/Qt/5.12.5/gcc_64/mkspecs/lin
 		/home/leon/Qt/5.12.5/gcc_64/mkspecs/features/qt_config.prf \
 		/home/leon/Qt/5.12.5/gcc_64/mkspecs/linux-g++/qmake.conf \
 		/home/leon/Qt/5.12.5/gcc_64/mkspecs/features/spec_post.prf \
+		.qmake.stash \
 		/home/leon/Qt/5.12.5/gcc_64/mkspecs/features/exclusive_builds.prf \
 		/home/leon/Qt/5.12.5/gcc_64/mkspecs/features/toolchain.prf \
 		/home/leon/Qt/5.12.5/gcc_64/mkspecs/features/default_pre.prf \
@@ -565,6 +567,7 @@ Makefile: ../CppPrimerC1/CppPrimerC1.pro /home/leon/Qt/5.12.5/gcc_64/mkspecs/lin
 /home/leon/Qt/5.12.5/gcc_64/mkspecs/features/qt_config.prf:
 /home/leon/Qt/5.12.5/gcc_64/mkspecs/linux-g++/qmake.conf:
 /home/leon/Qt/5.12.5/gcc_64/mkspecs/features/spec_post.prf:
+.qmake.stash:
 /home/leon/Qt/5.12.5/gcc_64/mkspecs/features/exclusive_builds.prf:
 /home/leon/Qt/5.12.5/gcc_64/mkspecs/features/toolchain.prf:
 /home/leon/Qt/5.12.5/gcc_64/mkspecs/features/default_pre.prf:
@@ -622,7 +625,7 @@ compiler_clean:
 
 ####### Compile
 
-main.o: ../CppPrimerC1/main.cpp 
+main.o: ../CppPrimerC1/main.cpp ../CppPrimerC1/Sales_item.h
 	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o main.o ../CppPrimerC1/main.cpp
 
 ####### Install
