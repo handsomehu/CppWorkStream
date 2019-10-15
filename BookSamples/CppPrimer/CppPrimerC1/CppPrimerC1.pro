@@ -8,3 +8,6 @@ SOURCES += \
 
 HEADERS += \
     Sales_item.h
+
+DISTFILES += \
+    memo.txt

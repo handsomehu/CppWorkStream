@@ -1,0 +1,27 @@
+Uninitialized objects of built-in type defined inside a function body have
+undefined value. Objects of class type that we do not explicitly initialize have
+a value that is defined by the class.
+
+
+::global_int   use global indicator to override local variable.
+
+
+A reference is not an object. Instead, a reference is just another name for an
+already existing object.
+
+Because references are not objects, they don’t have
+addresses. Hence, we may not define a pointer to a reference.
+
+Uninitialized pointers are a common source of run-time errors, so do initialize them, even as nullptr
+
+The type void* is a special pointer type that can hold the address of any object. Like
+any other pointer, a void* pointer holds an address, but the type of the object at
+that address is unknown
+
+int *&r = p // p is a int* pointer
+The easiest way to understand the type of r is to read the definition right to left. The
+symbol closest to the name of the variable (in this case the & in &r) is the one that
+has the most immediate effect on the variable’s type. Thus, we know that r is a
+reference. The rest of the declarator determines the type to which r refers. The next
+symbol, * in this case, says that the type r refers to is a pointer type. Finally, the
+base type of the declaration says that r is a reference to a pointer to an int.

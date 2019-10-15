@@ -54,7 +54,8 @@ OBJECTS_DIR   = ./
 
 SOURCES       = ../CppPrimerC1/main.cpp 
 OBJECTS       = main.o
-DIST          = /home/leon/Qt/5.12.5/gcc_64/mkspecs/features/spec_pre.prf \
+DIST          = ../CppPrimerC1/memo.txt \
+		/home/leon/Qt/5.12.5/gcc_64/mkspecs/features/spec_pre.prf \
 		/home/leon/Qt/5.12.5/gcc_64/mkspecs/common/unix.conf \
 		/home/leon/Qt/5.12.5/gcc_64/mkspecs/common/linux.conf \
 		/home/leon/Qt/5.12.5/gcc_64/mkspecs/common/sanitize.conf \
