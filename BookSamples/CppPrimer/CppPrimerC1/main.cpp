@@ -3,6 +3,7 @@
 
 void test_ptr1()
 {
+    const int ci1{10};
     double obj = 3.14, *dp = &obj;
     void *vp = dp;
     int i = 2;
@@ -20,6 +21,13 @@ void test_ptr1()
     std::cout << "pptri" << *pptri << "*pptri" << **pptri << std::endl;
 
 };
+void test_const()
+{
+    // decltype of an expression can be a reference type
+    int i = 42, *p = &i, &r = i;
+    decltype(r + 0) b; // ok: addition yields an int; b is an (uninitialized) int
+    decltype(*p) c= i; // *p , which * means de-reference, thus (*p) indicator it is a reference
+};
 void test_ptr2()
 {
     int i = 42;
@@ -29,10 +37,11 @@ void test_ptr2()
     r = &i;
     *r = 0;
     std::cout << *r << std::endl;
-    int* ip, &rr = ip;
+    //int* ip, &rr = ip; //error could not bind ref to point
 };
 int main ()
 {
+    test_const();
     test_ptr1();
     test_ptr2();
     //int &refval2; //error must be initializer

@@ -25,3 +25,34 @@ has the most immediate effect on the variable’s type. Thus, we know that r is 
 reference. The rest of the declarator determines the type to which r refers. The next
 symbol, * in this case, says that the type r refers to is a pointer type. Finally, the
 base type of the declaration says that r is a reference to a pointer to an int.
+
+
+
+Like a reference to const, a pointer to const says nothing about whether the
+object to which the pointer points is const
+
+
+It may be helpful to think of pointers and references to const as pointers or
+references “that think they point or refer to const.”
+
+
+
+Generally, it is a good idea to use constexpr for variables that you intend
+to use as constant expressions.
+
+
+typedef char* pstring;  //pstring is a pointer to char*(easy to remember)
+dobule *p1,*p2; //usual use of pointer, pointer time of p1 and p2
+
+
+
+decltype(f()) sum = x; // sum has whatever type f returns
+Here, the compiler does not call f, but it uses the type that such a call would return
+as the type for sum. That is, the compiler gives sum the same type as the type that
+would be returned if we were to call f.
+
+
+
+Remember that decltype((variable)) (note, double parentheses) is always
+a reference type, but decltype(variable) is a reference type only if variable
+is a reference.
