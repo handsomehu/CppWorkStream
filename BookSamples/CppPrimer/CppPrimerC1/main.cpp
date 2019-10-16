@@ -1,5 +1,8 @@
 #include <iostream>
 #include "Sales_item.h"
+#include "Sales_data.h"
+#include <cctype>
+
 
 void test_ptr1()
 {
@@ -39,8 +42,53 @@ void test_ptr2()
     std::cout << *r << std::endl;
     //int* ip, &rr = ip; //error could not bind ref to point
 };
+void test_whilecin()
+{
+    std::string s;
+    //while(std::cin >> s)
+    //    std::cout << s;
+    std::string ts{"Some string!"};
+    for(char &c:ts)
+        c = toupper(c);
+    std::cout << ts << std::endl;
+    return;
+
+    while(std::getline(std::cin,s))
+        if(!s.empty())
+        {
+            std::cout << s << std::endl;
+            std::cout <<s.size()<<std::endl;
+        }
+        else
+            std::cout << "empty";
+}
 int main ()
 {
+    test_whilecin();
+    Sales_data data1, data2;
+    double price = 0;
+    std::cin >> data1.bookNo >> data1.units_sold >> price ;
+    data1.revenue = data1.units_sold * price  ;
+    std::cin >> data2.bookNo >> data2.units_sold >> price;
+    data2.revenue = data2.units_sold * price;
+    std::cout << data1.revenue << std::endl;
+    if (data1.bookNo == data2.bookNo)
+    {
+        unsigned totalCnt = data1.units_sold + data2.units_sold;
+        double totalRevenue = data1.revenue + data2.revenue;
+        std::cout << data1.bookNo << " " << totalCnt
+        << " " << totalRevenue << " ";
+        if (totalCnt != 0)
+            std::cout << totalRevenue/totalCnt << std::endl;
+        else
+            std::cout << "no Sales!" << std::endl;
+        return 0;
+    }
+    else
+    {
+        std::cerr << "Data must refer to the same ISBN" << std::endl;
+        return -1;
+    }
     test_const();
     test_ptr1();
     test_ptr2();

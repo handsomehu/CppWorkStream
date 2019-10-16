@@ -56,3 +56,24 @@ would be returned if we were to call f.
 Remember that decltype((variable)) (note, double parentheses) is always
 a reference type, but decltype(variable) is a reference type only if variable
 is a reference.
+
+
+
+#ifndef SALES_DATA_H
+#define SALES_DATA_H
+#include <string>
+struct Sales_data {
+std::string bookNo;
+unsigned units_sold = 0;
+double revenue = 0.0;
+};
+#endif
+The first time Sales_data.h is included, the #ifndef test will succeed. The
+preprocessor will process the lines following #ifndef up to the #endif.
+
+
+Ordinarily, C++ programs should use the cname versions of headers and
+not the name .h versions. That way names from the standard library are
+consistently found in the std namespace. Using the .h headers puts the
+burden on the programmer to remember which library names are inherited
+from C and which are unique to C++.

@@ -7,6 +7,7 @@ SOURCES += \
         main.cpp
 
 HEADERS += \
+    Sales_data.h \
     Sales_item.h
 
 DISTFILES += \
