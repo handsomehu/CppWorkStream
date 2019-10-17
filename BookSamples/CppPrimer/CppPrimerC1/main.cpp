@@ -3,8 +3,15 @@
 #include "Sales_item.h"
 #include "Sales_data.h"
 #include <cctype>
+#include <cstring>
 
 
+void test_cstr()
+{
+    char ca[]={'C', '+', '+'};
+    std::cout << "test strlen" ;
+    std::cout << strlen(ca) << std::endl;//every run has diferent value, strange which is wrong
+}
 void test_ptr1()
 {
     const int ci1{10};
@@ -119,6 +126,7 @@ int main ()
         std::cerr << "Data must refer to the same ISBN" << std::endl;
         return -1;
     }
+    test_cstr();
     test_const();
     test_ptr1();
     test_ptr2();

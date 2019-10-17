@@ -109,3 +109,33 @@ a single operation. That is, it->mem is a synonym for (* it).mem.
 Some compilers allow array assignment as a compiler extension. It is
 usually a good idea to avoid using nonstandard features. Programs that use
 such features, will not work with a different compiler.
+int *ptrs[10]; // ptrs is an array of ten pointers to int
+int &refs[10] = /* ? */; // error: no arrays of references
+int (*Parray)[10] = &arr; // Parray points to an array of ten ints
+int (&arrRef)[10] = arr; // arrRef refers to an array of ten ints
+By default, type modifiers bind right to left. Reading the definition of ptrs from right
+to left (§ 2.3.3, p. 58) is easy: We see that we’re defining an array of size 10, named
+ptrs, that holds pointers to int.
+Reading the definition of Parray from right to left isn’t as helpful. Because the
+array dimension follows the name being declared, it can be easier to read array
+declarations from the inside out rather than from right to left. Reading from the inside
+out makes it much easier to understand the type of Parray. We start by observing
+that the parentheses around *Parray mean that Parray is a pointer. Looking right,
+we see that Parray points to an array of size 10. Looking left, we see that the
+elements in that array are ints. Thus, Parray is a pointer to an array of ten ints.
+Similarly, (&arrRef) says that arrRef is a reference. The type to which it refers is
+an array of size 10. That array holds elements of type int.
+
+
+int *(&arry)[10] = ptrs; // arry is a reference to an array of ten pointers
+Reading this declaration from the inside out, we see that arry is a reference. Looking
+right, we see that the object to which arry refers is an array of size 10. Looking left,
+we see that the element type is pointer to int. Thus, arry is a reference to an array
+of ten pointers.
+
+
+int ia[] = {0,1,2,3,4,5,6,7,8,9}; // ia is an array of ten ints
+int *beg = begin(ia); // pointer to the first element in ia
+int *last = end(ia); // pointer one past the last element in ia
+begin returns a pointer to the first, and end returns a pointer one past the last
+element in the given array: These functions are defined in the iterator header.
