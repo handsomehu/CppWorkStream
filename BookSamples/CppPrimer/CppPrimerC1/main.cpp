@@ -1,4 +1,5 @@
 #include <iostream>
+#include <vector>
 #include "Sales_item.h"
 #include "Sales_data.h"
 #include <cctype>
@@ -42,14 +43,42 @@ void test_ptr2()
     std::cout << *r << std::endl;
     //int* ip, &rr = ip; //error could not bind ref to point
 };
+void test_vector()
+{
+    //const char a4[6] = "Daniel";// error
+    std::vector<int> v1{42,65, 95, 100, 39, 67 ,95 ,76, 88 ,76 ,83 ,92, 76 ,93};
+    std::vector<int> g(11,0);
+    int gn = 0;
+    for(const int x:v1 )
+    {
+        //++scores[grade/10]; //Author code, much better and simpler
+        gn = x/10;
+        if (x>100)
+            std::cout << "bad number" << std::endl;
+        g[gn]++;
+    }
+    for(const auto y:g)
+        std::cout << y << " ";
+
+}
 void test_whilecin()
 {
     std::string s;
     //while(std::cin >> s)
     //    std::cout << s;
-    std::string ts{"Some string!"};
-    for(char &c:ts)
+    std::string ts{"some string!"};
+
+    for(std::size_t idx =0;idx != ts.size()&&!isspace(ts[idx]);++idx)
+            ts[idx] = toupper(ts[idx]);
+    std::cout << "firsts words upper" << ts << std::endl;
+    if (!ts.empty())
+    {
+        std::cout << ts[0] << std::endl;
+        ts[0] = toupper(ts[0]);
+        std::cout << ts[0] << std::endl;
+        for(char &c:ts)
         c = toupper(c);
+    }
     std::cout << ts << std::endl;
     return;
 
@@ -64,6 +93,7 @@ void test_whilecin()
 }
 int main ()
 {
+    test_vector();
     test_whilecin();
     Sales_data data1, data2;
     double price = 0;

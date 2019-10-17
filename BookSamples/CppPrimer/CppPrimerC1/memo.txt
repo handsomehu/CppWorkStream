@@ -77,3 +77,35 @@ not the name .h versions. That way names from the standard library are
 consistently found in the std namespace. Using the .h headers puts the
 burden on the programmer to remember which library names are inherited
 from C and which are unique to C++.
+
+We can define vectors to hold objects of most any type. Because references are
+not objects (§ 2.3.1, p. 50), we cannot have a vector of references
+
+The body of a range for must not change the size of the sequence over
+which it is iterating.
+
+
+Programmers coming to C++ from C or Java might be surprised that we used
+!= rather than < in our for loops such as the one above and in the one on
+page 94. C++ programmers use != as a matter of habit. They do so for the
+same reason that they use iterators rather than subscripts: This coding style
+applies equally well to various kinds of containers provided by the library.
+As we’ve seen, only a few library types, vector and string being among
+them, have the subscript operator. Similarly, all of the library containers have
+iterators that define the == and != operators. Most of those iterators do not
+have the < operator. By routinely using iterators and !=, we don’t have to
+worry about the precise type of container we’re processing.
+
+(*it).empty()
+For reasons we’ll cover in § 4.1.2 (p. 136), the parentheses in (*it).empty() are
+necessary. The parentheses say to apply the dereference operator to it and to apply
+the dot operator (§ 1.5.2, p. 23) to the result of dereferencing it. Without
+parentheses, the dot operator would apply to it, not to the resulting object:
+
+To simplify expressions such as this one, the language defines the arrow operator
+(the -> operator). The arrow operator combines dereference and member access into
+a single operation. That is, it->mem is a synonym for (* it).mem.
+
+Some compilers allow array assignment as a compiler extension. It is
+usually a good idea to avoid using nonstandard features. Programs that use
+such features, will not work with a different compiler.
