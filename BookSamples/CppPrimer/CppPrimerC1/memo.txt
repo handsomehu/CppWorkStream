@@ -139,3 +139,32 @@ int *beg = begin(ia); // pointer to the first element in ia
 int *last = end(ia); // pointer one past the last element in ia
 begin returns a pointer to the first, and end returns a pointer one past the last
 element in the given array: These functions are defined in the iterator header.
+
+
+
+This loop does not write to the elements, yet we still define the control variable of the
+outer loop as a reference. We do so in order to avoid the normal array to pointer
+conversion (§ 3.5.3, p. 117). Had we neglected the reference and written these loops
+as:
+for (auto row : ia)
+for (auto col : row)
+our program would not compile. As before, the first for iterates through ia, whose
+elements are arrays of size 4. Because row is not a reference, when the compiler
+initializes row it will convert each array element (like any other object of array type)
+to a pointer to that array’s first element. As a result, in this loop the type of row is
+int*. The inner for loop is illegal. Despite our intentions, that loop attempts to
+iterate over an int*.
+
+
+
+Note
+The parentheses in this declaration are essential:
+Click here to view code image
+int *ip[4]; // array of pointers to int
+int (*ip)[4]; // pointer to an array of four ints
+
+
+!!!!!!
+Roughly speaking, when we use an object as an rvalue,
+we use the object’s value (its contents). When we use an object as an lvalue, we use
+the object’s identity (its location in memory).

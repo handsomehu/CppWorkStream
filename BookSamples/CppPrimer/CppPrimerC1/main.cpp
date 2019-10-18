@@ -5,7 +5,20 @@
 #include <cctype>
 #include <cstring>
 
+void test_arrarr()
+{
+    constexpr size_t rowCnt = 3, colCnt = 4;
+    int ia[rowCnt][colCnt];
+    int cnt = 0;
+    for (auto &row :ia) //there is reason to use reference to avoid convertion
+        for(auto &col:row)
+        {
+            col = cnt;
+            cnt++;
+        }
+    std::cout << ia[1][1] << std::endl;
 
+}
 void test_cstr()
 {
     char ca[]={'C', '+', '+'};
@@ -100,6 +113,7 @@ void test_whilecin()
 }
 int main ()
 {
+    test_arrarr();
     test_vector();
     test_whilecin();
     Sales_data data1, data2;
