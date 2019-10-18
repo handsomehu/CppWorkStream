@@ -168,3 +168,16 @@ int (*ip)[4]; // pointer to an array of four ints
 Roughly speaking, when we use an object as an rvalue,
 we use the object’s value (its contents). When we use an object as an lvalue, we use
 the object’s identity (its location in memory).
+
+
+
+Because assignment has lower precedence than the relational operators,
+parentheses are usually needed around assignments in conditions.
+
+
+Advice: Use Postfix Operators only When Necessary
+Means use ++I as mucha s possible unless you need the other one
+
+void* p = &d; // ok: address of any nonconst object can be stored in a void*
+// ok: converts void* back to the original pointer type
+double *dp = static_cast<double*>(p);

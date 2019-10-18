@@ -5,6 +5,15 @@
 #include <cctype>
 #include <cstring>
 
+void test_pp()
+{
+    int i = 0, j=0;
+    j = ++i; // j = 1, i = 1: prefix yields the incremented value
+    std::cout << i << j << "test ij" << std::endl;
+    j = i++; // j = 1, i = 2: postfix yields the unincremented value
+    std::cout << i << j << "test ij" << std::endl;
+
+}
 void test_arrarr()
 {
     constexpr size_t rowCnt = 3, colCnt = 4;
@@ -113,6 +122,7 @@ void test_whilecin()
 }
 int main ()
 {
+    test_pp();
     test_arrarr();
     test_vector();
     test_whilecin();
