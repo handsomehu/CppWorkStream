@@ -4,7 +4,51 @@
 #include "Sales_data.h"
 #include <cctype>
 #include <cstring>
+#include <initializer_list>
 
+void test_ilist(std::initializer_list<std::string> il)
+{
+    for(aoto x: il)
+        std::cout << x << std::endl;
+
+}
+std::size_t count_calls()
+{
+static size_t ctr = 0; // value will persist across calls
+return ++ctr;
+}
+void test_cnt()
+{
+    int local_i = 0;
+    while (local_i < 20)
+    {
+        std::cout << count_calls() <<std::endl;
+        ++local_i;
+    }
+
+}
+void test_case()
+{
+    char ch;
+    int aCnt=0,eCnt=0,iCnt=0,oCnt=0,uCnt=0;
+    while(std::cin >> ch)
+    {
+
+        // warning: deliberately incorrect!
+        switch (ch) {
+        case 'a':
+        ++aCnt; // oops: should have a break statement
+        case 'e':
+        ++eCnt; // oops: should have a break statement
+        case 'i':
+        ++iCnt; // oops: should have a break statement
+        case 'o':
+        ++oCnt; // oops: should have a break statement
+        case 'u':
+        ++uCnt;}
+        std::cout << aCnt<<eCnt<<iCnt<<oCnt<<uCnt<< std::endl;
+    }
+}
 void test_pp()
 {
     int i = 0, j=0;
@@ -122,6 +166,8 @@ void test_whilecin()
 }
 int main ()
 {
+    test_cnt();
+    test_case();
     test_pp();
     test_arrarr();
     test_vector();

@@ -181,3 +181,11 @@ Means use ++I as mucha s possible unless you need the other one
 void* p = &d; // ok: address of any nonconst object can be stored in a void*
 // ok: converts void* back to the original pointer type
 double *dp = static_cast<double*>(p);
+
+
+Arrays have two special properties that affect how we define and use functions that
+operate on arrays: We cannot copy an array (§ 3.5.1, p. 114), and when we use an
+array it is (usually) converted to a pointer (§ 3.5.3, p. 117). Because we cannot copy
+an array, we cannot pass an array by value. Because arrays are converted to pointers,
+when we pass an array to a function, we are actually passing a pointer to the array’s
+first element.
