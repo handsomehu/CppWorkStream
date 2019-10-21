@@ -4,6 +4,7 @@ CONFIG -= app_bundle
 CONFIG -= qt
 
 SOURCES += \
+        Sales_data.cpp \
         main.cpp
 
 HEADERS += \

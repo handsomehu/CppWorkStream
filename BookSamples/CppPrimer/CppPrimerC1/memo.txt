@@ -189,3 +189,90 @@ array it is (usually) converted to a pointer (§ 3.5.3, p. 117). Because we cann
 an array, we cannot pass an array by value. Because arrays are converted to pointers,
 when we pass an array to a function, we are actually passing a pointer to the array’s
 first element.
+
+
+Whether a function call is an lvalue (§ 4.1.1, p. 135) depends on the return type of
+the function. Calls to functions that return references are lvalues; other return types
+yield rvalues. A call to a function that returns a reference can be used in the same
+C++ Primer, Fifth Edition
+ways as any other lvalue. In particular, we can assign to the result of a function that
+returns a reference to nonconst:
+
+Because we cannot copy an array, a function cannot return an array. However, a
+function can return a pointer or a reference to an array
+
+As a concrete example, the following declares func without using a type alias:
+int (*func(int i))[10];
+To understand this declaration, it can be helpful to think about it as follows:
+• func(int) says that we can call func with an int argument.
+• (*func(int)) says we can dereference the result of that call.
+• (*func(int))[10] says that dereferencing the result of a call to func yields
+an array of size ten.
+• int (*func(int))[10] says the element type in that array is int.
+
+
+
+auto func(int i) -> int(*)[10];
+Because the return type comes after the parameter list, it is easier to see that func
+returns a pointer and that that pointer points to an array of ten ints.
+
+
+It is an error for two functions to differ only in terms of their return types. If the
+parameter lists of two functions match but the return types differ, then the second
+declaration is an error:
+
+
+As we saw in § 6.2.3 (p. 212), top-level const (§ 2.4.3, p. 63) has no effect on the
+objects that can be passed to the function. A parameter that has a top-level const is
+indistinguishable from one without a top-level const:
+Click here to view code image
+
+Record lookup(Phone);
+Record lookup(const Phone); // redeclares Record lookup(Phone)
+
+
+A function specified as inline (usually) is expanded “in line” at each call. If
+shorterString were defined as inline, then this call
+Click here to view code image
+cout << shorterString(s1, s2) << endl;
+(probably) would be expanded during compilation into something like
+C++ Primer, Fifth Edition
+Click here to view code image
+cout << (s1.size() < s2.size() ? s1 : s2) << endl;
+The run-time overhead of making shorterString a function is thus removed.
+
+A constexpr function is permitted to return a value that is not a constant:
+Click here to view code image
+// scale(arg) is a constant expression if arg is a constant expression
+constexpr size_t scale(size_t cnt) { return new_sz() * cnt; }
+The scale function
+
+As a result, inline and constexpr
+functions normally are defined in headers.
+
+
+
+A function pointer is just that—a pointer that denotes a function rather than an
+object. Like any other pointer, a function pointer points to a particular type. A
+function’s type is determined by its return type and the types of its parameters. The
+function’s name is not part of its type. For example:
+Click here to view code image
+// compares lengths of two strings
+bool lengthCompare(const string &, const string &);
+has type bool(const string&, const string&). To declare a pointer that can
+point at this function, we declare a pointer in place of the function name:
+Click here to view code image
+// pf points to a function returning bool that takes two const string references
+bool (*pf)(const string &, const string &); // uninitialized
+
+
+When we pass a function as an argument, we can do so directly. It will be
+automatically converted to a pointer:
+Click here to view code image
+// automatically converts the function lengthCompare to a pointer to function
+useBigger(s1, s2, lengthCompare);
+
+
+The only tricky part in declaring getFcn is to remember that when we apply
+decltype to a function, it returns a function type, not a pointer to function type. We
+must add a * to indicate that we are returning a pointer, not a function.

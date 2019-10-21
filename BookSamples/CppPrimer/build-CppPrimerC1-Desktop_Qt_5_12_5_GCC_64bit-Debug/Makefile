@@ -52,8 +52,10 @@ OBJECTS_DIR   = ./
 
 ####### Files
 
-SOURCES       = ../CppPrimerC1/main.cpp 
-OBJECTS       = main.o
+SOURCES       = ../CppPrimerC1/Sales_data.cpp \
+		../CppPrimerC1/main.cpp 
+OBJECTS       = Sales_data.o \
+		main.o
 DIST          = ../CppPrimerC1/memo.txt \
 		/home/leon/Qt/5.12.5/gcc_64/mkspecs/features/spec_pre.prf \
 		/home/leon/Qt/5.12.5/gcc_64/mkspecs/common/unix.conf \
@@ -227,7 +229,8 @@ DIST          = ../CppPrimerC1/memo.txt \
 		/home/leon/Qt/5.12.5/gcc_64/mkspecs/features/yacc.prf \
 		/home/leon/Qt/5.12.5/gcc_64/mkspecs/features/lex.prf \
 		../CppPrimerC1/CppPrimerC1.pro Sales_data.h \
-		Sales_item.h ../CppPrimerC1/main.cpp
+		Sales_item.h ../CppPrimerC1/Sales_data.cpp \
+		../CppPrimerC1/main.cpp
 QMAKE_TARGET  = CppPrimerC1
 DESTDIR       = 
 TARGET        = CppPrimerC1
@@ -626,6 +629,9 @@ compiler_lex_clean:
 compiler_clean: 
 
 ####### Compile
+
+Sales_data.o: ../CppPrimerC1/Sales_data.cpp ../CppPrimerC1/Sales_data.h
+	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o Sales_data.o ../CppPrimerC1/Sales_data.cpp
 
 main.o: ../CppPrimerC1/main.cpp ../CppPrimerC1/Sales_item.h \
 		../CppPrimerC1/Sales_data.h
