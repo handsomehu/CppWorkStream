@@ -5,11 +5,13 @@ CONFIG -= qt
 
 SOURCES += \
         Sales_data.cpp \
-        main.cpp
+        main.cpp \
+        screen.cpp
 
 HEADERS += \
     Sales_data.h \
-    Sales_item.h
+    Sales_item.h \
+    screen.h
 
 DISTFILES += \
     memo.txt

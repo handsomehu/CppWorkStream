@@ -8,7 +8,7 @@
 
 void test_ilist(std::initializer_list<std::string> il)
 {
-    for(aoto x: il)
+    for(auto x: il)
         std::cout << x << std::endl;
 
 }

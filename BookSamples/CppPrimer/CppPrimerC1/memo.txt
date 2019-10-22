@@ -276,3 +276,10 @@ useBigger(s1, s2, lengthCompare);
 The only tricky part in declaring getFcn is to remember that when we apply
 decltype to a function, it returns a function type, not a pointer to function type. We
 must add a * to indicate that we are returning a pointer, not a function.
+
+It sometimes (but not very often) happens that a class has a data member that we
+want to be able to modify, even inside a const member function. We indicate such
+members by including the mutable keyword in their declaration.
+
+A const member function that returns *this as a reference should have a
+return type that is a reference to const.
