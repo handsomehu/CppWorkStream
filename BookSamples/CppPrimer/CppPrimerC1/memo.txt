@@ -284,4 +284,7 @@ members by including the mutable keyword in their declaration.
 A const member function that returns *this as a reference should have a
 return type that is a reference to const.
 
-I am on page 362 of cpp primer
+It is important to understand that friendship is not transitive. That is, if class
+Window_mgr has its own friends, those friends have no special access to Screen.
+
+got page 366

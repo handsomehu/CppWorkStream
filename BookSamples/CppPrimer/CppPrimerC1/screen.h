@@ -5,6 +5,8 @@
 class Screen {
 public:
 typedef std::string::size_type pos;
+friend class Window_mgr;
+
     Screen() = default; //
     Screen(pos ht, pos wd, char c): height(ht), width(wd),
     contents(ht * wd, c) { }
@@ -29,10 +31,23 @@ private:
     contents;}
 };
 class Window_mgr {
+public:
+using ScreenIndex = std::vector<Screen>::size_type;
 private:
 // Screens this Window_mgr is tracking
 // by default, a Window_mgr has one standard sized blank Screen
-std::vector<Screen> screens{Screen(24, 80, ' ') };
+
+    std::vector<Screen> screens{Screen(24, 80, ' ') };
+    void clear(ScreenIndex i);
+
+
 };
 
+struct X {
+friend void f() { /* friend function can be defined in the class body */ }
+void g();
+void h();
+};
+void f(); // declares the function defined inside X
+void X::h() { return f(); }
 #endif // SCREEN_H
