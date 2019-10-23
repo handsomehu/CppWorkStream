@@ -48,6 +48,14 @@ public:
         return bookNo;
     }
     Sales_data &combine(const Sales_data& );
+    double get_rev()
+    {
+        return revenue;
+    }
+    unsigned get_sold()
+    {
+        return units_sold;
+    }
 
 private:
     std::string bookNo;

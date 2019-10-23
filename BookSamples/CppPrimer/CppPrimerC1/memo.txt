@@ -287,4 +287,106 @@ return type that is a reference to const.
 It is important to understand that friendship is not transitive. That is, if class
 Window_mgr has its own friends, those friends have no special access to Screen.
 
-got page 366
+It is important to understand that a friend declaration affects access but is not a
+declaration in an ordinary sense.
+
+// bad practice: don't hide names that are needed from surrounding scopes
+void Screen::dummy_fcn(pos height) {
+cursor = width * ::height;// which height? the global one
+}
+Note
+Even though the outer object is hidden, it is still possible to access that
+object by using the scope operator.
+
+We must use the constructor initializer list to provide values for members that
+are const, reference, or of a class type that does not have a default
+constructor.
+
+
+It is a good idea to write constructor initializers in the same order as the
+members are declared. Moreover, when possible, avoid using members to
+initialize other members.
+
+The default constructor is used automatically whenever an object is default or value
+initialized. Default initialization happens:
+    • When we define nonstatic variables (§ 2.2.1, p. 43) or arrays (§3.5.1, p.
+    114) at block scope without initializers
+    • When a class that itself has members of class type uses the synthesized default
+    constructor (§ 7.1.4, p. 262)
+    • When members of class type are not explicitly initialized in a constructor
+    initializer list (§ 7.1.4, p. 265)
+    Value initialization happens
+    • During array initialization when we provide fewer initializers than the size of the
+    C++ Primer, Fifth Edition
+    array (§ 3.5.1, p. 114)
+    • When we define a local static object without an initializer (§ 6.1.1, p. 205)
+    • When we explicitly request value initialization by writing an expressions of the
+    form T() where T is the name of a type (The vector constructor that takes a
+    single argument to specify the vector’s size (§ 3.3.1, p. 98) uses an argument
+    of this kind to value initialize its element initializer.)
+
+In practice, it is almost always right to provide a default constructor if other
+constructors are being defined.
+
+It is a common mistake among programmers new to C++ to try to declare
+an object initialized with the default constructor as follows:
+Click here to view code image
+Sales_data obj(); // oops! declares a function, not an object
+Sales_data obj2; // ok: obj2 is an object, not a function
+
+
+string null_book = "9-999-99999-9";
+// constructs a temporary Sales_data object
+// with units_sold and revenue equal to 0 and bookNo equal to null_book
+item.combine(null_book); //implict convert null_book from string to Sales_data
+
+We can prevent the use of a constructor in a context that requires an implicit
+conversion by declaring the constructor as explicit:
+
+The explicit keyword is meaningful only on constructors that can be called with
+a single argument. Constructors that require more arguments are not used to perform
+an implicit conversion, so there is no need to designate such constructors as
+explicit.
+
+An aggregate class gives users direct access to its members and has special
+initialization syntax. A class is an aggregate if
+• All of its data members are public
+• It does not define any constructors
+• It has no in-class initializers (§ 2.6.1, p. 73)
+• It has no base classes or virtual functions, which are class-related features
+that we’ll cover in Chapter 15
+For example, the following class is an aggregate:
+struct Data {
+int ival;
+string s;
+};
+
+Similarly, static member functions are not bound to any object; they do not have
+a this pointer. As a result, static member functions may not be declared as
+const, and we may not refer to this in the body of a static member. This
+restriction applies both to explicit uses of this and to implicit uses of this by calling
+a nonstatic member.
+
+// define and initialize a static class member
+double Account::interestRate = initRate();
+This statement defines the object named interestRate that is a static member
+of class Account and has type double. Once the class name is seen, the remainder
+of the definition is in the scope of the class. As a result, we can use initRate
+without qualification as the initializer for rate. Note also that even though initRate
+is private, we can use this function to initialize interestRate. The definition of
+interestRate, like any other member definition, has access to the private
+members of the class.
+
+class Bar {
+public:
+// ...
+private:
+    static Bar mem1; // ok: static member can have incomplete type
+    Bar *mem2; // ok: pointer member can have incomplete type
+    Bar mem3; // error: data members must have complete type
+}
+
+
+As we saw in § 7.1.3 (p. 261), we cannot copy or assign objects of the IO types
+
+Page 416

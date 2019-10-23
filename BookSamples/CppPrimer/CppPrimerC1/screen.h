@@ -33,6 +33,7 @@ private:
 class Window_mgr {
 public:
 using ScreenIndex = std::vector<Screen>::size_type;
+    ScreenIndex addScreen(const Screen&);
 private:
 // Screens this Window_mgr is tracking
 // by default, a Window_mgr has one standard sized blank Screen
@@ -44,9 +45,10 @@ private:
 };
 
 struct X {
-friend void f() { /* friend function can be defined in the class body */ }
-void g();
-void h();
+    friend void f() { /* friend function can be defined in the class body */ }
+    //X() { f(); } // error: no declaration for f
+    void g();
+    void h();
 };
 void f(); // declares the function defined inside X
 void X::h() { return f(); }

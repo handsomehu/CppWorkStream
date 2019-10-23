@@ -5,7 +5,36 @@
 #include <cctype>
 #include <cstring>
 #include <initializer_list>
+#include <fstream>
 
+void test_file(std::string inf,std::string outf)
+{
+    std::ifstream input(inf);
+    std::ofstream output(outf);
+    Sales_data total;
+    if(read(input,total))
+    {
+        Sales_data trans;
+        while(read(input, trans))
+        {
+            if(total.isbn()==trans.isbn())
+                total.combine(trans);
+            else
+            {
+                print(output,total);//std::cout << total << std::endl;//
+                total = trans;
+            }
+        }
+        print(output,total);//std::cout << total << std::endl;
+    }
+    else
+    {
+        std::cerr << "No Data?!" << std::endl;
+        //return -1;
+    }
+
+
+}
 void test_ilist(std::initializer_list<std::string> il)
 {
     for(auto x: il)
@@ -166,6 +195,7 @@ void test_whilecin()
 }
 int main ()
 {
+    test_file("i.txt","o.txt");
     test_cnt();
     test_case();
     test_pp();
@@ -174,16 +204,18 @@ int main ()
     test_whilecin();
     Sales_data data1, data2;
     double price = 0;
-    std::cin >> data1.bookNo >> data1.units_sold >> price ;
-    data1.revenue = data1.units_sold * price  ;
-    std::cin >> data2.bookNo >> data2.units_sold >> price;
-    data2.revenue = data2.units_sold * price;
-    std::cout << data1.revenue << std::endl;
-    if (data1.bookNo == data2.bookNo)
+    //std::cin >> data1.bookNo >> data1.units_sold >> price ;
+    //data1.revenue = data1.units_sold * price  ;
+    //std::cin >> data2.bookNo >> data2.units_sold >> price;
+    //data2.revenue = data2.units_sold * price;
+    //std::cout << data1.revenue << std::endl;
+    read(std::cin,data1);
+    read(std::cin,data2);
+    if (data1.isbn() == data2.isbn())
     {
-        unsigned totalCnt = data1.units_sold + data2.units_sold;
-        double totalRevenue = data1.revenue + data2.revenue;
-        std::cout << data1.bookNo << " " << totalCnt
+        unsigned totalCnt = data1.get_sold() + data2.get_sold();
+        double totalRevenue = data1.get_rev() + data2.get_rev();
+        std::cout << data1.isbn() << " " << totalCnt
         << " " << totalRevenue << " ";
         if (totalCnt != 0)
             std::cout << totalRevenue/totalCnt << std::endl;

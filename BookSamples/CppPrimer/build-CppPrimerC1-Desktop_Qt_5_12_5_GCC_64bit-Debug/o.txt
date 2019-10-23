@@ -1,0 +1,2 @@
+booka1 3 30
+booka2 5 75
