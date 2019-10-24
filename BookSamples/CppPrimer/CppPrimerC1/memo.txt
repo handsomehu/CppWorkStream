@@ -414,4 +414,22 @@ Because the size of the right-hand operand might differ from the size of the lef
 operand, the array type does not support assign and it does not allow assignment
 from a braced list of values.
 
-Page 433
+Key Concept: Container Elements Are Copies
+When we use an object to initialize a container, or insert an object into a
+container, a copy of that object’s value is placed in the container, not the
+object itself. Just as when we pass an object to a nonreference parameter (§
+6.2.1, p. 209), there is no relationship between the element in the container
+and the object from which that value originated. Subsequent changes to the
+element in the container have no effect on the original object, and vice versa.
+
+
+When we call a push or insert member, we pass objects of the element type and
+those objects are copied into the container. When we call an emplace member, we
+pass arguments to a constructor for the element type. The emplace members use
+those arguments to construct an element directly in space managed by the container.
+
+The resize operation takes an optional element-value argument that it uses to
+initialize any elements that are added to the container. If this argument is absent,
+added elements are value initialized (§ 3.3.1, p. 98). If the container holds elements of
+a class type and resize adds elements, we must supply an initializer or the element
+type must have a default constructor.

@@ -6,7 +6,26 @@
 #include <cstring>
 #include <initializer_list>
 #include <fstream>
+#include <forward_list>
+void test_fwdlist()
+{
+    std::forward_list<int> flst = {0,1,2,3,4,5,6,7,8,9};
+    auto prev = flst.before_begin(); // denotes element "off the start" of flst
+    auto curr = flst.begin(); // denotes the first element in flst
+    while (curr != flst.end())
+    {
+        // while there are still elements to process
+        if (*curr % 2) // if the element is odd
+            curr = flst.erase_after(prev); // erase it and move curr
+        else
+        {
+            prev = curr; // move the iterators to denote the next
+            ++curr; // element and one before the next element
+        }
+    }
+    std::cout << *flst.begin() << *prev << "Finish FWD List" <<std::endl;
 
+}
 void test_file(std::string inf,std::string outf)
 {
     std::ifstream input(inf);
@@ -195,6 +214,7 @@ void test_whilecin()
 }
 int main ()
 {
+    test_fwdlist();
     test_file("i.txt","o.txt");
     test_cnt();
     test_case();
