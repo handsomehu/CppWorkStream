@@ -433,3 +433,10 @@ initialize any elements that are added to the container. If this argument is abs
 added elements are value initialized (§ 3.3.1, p. 98). If the container holds elements of
 a class type and resize adds elements, we must supply an initializer or the element
 type must have a default constructor.
+
+
+When we add or remove elements in a vector or string, or add elements or
+remove any but the first element in a deque, the iterator returned by end is always
+invalidated. Thus, loops that add or remove elements should always call end rather
+than use a stored copy. Partly for this reason, C++ standard libraries are usually
+implemented so that calling end() is a very fast operation.
