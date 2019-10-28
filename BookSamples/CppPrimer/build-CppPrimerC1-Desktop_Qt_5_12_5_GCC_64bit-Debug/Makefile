@@ -54,10 +54,12 @@ OBJECTS_DIR   = ./
 
 SOURCES       = ../CppPrimerC1/Sales_data.cpp \
 		../CppPrimerC1/main.cpp \
-		../CppPrimerC1/screen.cpp 
+		../CppPrimerC1/screen.cpp \
+		../CppPrimerC1/strblob.cpp 
 OBJECTS       = Sales_data.o \
 		main.o \
-		screen.o
+		screen.o \
+		strblob.o
 DIST          = ../CppPrimerC1/memo.txt \
 		/home/leon/Qt/5.12.5/gcc_64/mkspecs/features/spec_pre.prf \
 		/home/leon/Qt/5.12.5/gcc_64/mkspecs/common/unix.conf \
@@ -232,9 +234,11 @@ DIST          = ../CppPrimerC1/memo.txt \
 		/home/leon/Qt/5.12.5/gcc_64/mkspecs/features/lex.prf \
 		../CppPrimerC1/CppPrimerC1.pro Sales_data.h \
 		Sales_item.h \
-		screen.h ../CppPrimerC1/Sales_data.cpp \
+		screen.h \
+		strblob.h ../CppPrimerC1/Sales_data.cpp \
 		../CppPrimerC1/main.cpp \
-		../CppPrimerC1/screen.cpp
+		../CppPrimerC1/screen.cpp \
+		../CppPrimerC1/strblob.cpp
 QMAKE_TARGET  = CppPrimerC1
 DESTDIR       = 
 TARGET        = CppPrimerC1
@@ -638,11 +642,15 @@ Sales_data.o: ../CppPrimerC1/Sales_data.cpp ../CppPrimerC1/Sales_data.h
 	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o Sales_data.o ../CppPrimerC1/Sales_data.cpp
 
 main.o: ../CppPrimerC1/main.cpp ../CppPrimerC1/Sales_item.h \
-		../CppPrimerC1/Sales_data.h
+		../CppPrimerC1/Sales_data.h \
+		../CppPrimerC1/make_plural.h
 	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o main.o ../CppPrimerC1/main.cpp
 
 screen.o: ../CppPrimerC1/screen.cpp ../CppPrimerC1/screen.h
 	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o screen.o ../CppPrimerC1/screen.cpp
+
+strblob.o: ../CppPrimerC1/strblob.cpp ../CppPrimerC1/strblob.h
+	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o strblob.o ../CppPrimerC1/strblob.cpp
 
 ####### Install
 

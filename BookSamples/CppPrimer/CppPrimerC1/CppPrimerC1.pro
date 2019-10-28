@@ -6,12 +6,14 @@ CONFIG -= qt
 SOURCES += \
         Sales_data.cpp \
         main.cpp \
-        screen.cpp
+        screen.cpp \
+        strblob.cpp
 
 HEADERS += \
     Sales_data.h \
     Sales_item.h \
-    screen.h
+    screen.h \
+    strblob.h
 
 DISTFILES += \
     memo.txt
