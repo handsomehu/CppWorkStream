@@ -444,4 +444,4 @@ implemented so that calling end() is a very fast operation.
 Algorithms that write to a destination iterator assume the destination is large
 enough to hold the number of elements being written.
 
-Page 552
+Page 571
