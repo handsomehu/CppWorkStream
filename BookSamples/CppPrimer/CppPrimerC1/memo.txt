@@ -440,3 +440,8 @@ remove any but the first element in a deque, the iterator returned by end is alw
 invalidated. Thus, loops that add or remove elements should always call end rather
 than use a stored copy. Partly for this reason, C++ standard libraries are usually
 implemented so that calling end() is a very fast operation.
+
+Algorithms that write to a destination iterator assume the destination is large
+enough to hold the number of elements being written.
+
+Page 552

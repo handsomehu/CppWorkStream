@@ -7,6 +7,42 @@
 #include <initializer_list>
 #include <fstream>
 #include <forward_list>
+#include <algorithm>
+#include "make_plural.h"
+#include <map>
+#include <set>
+
+void word_cnt()
+{
+    std::map<std::string,std::size_t> wcnt;
+    std::string word;
+    std::set<std::string> exd{".",",","!"};
+    while(std::cin>>word)
+    {
+        if(exd.find(word)== exd.end())
+            ++ wcnt[word] ;
+    }
+        for(const auto &w: wcnt)
+        std::cout << w.first << " has cnt:" << w.second << std::endl;
+}
+void test_removeduplicated(std::vector<std::string> &words)
+{
+    std::sort(words.begin(),words.end());
+    auto end_unique = std::unique(words.begin(),words.end());
+    words.erase(end_unique,words.end());
+
+}
+void biggies(std::vector<std::string> &words,std::vector<std::string>::size_type sz)
+{
+    test_removeduplicated(words);
+    std::stable_sort(words.begin(),words.end(),[](const std::string &a,const std::string &b){return a.size()<b.size();});
+    auto wc = find_if(words.begin(),words.end(),[sz](std::string &a){return a.size()>=sz;});
+    auto count = words.end()-wc;
+    std::cout << count << " " << make_plural(count, "word", "s")
+    << " of length " << sz << " or longer" << std::endl;
+    for_each(wc,words.end(),[](const std::string &s){ std::cout << s << " ";});
+    std::cout << std::endl;
+}
 void test_iter()
 {
     // silly loop to remove even-valued elements and insert a duplicate of odd-valued elements
@@ -230,6 +266,10 @@ void test_whilecin()
 }
 int main ()
 {
+    word_cnt();
+    std::vector<std::string> wd_test{"This","is","just","a","test","hahahahaha!"};
+    std::vector<std::string>::size_type sz=3;
+    biggies(wd_test,sz);
     test_fwdlist();
     test_file("i.txt","o.txt");
     test_cnt();
