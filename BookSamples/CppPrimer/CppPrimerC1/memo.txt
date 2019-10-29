@@ -444,4 +444,78 @@ implemented so that calling end() is a very fast operation.
 Algorithms that write to a destination iterator assume the destination is large
 enough to hold the number of elements being written.
 
-Page 571
+For the same reasons as we usually initialize variables, it is also a good idea
+to initialize dynamically allocated objects.
+
+int i, *pi1 = &i, *pi2 = nullptr;
+double *pd = new double(33), *pd2 = pd;
+delete i; // error: i is not a pointer
+delete pi1; // undefined: pi1 refers to a local
+delete pd; // ok
+delete pd2; // undefined: the memory pointed to by pd2 was already freed
+delete pi2; // ok: it is always ok to delete a null pointer
+
+
+It is dangerous to use a built-in pointer to access an object owned by a
+smart pointer, because we may not know when that object is destroyed.
+
+Use get only to pass access to the pointer to code that you know will not
+delete the pointer. In particular, never use get to initialize or assign to
+another smart pointer.
+
+Caution: Smart Pointer Pitfalls
+Smart pointers can provide safety and convenience for handling dynamically
+allocated memory only when they are used properly. To use smart pointers
+correctly, we must adhere to a set of conventions:
+• Don’t use the same built-in pointer value to initialize (or reset) more than
+one smart pointer.
+• Don’t delete the pointer returned from get().
+• Don’t use get() to initialize or reset another smart pointer.
+• If you use a pointer returned by get(), remember that the pointer will
+become invalid when the last corresponding smart pointer goes away.
+• If you use a smart pointer to manage a resource other than memory
+allocated by new, remember to pass a deleter
+
+Because the allocated memory does not have an array type, we cannot call begin
+or end (§ 3.5.3, p. 118) on a dynamic array. These functions use the array dimension
+(which is part of an array’s type) to return pointers to the first and one past the last
+elements, respectively. For the same reasons, we also cannot use a range for to
+process the elements in a (so-called) dynamic array.
+
+
+char arr[0]; // error: cannot define a zero-length array
+char *cp = new char[0]; // ok: but cp can't be dereferenced
+When we use new to allocate an array of size zero, new returns a valid, nonzero
+pointer. That pointer is guaranteed to be distinct from any other pointer returned by
+new. This pointer acts as the off-the-end pointer (§ 3.5.3, p. 119) for a zero-element
+array. We can use this pointer in ways that we use an off-the-end iterator. The
+pointer can be compared as in the loop above. We can add zero to (or subtract zero
+from) such a pointer and can subtract the pointer from itself, yielding zero. The
+pointer cannot be dereferenced—after all, it points to no element.
+
+
+The library provides a version of unique_ptr that can manage arrays allocated by
+new. To use a unique_ptr to manage a dynamic array, we must include a pair of
+empty brackets after the object type:
+// up points to an array of ten uninitialized ints
+unique_ptr<int[]> up(new int[10]);
+up.release(); // automatically uses delete[] to destroy its pointer
+
+
+Unlike unique_ptr, shared_ptrs provide no direct support for managing a
+dynamic array. If we want to use a shared_ptr to manage a dynamic array, we
+must provide our own deleter:
+// to use a shared_ptr we must supply a deleter
+shared_ptr<int> sp(new int[10], [](int *p) { delete[] p; });
+sp.reset(); // uses the lambda we supplied that uses delete[] to free the array
+
+The fact that shared_ptr does not directly support managing arrays affects how we
+access the elements in the array:
+// shared_ptrs don't have subscript operator and don't support pointer arithmetic
+for (size_t i = 0; i != 10; ++i)
+*(sp.get() + i) = i; // use get to get a built-in pointer
+
+More importantly, classes that do not have default constructors cannot be
+dynamically allocated as an array.
+
+Page 605
