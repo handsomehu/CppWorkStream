@@ -5,6 +5,7 @@ CONFIG -= qt
 
 SOURCES += \
         Sales_data.cpp \
+        hasptr.cpp \
         main.cpp \
         screen.cpp \
         strblob.cpp
@@ -12,6 +13,7 @@ SOURCES += \
 HEADERS += \
     Sales_data.h \
     Sales_item.h \
+    hasptr.h \
     screen.h \
     strblob.h
 

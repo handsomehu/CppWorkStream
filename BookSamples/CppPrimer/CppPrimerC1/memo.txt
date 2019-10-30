@@ -518,4 +518,78 @@ for (size_t i = 0; i != 10; ++i)
 More importantly, classes that do not have default constructors cannot be
 dynamically allocated as an array.
 
-Page 605
+The copy constructor is used implicitly
+in several circumstances. Hence, the copy constructor usually should not be
+explicit
+
+string dots(10, '.'); // direct initialization
+string s(dots); // direct initialization
+string s2 = dots; // copy initialization
+string null_book = "9-999-99999-9"; // copy initialization
+string nines = string(100, '9'); // copy initialization
+
+Assignment operators ordinarily should return a reference to their left-hand operand.
+
+Because it takes no parameters, it cannot be overloaded. There is always only one
+destructor for a given class.
+
+The implicit destruction of a member of built-in pointer type does not
+delete the object to which that pointer points.
+
+If a class needs a destructor, it almost surely also needs the copy-assignment
+operator and a copy constructor.
+
+This example gives rise to a second rule of thumb: If a class needs a copy
+constructor, it almost surely needs a copy-assignment operator. And vice versa—if the
+class needs an assignment operator, it almost surely needs a copy constructor as well.
+Nevertheless, needing either the copy constructor or the copy-assignment operator
+does not (necessarily) indicate the need for a destructor.
+
+
+Under the new standard, we can prevent copies by defining the copy constructor and
+copy-assignment operator as deleted functions. A deleted function is one that is
+declared but may not be used in any other way. We indicate that we want to define a
+function as deleted by following its parameter list with = delete:
+Click here
+
+It is not possible to define an object or delete a pointer to a dynamically
+allocated object of a type with a deleted destructor.
+
+• The synthesized destructor is defined as deleted if the class has a member
+whose own destructor is deleted or is inaccessible (e.g., private).
+• The synthesized copy constructor is defined as deleted if the class has a
+member whose own copy constructor is deleted or inaccessible. It is also deleted
+if the class has a member with a deleted or inaccessible destructor.
+• The synthesized copy-assignment operator is defined as deleted if a member
+has a deleted or inaccessible copy-assignment operator, or if the class has a
+const or reference member.
+• The synthesized default constructor is defined as deleted if the class has a
+member with a deleted or inaccessible destructor; or has a reference member
+that does not have an in-class initializer (§ 2.6.1, p. 73); or has a const
+member whose type does not explicitly define a default constructor and that
+member does not have an in-class initializer.
+
+Prior to the new standard, classes prevented copies by declaring their copy constructor
+and copy-assignment operator as private
+
+Classes that want to prevent copying should define their copy constructor and
+copy-assignment operators using = delete rather than making those
+members private.
+
+Key Concept: Assignment Operators
+There are two points to keep in mind when you write an assignment
+operator:
+• Assignment operators must work correctly if an object is assigned to itself.
+• Most assignment operators share work with the destructor and copy
+constructor.
+A good pattern to use when you write an assignment operator is to first copy
+the right-hand operand into a local temporary. After the copy is done, it is
+safe to destroy the existing members of the left-hand operand. Once the lefthand
+operand is destroyed, copy the data from the temporary into the
+members of the left-hand operand
+
+It is crucially important for assignment operators to work correctly, even
+when an object is assigned to itself. A good way to do so is to copy the
+right-hand operand before destroying the left-hand operand.
+
+Page659
