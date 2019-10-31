@@ -924,3 +924,5 @@ values in the base and derived classes.
 If a derived virtual function that intended to call its base-class version omits
 the scope operator, the call will be resolved at run time as a call to the
 derived version itself, resulting in an infinite recursion.
+
+Page 752
