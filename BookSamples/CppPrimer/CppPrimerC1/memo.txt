@@ -925,4 +925,62 @@ If a derived virtual function that intended to call its base-class version omits
 the scope operator, the call will be resolved at run time as a call to the
 derived version itself, resulting in an infinite recursion.
 
-Page 752
+We may not create objects of a type that is an abstract base class.
+
+A derived class member or friend may access the protected members of the
+base class only through a derived object. The derived class has no special
+access to the protected members of base-class objects.
+
+For any given point in your code, if a public member of the base class
+would be accessible, then the derived-to-base conversion is also accessible,
+and not otherwise.
+
+
+In the absence of inheritance, we can think of a class as having two different
+kinds of users: ordinary users and implementors. Ordinary users write code
+that uses objects of the class type; such code can access only the public
+(interface) members of the class. Implementors write the code contained in
+the members and friends of the class. The members and friends of the class
+can access both the public and private (implementation) sections.
+Under inheritance, there is a third kind of user, namely, derived classes. A
+base class makes protected those parts of its implementation that it is
+willing to let its derived classes use. The protected members remain
+inaccessible to ordinary user code; private members remain inaccessible to
+derived classes and their friends.
+Like any other class, a class that is used as a base class makes its interface
+members public . A class that is used as a base class may divide its
+implementation into those members that are accessible to derived classes and
+those that remain accessible only to the base class and its friends. An
+implementation member should be protected if it provides an operation or
+data that a derived class will need to use in its own implementation.
+Otherwise, implementation members should be private.
+
+Just as friendship is not transitive (§7.3.4, p. 279), friendship is also not inherited.
+Friends of the base have no special access to members of its derived classes, and
+friends of a derived class have no special access to the base class:
+
+A derived-class member with the same name as a member of the base class
+hides direct use of the base-class member.
+
+Executing delete on a pointer to base that points to a derived object has
+undefined behavior if the base’s destructor is not virtual.
+
+The fact that a base class needs a virtual destructor has an important indirect impact
+on the definition of base and derived classes: If a class defines a destructor—even if
+it uses = default to use the synthesized version—the compiler will not synthesize a
+move operation for that class (§13.6.2, p. 537).
+
+By default, the base-class default constructor initializes the base-class part of
+a derived object. If we want copy (or move) the base-class part, we must
+explicitly use the copy (or move) constructor for the base class in the
+derived’s constructor initializer list.
+
+If a constructor or destructor calls a virtual, the version that is run is the one
+corresponding to the type of the constructor or destructor itself.
+
+When we need a container that holds objects related by inheritance, we typically
+define the container to hold pointers (preferably smart pointers (§12.1, p. 450)) to the
+base class. As usual, the dynamic type of the object to which those pointers point
+might be the base-class type or a type derived from that base:
+
+Page 779
