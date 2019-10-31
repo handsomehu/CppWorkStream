@@ -687,4 +687,240 @@ iterator.
 Outside of class implementation code such as move constructors or
 move-assignment operators, use std::move only when you are certain
 that you need to do a move and that the move is guaranteed to be safe.
-page 675
+
+
+Overloaded functions that distinguish between moving and copying a
+parameter typically have one version
+that takes a const T& and one that
+takes a T&&.
+
+When an overloaded operator is a member function, this is bound to the
+left-hand operand. Member operator functions have one less (explicit)
+parameter than the number of operands.
+
+Ordinarily, the comma, address-of, logical AND, and logical OR operators
+should not be overloaded.
+
+Obvious abuses of operator overloading rarely happen in practice. As an
+example, no responsible programmer would define operator+ to perform
+subtraction. More common, but still inadvisable, are uses that contort an
+operator’s “normal” meaning to force a fit to a given type. Operators should
+be used only for operations that are likely to be unambiguous to users. An
+operator has an ambiguous meaning if it plausibly has more than one
+interpretation.
+
+
+The following guidelines can be of help in deciding whether to make an operator a
+member or an ordinary nonmember function:
+• The assignment (=), subscript ([]), call (()), and member access arrow (->)
+operators must be defined as members.
+• The compound-assignment operators ordinarily ought to be members. However,
+unlike assignment, they are not required to be members.
+• Operators that change the state of their object or that are closely tied to their given type—such as increment, decrement, and dereference—usually should be
+members.
+• Symmetric operators—those that might convert either operand, such as the
+arithmetic, equality, relational, and bitwise operators—usually should be defined
+as ordinary nonmember functions.
+
+string s = "world";
+string t = s + "!"; // ok: we can add a const char* to a string
+string u = "hi" + s; // would be an error if + were a member of string
+If operator+ were a member of the string class, the first addition would be
+equivalent to s.operator+("!"). Likewise, "hi" + s would be equivalent to
+"hi".operator+(s). However, the type of "hi" is const char*, and that is a
+built-in type; it does not even have member functions.
+
+Generally, output operators should print the contents of the object, with
+minimal formatting. They should not print a newline.
+
+Input and output operators that conform to the conventions of the iostream library
+must be ordinary nonmember functions.
+
+Ordinarily, we define the arithmetic and relational operators as nonmember functions
+in order to allow conversions for either the left- or right-hand operand (§ 14.1, p.
+555). These operators shouldn’t need to change the state of either operand, so the
+parameters are ordinarily references to const.
+
+bool operator==(const Sales_data &lhs, const Sales_data &rhs)
+{
+return lhs.isbn() == rhs.isbn() &&
+lhs.units_sold == rhs.units_sold &&
+lhs.revenue == rhs.revenue;
+}
+bool operator!=(const Sales_data &lhs, const Sales_data &rhs)
+{
+return !(lhs == rhs);
+}
+
+Assignment operators can be overloaded. Assignment operators, regardless of
+parameter type, must be defined as member functions.
+
+
+Assignment operators must, and ordinarily compound-assignment operators
+should, be defined as members. These operators should return a reference to
+the left-hand operand.
+
+The subscript operator must be a member function.
+
+If a class has a subscript operator, it usually should define two versions: one
+that returns a plain reference and the other that is a const member and
+returns a reference to const.
+
+Classes that define increment or decrement operators should define both the
+prefix and postfix versions. These operators usually should be defined as
+members
+
+To be consistent with the built-in operators, the postfix operators should
+return the old (unincremented or undecremented) value. That value is
+returned as a value, not a reference.
+
+
+class StrBlobPtr {
+public:
+std::string& operator*() const
+{ auto p = check(curr, "dereference past end");
+return (*p)[curr]; // (*p) is the vector to which this object points
+}
+std::string* operator->() const
+{ // delegate the real work to the dereference operator
+return & this->operator*();
+}
+// other members as before
+};
+
+The overloaded arrow operator must return either a pointer to a class type or
+an object of a class type that defines its own operator arrow.
+
+The function-call operator must be a member function. A class may define
+multiple versions of the call operator, each of which must differ as to the
+number or types of their parameters.
+
+map<string, function<int(int, int)>> binops = {
+{"+", add}, // function pointer
+{"-", std::minus<int>()}, // library function object
+{"/", div()}, // user-defined function object
+{"*", [](int i, int j) { return i * j; }}, // unnamed
+lambda
+{"%", mod} };
+
+A conversion operator is a special kind of member function that converts a value of
+a class type to a value of some other type. A conversion function typically has the
+general form
+operator type() const;
+
+where type represents a type. Conversion operators can be defined for any type
+(other than void) that can be a function return type (§ 6.1, p. 204). Conversions to
+an array or a function type are not permitted. Conversions to pointer types—both data
+and function pointers—and to reference types are allowed.
+
+A conversion function must be a member function, may not specify a return
+type, and must have an empty parameter list. The function usually should be
+const.
+
+If the conversion operator is explicit, we can still do the conversion. However, with
+one exception, we must do so explicitly through a cast.
+
+Conversion to bool is usually intended for use in conditions. As a result,
+operator bool ordinarily should be defined as explicit.
+
+
+Caution: Conversions and Operators
+Correctly designing the overloaded operators, conversion constructors, and
+conversion functions for a class requires some care. In particular, ambiguities
+are easy to generate if a class defines both conversion operators and
+overloaded operators. A few rules of thumb can be helpful:
+• Don’t define mutually converting classes—if class Foo has a constructor
+that takes an object of class Bar, do not give Bar a conversion operator to
+type Foo.
+• Avoid conversions to the built-in arithmetic types. In particular, if you do
+define a conversion to an arithmetic type, then
+– Do not define overloaded versions of the operators that take arithmetic
+types. If users need to use these operators, the conversion operation will
+convert objects of your type, and then the built-in operators can be used.
+– Do not define a conversion to more than one arithmetic type. Let the
+standard conversions provide conversions to the other arithmetic types.
+The easiest rule of all: With the exception of an explicit conversion to
+bool, avoid defining conversion functions and limit nonexplicit
+constructors to those that are “obviously right.”
+
+The set of candidate functions for an operator used in an expression can
+contain both nonmember and member functions.
+
+In C++, dynamic binding happens when a virtual function is called through a
+reference (or a pointer) to a base class.
+
+
+Base classes ordinarily should define a virtual destructor. Virtual destructors
+are needed even if they do no work.
+
+A function that is declared as
+virtual in the base class is implicitly virtual in the derived classes as well.
+
+The base class is initialized first, and then the members of the derived class
+are initialized in the order in which they are declared in the class.
+
+It is essential to understand that each class defines its own interface.
+Interactions with an object of a class-type should use the interface of that
+class, even if that object is the base-class part of a derived object.
+As a result, derived-class constructors may not directly initialize the
+members of its base class. The constructor body of a derived constructor can
+assign values to its public or protected base-class members. Although it
+can assign to those members, it generally should not do so. Like any other
+user of the base class, a derived class should respect the interface of its base
+class by using a constructor to initialize its inherited members.
+
+Bulk_quote bulk;
+Quote *itemP = &bulk; // ok: dynamic type is Bulk_quote
+Bulk_quote *bulkP = itemP; // error: can't convert base to derived
+
+When we initialize or assign an object of a base type from an object of a
+derived type, only the base-class part of the derived object is copied, moved,
+or assigned. The derived part of the object is ignored.
+
+There are three things that are important to understand about conversions
+among classes related by inheritance:
+• The conversion from derived to base applies only to pointer or reference types.
+• There is no implicit conversion from the base-class type to the derived
+type.
+• Like any member, the derived-to-base conversion may be inaccessible due
+to access controls. We’ll cover accessibility in §15.5 (p. 613).
+Although the automatic conversion applies only to pointers and references,
+most classes in an inheritance hierarchy (implicitly or explicitly) define the
+copy-control members (Chapter 13). As a result, we can often copy, move, or
+assign an object of derived type to a base-type object. However, copying,
+moving, or assigning a derived-type object to a base-type object copies,
+moves, or assigns only the members in the base-class part of the object.
+
+It is crucial to understand that dynamic binding happens only when a virtual
+function is called through a pointer or a reference.
+
+Virtuals are resolved at run time only if the call is made through a
+reference or pointer. Only in these cases is it possible for an object’s
+dynamic type to differ from its static type.
+
+When a derived class overrides a virtual function, it may, but is not required to, repeat
+the virtual keyword. Once a function is declared as virtual, it remains virtual
+in all the derived classes.
+
+A function that is virtual in a base class is implicitly virtual in its
+derived classes. When a derived class overrides a virtual, the parameters in
+the base and derived classes must match exactly.
+
+struct B {
+virtual void f1(int) const;
+virtual void f2();
+void f3();
+};
+struct D1 : B {
+void f1(int) const override; // ok: f1 matches f1 in the base
+void f2(int) override; // error: B has no f2(int) function
+void f3() override; // error: f3 not virtual
+void f4() override; // error: B doesn't have a function named f4
+}
+
+Virtual functions that have default arguments should use the same argument
+values in the base and derived classes.
+
+If a derived virtual function that intended to call its base-class version omits
+the scope operator, the call will be resolved at run time as a call to the
+derived version itself, resulting in an infinite recursion.

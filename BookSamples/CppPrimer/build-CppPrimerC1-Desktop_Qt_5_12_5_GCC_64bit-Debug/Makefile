@@ -53,11 +53,13 @@ OBJECTS_DIR   = ./
 ####### Files
 
 SOURCES       = ../CppPrimerC1/Sales_data.cpp \
+		../CppPrimerC1/bookdata.cpp \
 		../CppPrimerC1/hasptr.cpp \
 		../CppPrimerC1/main.cpp \
 		../CppPrimerC1/screen.cpp \
 		../CppPrimerC1/strblob.cpp 
 OBJECTS       = Sales_data.o \
+		bookdata.o \
 		hasptr.o \
 		main.o \
 		screen.o \
@@ -236,9 +238,11 @@ DIST          = ../CppPrimerC1/memo.txt \
 		/home/leon/Qt/5.12.5/gcc_64/mkspecs/features/lex.prf \
 		../CppPrimerC1/CppPrimerC1.pro Sales_data.h \
 		Sales_item.h \
+		bookdata.h \
 		hasptr.h \
 		screen.h \
 		strblob.h ../CppPrimerC1/Sales_data.cpp \
+		../CppPrimerC1/bookdata.cpp \
 		../CppPrimerC1/hasptr.cpp \
 		../CppPrimerC1/main.cpp \
 		../CppPrimerC1/screen.cpp \
@@ -644,6 +648,9 @@ compiler_clean:
 
 Sales_data.o: ../CppPrimerC1/Sales_data.cpp ../CppPrimerC1/Sales_data.h
 	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o Sales_data.o ../CppPrimerC1/Sales_data.cpp
+
+bookdata.o: ../CppPrimerC1/bookdata.cpp ../CppPrimerC1/bookdata.h
+	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o bookdata.o ../CppPrimerC1/bookdata.cpp
 
 hasptr.o: ../CppPrimerC1/hasptr.cpp ../CppPrimerC1/hasptr.h
 	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o hasptr.o ../CppPrimerC1/hasptr.cpp

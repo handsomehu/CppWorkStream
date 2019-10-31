@@ -12,6 +12,23 @@
 #include <map>
 #include <set>
 
+void test_functor()
+{
+    class PrintString {
+    public:
+        PrintString(std::ostream &o = cout, char c = ' '):os(o), sep(c) { }
+        void operator()(const string &s) const { os << s << sep;}
+    private:
+        std::ostream &os; // stream on which to write
+        char sep; // character to print after each output
+    };
+
+    PrintString ps(std::cout,',');
+    ps("This");
+    ps("is");
+    ps("a");
+    ps("test!");
+}
 void word_cnt()
 {
     std::map<std::string,std::size_t> wcnt;
@@ -266,6 +283,7 @@ void test_whilecin()
 }
 int main ()
 {
+    test_functor();
     word_cnt();
     std::vector<std::string> wd_test{"This","is","just","a","test","hahahahaha!"};
     std::vector<std::string>::size_type sz=3;

@@ -40,3 +40,22 @@ Sales_data::Sales_data(std::istream &is)
 {
 read(is, *this); // read will read a transaction from is into this object
 }
+
+
+std::ostream &operator<<(std::ostream &os,const Sales_data &item)
+{
+    os << item.isbn()  << " " << item.get_sold() << " "
+    << item.get_rev() << " " << item.get_avg();
+    return os;
+}
+
+std::istream &operator>>(std::istream &is, Sales_data &item)
+{
+    double price;
+    is >> item.bookNo >> item.units_sold >> price;
+    if (is)
+        item.revenue = item.units_sold * price;
+    else
+        item = Sales_data();
+    return is;
+}

@@ -48,22 +48,28 @@ public:
         return bookNo;
     }
     Sales_data &combine(const Sales_data& );
-    double get_rev()
+    double get_rev() const
     {
         return revenue;
     }
-    unsigned get_sold()
+    unsigned get_sold() const
     {
         return units_sold;
     }
 
-private:
+    double get_avg() const
+    {
+        return avg_price();
+    }
     std::string bookNo;
     unsigned units_sold = 0;
     double revenue = 0.0;
+private:
+
     double avg_price() const;
 };
-
+std::ostream &operator<<(std::ostream &os,const Sales_data &item);
+std::istream &operator>>(std::istream &is, Sales_data &item);
 Sales_data &add(const Sales_data&, const Sales_data&);
 std::ostream &print(std::ostream&,const Sales_data& );
 std::istream &read(std::istream&,Sales_data&);
