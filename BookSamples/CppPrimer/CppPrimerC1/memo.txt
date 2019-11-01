@@ -983,4 +983,50 @@ define the container to hold pointers (preferably smart pointers (§12.1, p. 450
 base class. As usual, the dynamic type of the object to which those pointers point
 might be the base-class type or a type derived from that base:
 
-Page 779
+Because derived objects are “sliced down” when assigned to a base-type
+object, containers and types related by inheritance do not mix well.
+
+template<unsigned N, unsigned M>
+int compare(const char (&p1)[N], const char (&p2)[M])
+{
+return strcmp(p1, p2);
+}
+When we call this version of compare:
+compare("hi", "mom")
+
+
+Definitions of function templates and member functions of class templates are
+ordinarily put into header files.
+
+
+By default, a member of an instantiated class template is instantiated only if
+the member is used.
+
+
+By default, the language assumes that a name accessed through the scope operator
+is not a type. As a result, if we want to use a type member of a template type
+parameter, we must explicitly tell the compiler that the name is a type. We do so by
+using the keyword typename
+
+
+A class—either an ordinary class or a class template—may have a member function
+that is itself a template. Such members are referred to as member templates.
+Member templates may not be virtual.
+
+
+There must be an explicit instantiation definition somewhere in the program
+for every instantiation declaration.
+
+const conversions and array or function to pointer are the only automatic
+conversions for arguments to parameters with template types.
+
+Reference collapsing applies only when a reference to a reference is created
+indirectly, such as in a type alias or a template parameter.
+
+An argument of any type can be passed to a function parameter that is an
+rvalue reference to a template parameter type (i.e., T&&). When an lvalue is
+passed to such a parameter, the function parameter is instantiated as an
+ordinary, lvalue reference (T&).
+
+
+Page 857
