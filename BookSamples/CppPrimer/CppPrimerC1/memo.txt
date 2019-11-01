@@ -1029,4 +1029,40 @@ passed to such a parameter, the function parameter is instantiated as an
 ordinary, lvalue reference (T&).
 
 
-Page 857
+When a nontemplate function provides an equally good match for a call as a
+function template, the nontemplate version is preferred.
+
+
+Specializations instantiate a template; they do not overload it. As a result,
+specializations do not affect function matching.
+
+
+In order to specialize a template, a declaration for the original template must
+be in scope. Moreover, a declaration for a specialization must be in scope
+before any code uses that instantiation of the template.
+With ordinary classes and functions, missing declarations are (usually) easy
+to find—the compiler won’t be able to process our code. However, if a
+specialization declaration is missing, the compiler will usually generate code
+using the original template. Because the compiler can often instantiate the
+original template when a specialization is missing, errors in declaration order
+between a template and its specializations are easy to make but hard to find.
+It is an error for a program to use a specialization and an instantiation of 
+the original template with the same set of template arguments. However, it is
+an error that the compiler is unlikely to detect.
+Templates and their specializations should be declared in the same
+header file. Declarations for all the templates with a given name should
+appear first, followed by any specializations of those templates.
+
+
+A given random-number generator always produces the same sequence of
+numbers. A function with a local random-number generator should make that
+generator (both the engine and distribution objects) static. Otherwise, the
+function will generate the identical sequence on each call.
+
+Because engines return the same sequence of numbers (§ 17.4.1, p. 747), it
+is essential that we declare engines outside of loops. Otherwise, we’d create
+a new engine on each iteration and generate the same values on each
+iteration. Similarly, distributions may retain state and should also be defined
+outside loops.
+
+page 946
