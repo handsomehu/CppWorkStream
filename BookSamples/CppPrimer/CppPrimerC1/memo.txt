@@ -1065,4 +1065,37 @@ a new engine on each iteration and generate the same values on each
 iteration. Similarly, distributions may retain state and should also be defined
 outside loops.
 
-page 946
+During stack unwinding, destructors are run on local objects of class type.
+Because destructors are run automatically, they should not throw. If, during
+stack unwinding, a destructor throws an exception that it does not also catch,
+the program will be terminated.
+
+
+• Conversions from nonconst to const are allowed. That is, a throw of a
+nonconst object can match a catch specified to take a reference to const.
+• Conversions from derived type to base type are allowed.
+• An array is converted to a pointer to the type of the array; a function is
+converted to the appropriate pointer to function type.
+
+
+template <typename T>
+Blob<T>::Blob(std::initializer_list<T> il) try :
+data(std::make_shared<std::vector<T>>(il)) {
+/* empty body */
+} catch(const std::bad_alloc &e) { handle_out_of_memory(e); }
+
+noexcept has two meanings: It is an exception specifier when it follows a
+function’s parameter list, and it is an operator that is often used as the bool
+argument to a noexcept exception specifier.
+
+If a virtual function includes a promise not to throw, the inherited virtuals must also
+promise not to throw. On the other hand, if the base allows exceptions, it is okay for
+the derived functions to be more restrictive and promise not to throw:
+
+
+A namespace scope does not end with a semicolon.
+
+page 983
+
+
+
