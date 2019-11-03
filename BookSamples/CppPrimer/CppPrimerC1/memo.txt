@@ -1095,7 +1095,95 @@ the derived functions to be more restrictive and promise not to throw:
 
 A namespace scope does not end with a semicolon.
 
-page 983
+When a class has multiple base classes, it is possible for that derived class to
+inherit a member with the same name from two or more of its base classes.
+Unqualified uses of that name are ambiguous.
+
+In C++ we solve this kind of problem by using virtual inheritance. Virtual
+inheritance lets a class specify that it is willing to share its base class. The shared
+base-class subobject is called a virtual base class. Regardless of how often the
+same virtual base appears in an inheritance hierarchy, the derived object contains only
+one, shared subobject for that virtual base class.
+
+We specify that a base class is virtual by including the keyword virtual in the
+derivation list:
+// the order of the keywords public and virtual is not significant
+class Raccoon : public virtual ZooAnimal { /* ... */ };
+class Bear : virtual public ZooAnimal { /* ... */ };
+
+In a virtual derivation, the virtual base is initialized by the most derived constructor. In
+our example, when we create a Panda object, the Panda constructor alone controls
+how the ZooAnimal base class is initialized.
+Panda::Panda(std::string name, bool onExhibit)
+: ZooAnimal(name, onExhibit, "Panda"),
+Bear(name, onExhibit),
+Raccoon(name, onExhibit),
+Endangered(Endangered::critical),
+sleeping flag(false) { }
+
+If the Panda constructor does not explicitly initialize the ZooAnimal base class,
+then the ZooAnimal default constructor is used. If ZooAnimal doesn’t have a
+default constructor, then the code is in error.
+
+A class can have more than one virtual base class. In that case, the virtual subobjects
+are constructed in left-to-right order as they appear in the derivation list. For example,
+in the following whimsical TeddyBear derivation, there are two virtual base classes:
+ToyAnimal, a direct virtual base, and ZooAnimal, which is a virtual base class of
+Bear:
+Click here to view code image
+class Character { /* ... */ };
+class BookCharacter : public Character { /* ... */ };
+class ToyAnimal { /* ... */ };
+class TeddyBear : public BookCharacter,
+public Bear, public virtual ToyAnimal
+{ /* ... */ };
+The direct base classes are examined in declaration order to determine whether
+there are any virtual base classes. If so, the virtual bases are constructed first,
+followed by the nonvirtual base-class constructors in declaration order. Thus, to create
+a TeddyBear, the constructors are invoked in the following order:
+Click here to view code image
+ZooAnimal(); // Bear's virtual base class
+ToyAnimal(); // direct virtual base class
+Character(); // indirect base class of first nonvirtual base class
+BookCharacter(); // first direct nonvirtual base class
+Bear(); // second direct nonvirtual base class
+TeddyBear(); // most derived class
 
 
+The member new and delete functions must be static because they are used
+either before the object is constructed (operator new) or after it has been
+destroyed (operator delete). There are, therefore, no member data for these
+functions to manipulate.
+An operator new or operator
+
+
+The member new and delete functions must be static because they are used
+either before the object is constructed (operator new) or after it has been
+destroyed (operator delete). There are, therefore, no member data for these
+functions to manipulate.
+An operator new or operator
+
+void *operator new(size_t size) {
+if (void *mem = malloc(size))
+return mem;
+else
+throw bad_alloc();
+}
+void operator delete(void *mem) noexcept { free(mem); }
+
+RTTI should be used with caution. When possible, it is better to define a
+virtual function rather than to take over managing the types directly.
+
+
+It is worth noting that we defined dp inside the condition. By defining the variable in
+a condition, we do the cast and corresponding check as a single operation. Moreover,
+the pointer dp is not accessible outside the if. If the cast fails, then the unbound
+pointer is not available for use in subsequent code where we might forget to check
+C++ Primer, Fifth Edition
+whether the cast succeeded.
+
+uses data members of the TextQuery object on which query was run to initialize a
+QueryResult object. We have to use these members to construct the QueryResult
+object we return because a QueryResult object does not contain the members of its
+enclosing class.
 
