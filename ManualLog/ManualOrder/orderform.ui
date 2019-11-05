@@ -6,8 +6,8 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>630</width>
-    <height>342</height>
+    <width>778</width>
+    <height>521</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -17,8 +17,8 @@
    <widget class="QPushButton" name="pb_order">
     <property name="geometry">
      <rect>
-      <x>59</x>
-      <y>240</y>
+      <x>50</x>
+      <y>300</y>
       <width>101</width>
       <height>21</height>
      </rect>
@@ -27,21 +27,21 @@
      <string>Order</string>
     </property>
    </widget>
-   <widget class="QTextEdit" name="te_infor">
+   <widget class="QTextEdit" name="te_rmk1">
     <property name="geometry">
      <rect>
-      <x>410</x>
+      <x>380</x>
       <y>30</y>
       <width>211</width>
-      <height>201</height>
+      <height>51</height>
      </rect>
     </property>
    </widget>
    <widget class="QPushButton" name="pb_reset">
     <property name="geometry">
      <rect>
-      <x>170</x>
-      <y>240</y>
+      <x>161</x>
+      <y>300</y>
       <width>101</width>
       <height>21</height>
      </rect>
@@ -50,13 +50,13 @@
      <string>Reset</string>
     </property>
    </widget>
-   <widget class="QWidget" name="">
+   <widget class="QWidget" name="layoutWidget">
     <property name="geometry">
      <rect>
       <x>60</x>
       <y>30</y>
       <width>212</width>
-      <height>190</height>
+      <height>251</height>
      </rect>
     </property>
     <layout class="QHBoxLayout" name="horizontalLayout">
@@ -84,6 +84,13 @@
         </widget>
        </item>
        <item>
+        <widget class="QLabel" name="label_exch">
+         <property name="text">
+          <string>Exchange</string>
+         </property>
+        </widget>
+       </item>
+       <item>
         <widget class="QLabel" name="label_symbol">
          <property name="text">
           <string>Symbol</string>
@@ -94,6 +101,13 @@
         <widget class="QLabel" name="label_price">
          <property name="text">
           <string>Price</string>
+         </property>
+        </widget>
+       </item>
+       <item>
+        <widget class="QLabel" name="label_qty">
+         <property name="text">
+          <string>Qty</string>
          </property>
         </widget>
        </item>
@@ -111,12 +125,71 @@
         <widget class="QComboBox" name="cb_strg"/>
        </item>
        <item>
+        <widget class="QComboBox" name="cb_exch"/>
+       </item>
+       <item>
         <widget class="QLineEdit" name="le_symbol"/>
        </item>
        <item>
         <widget class="QLineEdit" name="le_price"/>
        </item>
+       <item>
+        <widget class="QLineEdit" name="le_qty"/>
+       </item>
       </layout>
+     </item>
+    </layout>
+   </widget>
+   <widget class="QTextEdit" name="te_rmk2">
+    <property name="geometry">
+     <rect>
+      <x>380</x>
+      <y>100</y>
+      <width>211</width>
+      <height>51</height>
+     </rect>
+    </property>
+   </widget>
+   <widget class="QTextEdit" name="te_log">
+    <property name="geometry">
+     <rect>
+      <x>380</x>
+      <y>160</y>
+      <width>211</width>
+      <height>51</height>
+     </rect>
+    </property>
+   </widget>
+   <widget class="QWidget" name="">
+    <property name="geometry">
+     <rect>
+      <x>290</x>
+      <y>30</y>
+      <width>82</width>
+      <height>191</height>
+     </rect>
+    </property>
+    <layout class="QVBoxLayout" name="verticalLayout_3">
+     <item>
+      <widget class="QLabel" name="label_rmk1">
+       <property name="text">
+        <string>Remark1</string>
+       </property>
+      </widget>
+     </item>
+     <item>
+      <widget class="QLabel" name="label_rmk2">
+       <property name="text">
+        <string>Remark2</string>
+       </property>
+      </widget>
+     </item>
+     <item>
+      <widget class="QLabel" name="label_log">
+       <property name="text">
+        <string>Log Infor</string>
+       </property>
+      </widget>
      </item>
     </layout>
    </widget>
@@ -126,7 +199,7 @@
     <rect>
      <x>0</x>
      <y>0</y>
-     <width>630</width>
+     <width>778</width>
      <height>27</height>
     </rect>
    </property>
