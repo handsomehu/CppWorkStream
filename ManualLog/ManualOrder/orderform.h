@@ -2,6 +2,7 @@
 #define ORDERFORM_H
 
 #include <QMainWindow>
+#include "sqlhelper.h"
 
 QT_BEGIN_NAMESPACE
 namespace Ui { class OrderForm; }
@@ -22,5 +23,7 @@ private slots:
 
 private:
     Ui::OrderForm *ui;
+    SqlHelper dbhelper;
+
 };
 #endif // ORDERFORM_H

@@ -1,22 +1,28 @@
 #ifndef SQLHELPER_H
 #define SQLHELPER_H
-#include <QDebug>
 #include <QSqlDatabase>
-#include <QSqlDriver>
-#include <QSqlQuery>
-#include <QDateTime>
 #include <QSqlError>
-#include <QSqlRecord>
-#include <QSqlResult>
-#include <string>
+#include <QSqlQuery>
+//credit:https://blog.csdn.net/Empty_Android/article/details/80438497
 class SqlHelper
 {
 public:
-    SqlHelper();
+    SqlHelper(const QString& DbPath);
+    QSqlDatabase createDatabase(const QString& DbPath);
+    void createDataTable(const QString &dml);
+    void open();
+    void close();
+    int insert(const QString &cmd);
+    int update(const QString &cmd);
+    void query(const QString &qur);
+    void deleteRecord(const QString &cmd);
+    int getMaxId(const QString &tabname);
+    ~SqlHelper();
 
 private:
-    std::string dbpath;
-    std::
+    QSqlDatabase database;
+    QSqlQuery sql_query; //bug 需要在方法中重新定义, 不然会出现 "Driver not loaded" 的错误
+    int max_id;
 };
 
 #endif // SQLHELPER_H
