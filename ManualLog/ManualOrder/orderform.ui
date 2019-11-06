@@ -6,8 +6,8 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>778</width>
-    <height>521</height>
+    <width>945</width>
+    <height>658</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -17,11 +17,16 @@
    <widget class="QPushButton" name="pb_order">
     <property name="geometry">
      <rect>
-      <x>50</x>
-      <y>300</y>
-      <width>101</width>
-      <height>21</height>
+      <x>550</x>
+      <y>270</y>
+      <width>171</width>
+      <height>41</height>
      </rect>
+    </property>
+    <property name="font">
+     <font>
+      <pointsize>20</pointsize>
+     </font>
     </property>
     <property name="text">
      <string>Order</string>
@@ -30,21 +35,31 @@
    <widget class="QTextEdit" name="te_rmk1">
     <property name="geometry">
      <rect>
-      <x>380</x>
-      <y>30</y>
+      <x>689</x>
+      <y>49</y>
       <width>211</width>
       <height>51</height>
      </rect>
+    </property>
+    <property name="font">
+     <font>
+      <pointsize>20</pointsize>
+     </font>
     </property>
    </widget>
    <widget class="QPushButton" name="pb_reset">
     <property name="geometry">
      <rect>
-      <x>161</x>
-      <y>300</y>
-      <width>101</width>
-      <height>21</height>
+      <x>740</x>
+      <y>270</y>
+      <width>141</width>
+      <height>41</height>
      </rect>
+    </property>
+    <property name="font">
+     <font>
+      <pointsize>20</pointsize>
+     </font>
     </property>
     <property name="text">
      <string>Reset</string>
@@ -53,17 +68,27 @@
    <widget class="QWidget" name="layoutWidget">
     <property name="geometry">
      <rect>
-      <x>60</x>
-      <y>30</y>
-      <width>212</width>
-      <height>251</height>
+      <x>110</x>
+      <y>10</y>
+      <width>181</width>
+      <height>560</height>
      </rect>
+    </property>
+    <property name="font">
+     <font>
+      <pointsize>20</pointsize>
+     </font>
     </property>
     <layout class="QHBoxLayout" name="horizontalLayout">
      <item>
       <layout class="QVBoxLayout" name="verticalLayout_2">
        <item>
         <widget class="QLabel" name="label_dir">
+         <property name="font">
+          <font>
+           <pointsize>20</pointsize>
+          </font>
+         </property>
          <property name="text">
           <string>Direction</string>
          </property>
@@ -71,6 +96,11 @@
        </item>
        <item>
         <widget class="QLabel" name="label_offset">
+         <property name="font">
+          <font>
+           <pointsize>20</pointsize>
+          </font>
+         </property>
          <property name="text">
           <string>Offset</string>
          </property>
@@ -78,6 +108,11 @@
        </item>
        <item>
         <widget class="QLabel" name="label_strg">
+         <property name="font">
+          <font>
+           <pointsize>20</pointsize>
+          </font>
+         </property>
          <property name="text">
           <string>Strategy</string>
          </property>
@@ -85,6 +120,11 @@
        </item>
        <item>
         <widget class="QLabel" name="label_exch">
+         <property name="font">
+          <font>
+           <pointsize>20</pointsize>
+          </font>
+         </property>
          <property name="text">
           <string>Exchange</string>
          </property>
@@ -92,6 +132,11 @@
        </item>
        <item>
         <widget class="QLabel" name="label_symbol">
+         <property name="font">
+          <font>
+           <pointsize>20</pointsize>
+          </font>
+         </property>
          <property name="text">
           <string>Symbol</string>
          </property>
@@ -99,6 +144,11 @@
        </item>
        <item>
         <widget class="QLabel" name="label_price">
+         <property name="font">
+          <font>
+           <pointsize>20</pointsize>
+          </font>
+         </property>
          <property name="text">
           <string>Price</string>
          </property>
@@ -106,35 +156,15 @@
        </item>
        <item>
         <widget class="QLabel" name="label_qty">
+         <property name="font">
+          <font>
+           <pointsize>20</pointsize>
+          </font>
+         </property>
          <property name="text">
           <string>Qty</string>
          </property>
         </widget>
-       </item>
-      </layout>
-     </item>
-     <item>
-      <layout class="QVBoxLayout" name="verticalLayout">
-       <item>
-        <widget class="QComboBox" name="cb_Dir"/>
-       </item>
-       <item>
-        <widget class="QComboBox" name="cb_offset"/>
-       </item>
-       <item>
-        <widget class="QComboBox" name="cb_strg"/>
-       </item>
-       <item>
-        <widget class="QComboBox" name="cb_exch"/>
-       </item>
-       <item>
-        <widget class="QLineEdit" name="le_symbol"/>
-       </item>
-       <item>
-        <widget class="QLineEdit" name="le_price"/>
-       </item>
-       <item>
-        <widget class="QLineEdit" name="le_qty"/>
        </item>
       </layout>
      </item>
@@ -143,51 +173,223 @@
    <widget class="QTextEdit" name="te_rmk2">
     <property name="geometry">
      <rect>
-      <x>380</x>
-      <y>100</y>
+      <x>689</x>
+      <y>109</y>
       <width>211</width>
       <height>51</height>
      </rect>
+    </property>
+    <property name="font">
+     <font>
+      <pointsize>20</pointsize>
+     </font>
     </property>
    </widget>
    <widget class="QTextEdit" name="te_log">
     <property name="geometry">
      <rect>
-      <x>380</x>
-      <y>160</y>
+      <x>689</x>
+      <y>169</y>
       <width>211</width>
       <height>51</height>
      </rect>
+    </property>
+    <property name="font">
+     <font>
+      <pointsize>20</pointsize>
+     </font>
+    </property>
+   </widget>
+   <widget class="QWidget" name="layoutWidget">
+    <property name="geometry">
+     <rect>
+      <x>549</x>
+      <y>49</y>
+      <width>131</width>
+      <height>191</height>
+     </rect>
+    </property>
+    <property name="font">
+     <font>
+      <pointsize>20</pointsize>
+     </font>
+    </property>
+    <layout class="QVBoxLayout" name="verticalLayout_3"/>
+   </widget>
+   <widget class="QLabel" name="label_rmk2">
+    <property name="geometry">
+     <rect>
+      <x>560</x>
+      <y>105</y>
+      <width>112</width>
+      <height>59</height>
+     </rect>
+    </property>
+    <property name="font">
+     <font>
+      <pointsize>20</pointsize>
+     </font>
+    </property>
+    <property name="text">
+     <string>Remark2</string>
+    </property>
+   </widget>
+   <widget class="QLabel" name="label_log">
+    <property name="geometry">
+     <rect>
+      <x>560</x>
+      <y>170</y>
+      <width>112</width>
+      <height>59</height>
+     </rect>
+    </property>
+    <property name="font">
+     <font>
+      <pointsize>20</pointsize>
+     </font>
+    </property>
+    <property name="text">
+     <string>Log Infor</string>
+    </property>
+   </widget>
+   <widget class="QLabel" name="label_rmk1">
+    <property name="geometry">
+     <rect>
+      <x>560</x>
+      <y>40</y>
+      <width>112</width>
+      <height>59</height>
+     </rect>
+    </property>
+    <property name="font">
+     <font>
+      <pointsize>20</pointsize>
+     </font>
+    </property>
+    <property name="text">
+     <string>Remark1</string>
     </property>
    </widget>
    <widget class="QWidget" name="">
     <property name="geometry">
      <rect>
-      <x>290</x>
-      <y>30</y>
-      <width>82</width>
-      <height>191</height>
+      <x>300</x>
+      <y>10</y>
+      <width>241</width>
+      <height>558</height>
      </rect>
     </property>
-    <layout class="QVBoxLayout" name="verticalLayout_3">
+    <property name="font">
+     <font>
+      <pointsize>20</pointsize>
+     </font>
+    </property>
+    <layout class="QVBoxLayout" name="verticalLayout">
      <item>
-      <widget class="QLabel" name="label_rmk1">
-       <property name="text">
-        <string>Remark1</string>
+      <widget class="QComboBox" name="cb_Dir">
+       <property name="font">
+        <font>
+         <pointsize>20</pointsize>
+        </font>
        </property>
       </widget>
      </item>
      <item>
-      <widget class="QLabel" name="label_rmk2">
-       <property name="text">
-        <string>Remark2</string>
+      <widget class="QComboBox" name="cb_offset">
+       <property name="font">
+        <font>
+         <pointsize>20</pointsize>
+        </font>
        </property>
       </widget>
      </item>
      <item>
-      <widget class="QLabel" name="label_log">
+      <widget class="QComboBox" name="cb_strg">
+       <property name="font">
+        <font>
+         <pointsize>20</pointsize>
+        </font>
+       </property>
+      </widget>
+     </item>
+     <item>
+      <widget class="QComboBox" name="cb_exch">
+       <property name="font">
+        <font>
+         <pointsize>20</pointsize>
+        </font>
+       </property>
+      </widget>
+     </item>
+     <item>
+      <widget class="QLineEdit" name="le_symbol">
+       <property name="font">
+        <font>
+         <pointsize>20</pointsize>
+        </font>
+       </property>
+      </widget>
+     </item>
+     <item>
+      <widget class="QLineEdit" name="le_price">
+       <property name="font">
+        <font>
+         <pointsize>20</pointsize>
+        </font>
+       </property>
+      </widget>
+     </item>
+     <item>
+      <widget class="QLineEdit" name="le_qty">
+       <property name="font">
+        <font>
+         <pointsize>20</pointsize>
+        </font>
+       </property>
+      </widget>
+     </item>
+    </layout>
+   </widget>
+   <widget class="QWidget" name="gridLayoutWidget">
+    <property name="geometry">
+     <rect>
+      <x>560</x>
+      <y>360</y>
+      <width>331</width>
+      <height>131</height>
+     </rect>
+    </property>
+    <layout class="QGridLayout" name="gridLayout">
+     <item row="2" column="0">
+      <widget class="QLineEdit" name="le_del">
+       <property name="font">
+        <font>
+         <pointsize>20</pointsize>
+        </font>
+       </property>
+      </widget>
+     </item>
+     <item row="1" column="0">
+      <widget class="QLabel" name="label_del">
+       <property name="font">
+        <font>
+         <pointsize>20</pointsize>
+        </font>
+       </property>
        <property name="text">
-        <string>Log Infor</string>
+        <string>Delete Order ID</string>
+       </property>
+      </widget>
+     </item>
+     <item row="3" column="0">
+      <widget class="QPushButton" name="pb_del">
+       <property name="font">
+        <font>
+         <pointsize>20</pointsize>
+        </font>
+       </property>
+       <property name="text">
+        <string>Delete</string>
        </property>
       </widget>
      </item>
@@ -199,7 +401,7 @@
     <rect>
      <x>0</x>
      <y>0</y>
-     <width>778</width>
+     <width>945</width>
      <height>27</height>
     </rect>
    </property>

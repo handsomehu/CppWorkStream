@@ -12,7 +12,9 @@ public:
     void createDataTable(const QString &dml);
     void open();
     void close();
+    bool openstatus();
     int insert(const QString &cmd);
+    int remove(const QString &cmd);
     int update(const QString &cmd);
     void query(const QString &qur);
     void deleteRecord(const QString &cmd);

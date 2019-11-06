@@ -16,6 +16,14 @@ SqlHelper::~SqlHelper()
         close();
 }
 
+bool SqlHelper::openstatus()
+{
+    bool retval = false;
+
+    if (database.open())
+        retval = true;
+    return retval;
+}
 QSqlDatabase SqlHelper::createDatabase(const QString& DbPath )
 {
     // create database
@@ -75,6 +83,21 @@ int SqlHelper::insert(const QString &cmd)
     else
     {
         qDebug() << "inserted successfully.";
+        return 1;
+    }
+}
+int SqlHelper::remove(const QString &cmd)
+{
+
+
+    if(!sql_query.exec(cmd))
+    {
+        qDebug() << sql_query.lastError();
+        return 0;
+    }
+    else
+    {
+        qDebug() << "deleted successfully.";
         return 1;
     }
 }

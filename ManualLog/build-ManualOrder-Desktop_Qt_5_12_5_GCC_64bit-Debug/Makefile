@@ -767,6 +767,10 @@ moc_orderform.cpp: ../ManualOrder/orderform.h \
 		../../../../Qt/5.12.5/gcc_64/include/QtGui/qtouchdevice.h \
 		../../../../Qt/5.12.5/gcc_64/include/QtWidgets/qtabwidget.h \
 		../../../../Qt/5.12.5/gcc_64/include/QtGui/qicon.h \
+		../../../../Qt/5.12.5/gcc_64/include/QtCore/QDate \
+		../../../../Qt/5.12.5/gcc_64/include/QtCore/qdatetime.h \
+		../../../../Qt/5.12.5/gcc_64/include/QtCore/QDateTime \
+		../../../../Qt/5.12.5/gcc_64/include/QtCore/QTime \
 		../ManualOrder/sqlhelper.h \
 		../../../../Qt/5.12.5/gcc_64/include/QtSql/QSqlDatabase \
 		../../../../Qt/5.12.5/gcc_64/include/QtSql/qsqldatabase.h \
@@ -908,6 +912,10 @@ main.o: ../ManualOrder/main.cpp ../ManualOrder/orderform.h \
 		../../../../Qt/5.12.5/gcc_64/include/QtGui/qtouchdevice.h \
 		../../../../Qt/5.12.5/gcc_64/include/QtWidgets/qtabwidget.h \
 		../../../../Qt/5.12.5/gcc_64/include/QtGui/qicon.h \
+		../../../../Qt/5.12.5/gcc_64/include/QtCore/QDate \
+		../../../../Qt/5.12.5/gcc_64/include/QtCore/qdatetime.h \
+		../../../../Qt/5.12.5/gcc_64/include/QtCore/QDateTime \
+		../../../../Qt/5.12.5/gcc_64/include/QtCore/QTime \
 		../ManualOrder/sqlhelper.h \
 		../../../../Qt/5.12.5/gcc_64/include/QtSql/QSqlDatabase \
 		../../../../Qt/5.12.5/gcc_64/include/QtSql/qsqldatabase.h \
@@ -1033,6 +1041,10 @@ orderform.o: ../ManualOrder/orderform.cpp ../ManualOrder/orderform.h \
 		../../../../Qt/5.12.5/gcc_64/include/QtGui/qtouchdevice.h \
 		../../../../Qt/5.12.5/gcc_64/include/QtWidgets/qtabwidget.h \
 		../../../../Qt/5.12.5/gcc_64/include/QtGui/qicon.h \
+		../../../../Qt/5.12.5/gcc_64/include/QtCore/QDate \
+		../../../../Qt/5.12.5/gcc_64/include/QtCore/qdatetime.h \
+		../../../../Qt/5.12.5/gcc_64/include/QtCore/QDateTime \
+		../../../../Qt/5.12.5/gcc_64/include/QtCore/QTime \
 		../ManualOrder/sqlhelper.h \
 		../../../../Qt/5.12.5/gcc_64/include/QtSql/QSqlDatabase \
 		../../../../Qt/5.12.5/gcc_64/include/QtSql/qsqldatabase.h \
@@ -1065,11 +1077,12 @@ orderform.o: ../ManualOrder/orderform.cpp ../ManualOrder/orderform.h \
 		../../../../Qt/5.12.5/gcc_64/include/QtWidgets/qrubberband.h \
 		../../../../Qt/5.12.5/gcc_64/include/QtWidgets/qframe.h \
 		../../../../Qt/5.12.5/gcc_64/include/QtCore/qabstractitemmodel.h \
-		../../../../Qt/5.12.5/gcc_64/include/QtWidgets/QHBoxLayout \
-		../../../../Qt/5.12.5/gcc_64/include/QtWidgets/qboxlayout.h \
+		../../../../Qt/5.12.5/gcc_64/include/QtWidgets/QGridLayout \
+		../../../../Qt/5.12.5/gcc_64/include/QtWidgets/qgridlayout.h \
 		../../../../Qt/5.12.5/gcc_64/include/QtWidgets/qlayout.h \
 		../../../../Qt/5.12.5/gcc_64/include/QtWidgets/qlayoutitem.h \
-		../../../../Qt/5.12.5/gcc_64/include/QtWidgets/qgridlayout.h \
+		../../../../Qt/5.12.5/gcc_64/include/QtWidgets/qboxlayout.h \
+		../../../../Qt/5.12.5/gcc_64/include/QtWidgets/QHBoxLayout \
 		../../../../Qt/5.12.5/gcc_64/include/QtWidgets/QLabel \
 		../../../../Qt/5.12.5/gcc_64/include/QtWidgets/qlabel.h \
 		../../../../Qt/5.12.5/gcc_64/include/QtWidgets/QLineEdit \
@@ -1093,7 +1106,8 @@ orderform.o: ../ManualOrder/orderform.cpp ../ManualOrder/orderform.h \
 		../../../../Qt/5.12.5/gcc_64/include/QtWidgets/qabstractscrollarea.h \
 		../../../../Qt/5.12.5/gcc_64/include/QtGui/qtextdocument.h \
 		../../../../Qt/5.12.5/gcc_64/include/QtWidgets/QVBoxLayout \
-		../../../../Qt/5.12.5/gcc_64/include/QtWidgets/QWidget
+		../../../../Qt/5.12.5/gcc_64/include/QtWidgets/QWidget \
+		../../../../Qt/5.12.5/gcc_64/include/QtCore/QDebug
 	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o orderform.o ../ManualOrder/orderform.cpp
 
 sqlhelper.o: ../ManualOrder/sqlhelper.cpp ../ManualOrder/sqlhelper.h \
