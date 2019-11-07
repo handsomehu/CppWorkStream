@@ -24,9 +24,45 @@ void CTraderHandler::connect()
     //输出API版本信息
 
     printf("%s\n", m_ptraderapi->GetApiVersion());
+    ReqAuthenticate();
+
+}
+int CTraderHandler::ReqAuthenticate()
+{
+    CThostFtdcReqAuthenticateField field;
+    memset(&field, 0, sizeof(field));
+    std::strcpy(field.BrokerID, "8000");
+    std::strcpy(field.UserID, "001888");
+    std::strcpy(field.AppID, "XY_Q7_V1.0.0");
+    std::strcpy(field.AuthCode, "5A5P4V7AZ5LCFEAK");
+    return m_ptraderapi->ReqAuthenticate(&field, 5);
+
+}
+void CTraderHandler::OnRspAuthenticate(CThostFtdcRspAuthenticateField *pRspAuthenticateField, CThostFtdcRspInfoField *pRspInfo, int nRequestID, bool bIsLast)
+{
+    printf("OnRspAuthenticate\n");
+    if (pRspInfo != NULL && pRspInfo->ErrorID == 0)
+    {
+        printf("认证成功,ErrorID=0x%04x, ErrMsg=%s\n\n", pRspInfo->ErrorID, pRspInfo->ErrorMsg);
+        ReqUserLogin();
+    }
+    else
+    std::cout << "认证失败，" << "ErrorID=" << pRspInfo->ErrorID << "  ,ErrMsg=" << pRspInfo->ErrorMsg << std::endl;
 
 }
 
+int CTraderHandler::ReqUserLogin()
+{
+    printf("====ReqUserLogin====,用户登录中...\n\n");
+    CThostFtdcReqUserLoginField reqUserLogin;
+    memset(&reqUserLogin, 0, sizeof(reqUserLogin));
+    std::strcpy(reqUserLogin.BrokerID, "8000");
+    strcpy(reqUserLogin.UserID, "001888");
+    strcpy(reqUserLogin.Password, "1");
+    strcpy(reqUserLogin.TradingDay, "20190715");
+    static int RequestID = 0;
+    return m_ptraderapi->ReqUserLogin(&reqUserLogin, ++RequestID);
+}
 void CTraderHandler::release()
 {
     m_ptraderapi->Release();

@@ -8,6 +8,7 @@
 #include <memory>
 #include <chrono>
 #include <thread>
+#include <iostream>
 //#include <Windows.h>
 
 class CTraderHandler: public CThostFtdcTraderSpi
@@ -17,6 +18,9 @@ public:
     CTraderHandler();
     //activat method
     void connect();
+    int ReqAuthenticate();
+    void OnRspAuthenticate(CThostFtdcRspAuthenticateField *pRspAuthenticateField, CThostFtdcRspInfoField *pRspInfo, int nRequestID, bool bIsLast);
+    int ReqUserLogin();
     void release();
     void login();
     void settlementinfoConfirm();

@@ -17,7 +17,7 @@ CXX           = g++
 DEFINES       = -DQT_DEPRECATED_WARNINGS -DQT_QML_DEBUG -DQT_CORE_LIB
 CFLAGS        = -pipe -g -Wall -W -D_REENTRANT -fPIC $(DEFINES)
 CXXFLAGS      = -pipe -g -std=gnu++11 -Wall -W -D_REENTRANT -fPIC $(DEFINES)
-INCPATH       = -I../CtpTradeTest -I. -I../../../../Qt/5.12.5/gcc_64/include -I../../../../Qt/5.12.5/gcc_64/include/QtCore -I. -I../../../../Qt/5.12.5/gcc_64/mkspecs/linux-g++
+INCPATH       = -I../CtpTradeTest -I. -I../CtpTradeTest/libfiles -I../../../../Qt/5.12.5/gcc_64/include -I../../../../Qt/5.12.5/gcc_64/include/QtCore -I. -I../../../../Qt/5.12.5/gcc_64/mkspecs/linux-g++
 QMAKE         = /home/leon/Qt/5.12.5/gcc_64/bin/qmake
 DEL_FILE      = rm -f
 CHK_DIR_EXISTS= test -d
@@ -40,7 +40,7 @@ DISTNAME      = CtpTradeTest1.0.0
 DISTDIR = /home/leon/CppJourney/CppWorkStream/QtExplore/build-CtpTradeTest-Desktop_Qt_5_12_5_GCC_64bit-Debug/.tmp/CtpTradeTest1.0.0
 LINK          = g++
 LFLAGS        = -Wl,-rpath,/home/leon/Qt/5.12.5/gcc_64/lib
-LIBS          = $(SUBLIBS) -L/home/leon/CppJourney/CppWorkStream/QtExplore/CtpTradeTest/libfiles/ -lpsapi /home/leon/Qt/5.12.5/gcc_64/lib/libQt5Core.so -lpthread   
+LIBS          = $(SUBLIBS) -L/home/leon/CppJourney/CppWorkStream/QtExplore/CtpTradeTest/libfiles/ -lthosttraderapi_se /home/leon/Qt/5.12.5/gcc_64/lib/libQt5Core.so -lpthread   
 AR            = ar cqs
 RANLIB        = 
 SED           = sed
@@ -724,7 +724,11 @@ main.o: ../CtpTradeTest/main.cpp ../../../../Qt/5.12.5/gcc_64/include/QtCore/QCo
 		../../../../Qt/5.12.5/gcc_64/include/QtCore/qvarlengtharray.h \
 		../../../../Qt/5.12.5/gcc_64/include/QtCore/qcontainerfwd.h \
 		../../../../Qt/5.12.5/gcc_64/include/QtCore/qobject_impl.h \
-		../../../../Qt/5.12.5/gcc_64/include/QtCore/qeventloop.h
+		../../../../Qt/5.12.5/gcc_64/include/QtCore/qeventloop.h \
+		../CtpTradeTest/ctraderhandler.h \
+		../CtpTradeTest/libhead/ThostFtdcTraderApi.h \
+		../CtpTradeTest/libhead/ThostFtdcUserApiStruct.h \
+		../CtpTradeTest/libhead/ThostFtdcUserApiDataType.h
 	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o main.o ../CtpTradeTest/main.cpp
 
 ####### Install

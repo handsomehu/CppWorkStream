@@ -33,4 +33,9 @@ HEADERS += \
     libhead/ThostFtdcTraderApi.h \
     libhead/ThostFtdcUserApiDataType.h \
     libhead/ThostFtdcUserApiStruct.h
-LIBS += -L"$$_PRO_FILE_PWD_/libfiles/" -lpsapi
+win32:CONFIG(release, debug|release): LIBS += -L$$PWD/libfiles/release/ -lthosttraderapi_se
+else:win32:CONFIG(debug, debug|release): LIBS += -L$$PWD/libfiles/debug/ -lthosttraderapi_se
+else:unix: LIBS += -L$$PWD/libfiles/ -lthosttraderapi_se
+
+INCLUDEPATH += $$PWD/libfiles
+DEPENDPATH += $$PWD/libfiles
