@@ -8,18 +8,22 @@ TradeWrapper::TradeWrapper(const std::string &path):
     nlohmann::json j;
     if (jfile)
     {
-        std::cout << "start read json!" << std::endl;
         jfile >> j;
-        //auto jdict = nlohmann::json::parse(j)
-        std::cout << j << std::endl;
-        brokerid = j["brokerid"];
-        mdaddress = j["mdaddress"];
-        std::cout << mdaddress << std::endl;
-        tdaddress = j["tdaddress"];
-        userid = j["userid"];
-        password = j["password"];
-        appid = j["appid"];
-        authcode = j["authcode"];
+        if (j.find("brokerID") != j.end())
+          brokerid = j["brokerID"];
+        if (j.find("mdAddress") != j.end())
+          mdaddress = j["mdAddress"];
+        if (j.find("tdAddress") != j.end())
+          tdaddress = j["tdAddress"];
+        if (j.find("userID") != j.end())
+          userid = j["userID"];
+        if (j.find("password") != j.end())
+          password = j["password"];
+        if (j.find("appID") != j.end())
+          appid = j["appID"];
+        if (j.find("authCode") != j.end())
+          authcode = j["authCode"];
+
     }
 }
 void TradeWrapper::ReadUserData()
@@ -29,7 +33,7 @@ void TradeWrapper::ReadUserData()
 void TradeWrapper::connect()
 {
     //创建API实例
-
+    std::cout << "start connect!";
     m_ptraderapi = CThostFtdcTraderApi::CreateFtdcTraderApi(".//flow/");
     //必须提前创建好flow目录，流文件*.con就会在该文件夹下面创建，如果想要区别不同session创建的流水文件名称可见如下示例“.//flow/a_”
 

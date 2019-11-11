@@ -109,8 +109,10 @@ void OrderForm::on_pushButton_clicked()
 {
     //test ctp connection
     TradeWrapper tr("./cfg/j123.json");
+    std::cout << "wrapper created!" << std::endl;
     tr.connect();
     //test finish, exit
+    std::this_thread::sleep_for(std::chrono::seconds(20));//Sleep(1000);
     tr.release();
 
 }
