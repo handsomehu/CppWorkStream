@@ -18,11 +18,18 @@ DEFINES += QT_DEPRECATED_WARNINGS
 SOURCES += \
     main.cpp \
     orderform.cpp \
-    sqlhelper.cpp
+    sqlhelper.cpp \
+    tradewrapper.cpp
 
 HEADERS += \
+    libhead/ThostFtdcMdApi.h \
+    libhead/ThostFtdcTraderApi.h \
+    libhead/ThostFtdcUserApiDataType.h \
+    libhead/ThostFtdcUserApiStruct.h \
+    libhead/json.hpp \
     orderform.h \
-    sqlhelper.h
+    sqlhelper.h \
+    tradewrapper.h
 
 FORMS += \
     orderform.ui
@@ -31,3 +38,17 @@ FORMS += \
 qnx: target.path = /tmp/$${TARGET}/bin
 else: unix:!android: target.path = /opt/$${TARGET}/bin
 !isEmpty(target.path): INSTALLS += target
+
+DISTFILES += \
+    cfg/CTP_connect.json \
+    libfiles/libthostmduserapi_se.so \
+    libfiles/libthosttraderapi_se.so \
+    libhead/error.dtd \
+    libhead/error.xml
+
+win32:CONFIG(release, debug|release): LIBS += -L$$PWD/libfiles/release/ -lthosttraderapi_se
+else:win32:CONFIG(debug, debug|release): LIBS += -L$$PWD/libfiles/debug/ -lthosttraderapi_se
+else:unix: LIBS += -L$$PWD/libfiles/ -lthosttraderapi_se
+
+INCLUDEPATH += $$PWD/libfiles
+DEPENDPATH += $$PWD/libfiles

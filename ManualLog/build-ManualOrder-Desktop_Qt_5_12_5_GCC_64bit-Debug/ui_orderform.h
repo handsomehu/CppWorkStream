@@ -50,7 +50,7 @@ public:
     QLabel *label_rmk2;
     QLabel *label_log;
     QLabel *label_rmk1;
-    QWidget *widget;
+    QWidget *layoutWidget2;
     QVBoxLayout *verticalLayout;
     QComboBox *cb_Dir;
     QComboBox *cb_offset;
@@ -64,6 +64,7 @@ public:
     QLineEdit *le_del;
     QLabel *label_del;
     QPushButton *pb_del;
+    QPushButton *pushButton;
     QMenuBar *menubar;
     QStatusBar *statusbar;
 
@@ -169,50 +170,50 @@ public:
         label_rmk1->setObjectName(QString::fromUtf8("label_rmk1"));
         label_rmk1->setGeometry(QRect(560, 40, 112, 59));
         label_rmk1->setFont(font);
-        widget = new QWidget(centralwidget);
-        widget->setObjectName(QString::fromUtf8("widget"));
-        widget->setGeometry(QRect(300, 10, 241, 558));
-        widget->setFont(font);
-        verticalLayout = new QVBoxLayout(widget);
+        layoutWidget2 = new QWidget(centralwidget);
+        layoutWidget2->setObjectName(QString::fromUtf8("layoutWidget2"));
+        layoutWidget2->setGeometry(QRect(300, 10, 241, 558));
+        layoutWidget2->setFont(font);
+        verticalLayout = new QVBoxLayout(layoutWidget2);
         verticalLayout->setObjectName(QString::fromUtf8("verticalLayout"));
         verticalLayout->setContentsMargins(0, 0, 0, 0);
-        cb_Dir = new QComboBox(widget);
+        cb_Dir = new QComboBox(layoutWidget2);
         cb_Dir->setObjectName(QString::fromUtf8("cb_Dir"));
         cb_Dir->setFont(font);
 
         verticalLayout->addWidget(cb_Dir);
 
-        cb_offset = new QComboBox(widget);
+        cb_offset = new QComboBox(layoutWidget2);
         cb_offset->setObjectName(QString::fromUtf8("cb_offset"));
         cb_offset->setFont(font);
 
         verticalLayout->addWidget(cb_offset);
 
-        cb_strg = new QComboBox(widget);
+        cb_strg = new QComboBox(layoutWidget2);
         cb_strg->setObjectName(QString::fromUtf8("cb_strg"));
         cb_strg->setFont(font);
 
         verticalLayout->addWidget(cb_strg);
 
-        cb_exch = new QComboBox(widget);
+        cb_exch = new QComboBox(layoutWidget2);
         cb_exch->setObjectName(QString::fromUtf8("cb_exch"));
         cb_exch->setFont(font);
 
         verticalLayout->addWidget(cb_exch);
 
-        le_symbol = new QLineEdit(widget);
+        le_symbol = new QLineEdit(layoutWidget2);
         le_symbol->setObjectName(QString::fromUtf8("le_symbol"));
         le_symbol->setFont(font);
 
         verticalLayout->addWidget(le_symbol);
 
-        le_price = new QLineEdit(widget);
+        le_price = new QLineEdit(layoutWidget2);
         le_price->setObjectName(QString::fromUtf8("le_price"));
         le_price->setFont(font);
 
         verticalLayout->addWidget(le_price);
 
-        le_qty = new QLineEdit(widget);
+        le_qty = new QLineEdit(layoutWidget2);
         le_qty->setObjectName(QString::fromUtf8("le_qty"));
         le_qty->setFont(font);
 
@@ -242,6 +243,9 @@ public:
 
         gridLayout->addWidget(pb_del, 3, 0, 1, 1);
 
+        pushButton = new QPushButton(centralwidget);
+        pushButton->setObjectName(QString::fromUtf8("pushButton"));
+        pushButton->setGeometry(QRect(570, 520, 311, 30));
         OrderForm->setCentralWidget(centralwidget);
         menubar = new QMenuBar(OrderForm);
         menubar->setObjectName(QString::fromUtf8("menubar"));
@@ -273,6 +277,7 @@ public:
         label_rmk1->setText(QApplication::translate("OrderForm", "Remark1", nullptr));
         label_del->setText(QApplication::translate("OrderForm", "Delete Order ID", nullptr));
         pb_del->setText(QApplication::translate("OrderForm", "Delete", nullptr));
+        pushButton->setText(QApplication::translate("OrderForm", "PushButton", nullptr));
     } // retranslateUi
 
 };

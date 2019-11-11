@@ -17,7 +17,7 @@ CXX           = g++
 DEFINES       = -DQT_DEPRECATED_WARNINGS -DQT_QML_DEBUG -DQT_WIDGETS_LIB -DQT_GUI_LIB -DQT_SQL_LIB -DQT_CORE_LIB
 CFLAGS        = -pipe -g -Wall -W -D_REENTRANT -fPIC $(DEFINES)
 CXXFLAGS      = -pipe -g -std=gnu++11 -Wall -W -D_REENTRANT -fPIC $(DEFINES)
-INCPATH       = -I../ManualOrder -I. -I../../../../Qt/5.12.5/gcc_64/include -I../../../../Qt/5.12.5/gcc_64/include/QtWidgets -I../../../../Qt/5.12.5/gcc_64/include/QtGui -I../../../../Qt/5.12.5/gcc_64/include/QtSql -I../../../../Qt/5.12.5/gcc_64/include/QtCore -I. -isystem /usr/include/libdrm -I. -I../../../../Qt/5.12.5/gcc_64/mkspecs/linux-g++
+INCPATH       = -I../ManualOrder -I. -I../ManualOrder/libfiles -I../../../../Qt/5.12.5/gcc_64/include -I../../../../Qt/5.12.5/gcc_64/include/QtWidgets -I../../../../Qt/5.12.5/gcc_64/include/QtGui -I../../../../Qt/5.12.5/gcc_64/include/QtSql -I../../../../Qt/5.12.5/gcc_64/include/QtCore -I. -isystem /usr/include/libdrm -I. -I../../../../Qt/5.12.5/gcc_64/mkspecs/linux-g++
 QMAKE         = /home/leon/Qt/5.12.5/gcc_64/bin/qmake
 DEL_FILE      = rm -f
 CHK_DIR_EXISTS= test -d
@@ -40,7 +40,7 @@ DISTNAME      = ManualOrder1.0.0
 DISTDIR = /home/leon/CppJourney/CppWorkStream/ManualLog/build-ManualOrder-Desktop_Qt_5_12_5_GCC_64bit-Debug/.tmp/ManualOrder1.0.0
 LINK          = g++
 LFLAGS        = -Wl,-rpath,/home/leon/Qt/5.12.5/gcc_64/lib
-LIBS          = $(SUBLIBS) /home/leon/Qt/5.12.5/gcc_64/lib/libQt5Widgets.so /home/leon/Qt/5.12.5/gcc_64/lib/libQt5Gui.so /home/leon/Qt/5.12.5/gcc_64/lib/libQt5Sql.so /home/leon/Qt/5.12.5/gcc_64/lib/libQt5Core.so -lGL -lpthread   
+LIBS          = $(SUBLIBS) -L/home/leon/CppJourney/CppWorkStream/ManualLog/ManualOrder/libfiles/ -lthosttraderapi_se /home/leon/Qt/5.12.5/gcc_64/lib/libQt5Widgets.so /home/leon/Qt/5.12.5/gcc_64/lib/libQt5Gui.so /home/leon/Qt/5.12.5/gcc_64/lib/libQt5Sql.so /home/leon/Qt/5.12.5/gcc_64/lib/libQt5Core.so -lGL -lpthread   
 AR            = ar cqs
 RANLIB        = 
 SED           = sed
@@ -54,12 +54,19 @@ OBJECTS_DIR   = ./
 
 SOURCES       = ../ManualOrder/main.cpp \
 		../ManualOrder/orderform.cpp \
-		../ManualOrder/sqlhelper.cpp moc_orderform.cpp
+		../ManualOrder/sqlhelper.cpp \
+		../ManualOrder/tradewrapper.cpp moc_orderform.cpp
 OBJECTS       = main.o \
 		orderform.o \
 		sqlhelper.o \
+		tradewrapper.o \
 		moc_orderform.o
-DIST          = ../../../../Qt/5.12.5/gcc_64/mkspecs/features/spec_pre.prf \
+DIST          = ../ManualOrder/cfg/CTP_connect.json \
+		../ManualOrder/libfiles/libthostmduserapi_se.so \
+		../ManualOrder/libfiles/libthosttraderapi_se.so \
+		../ManualOrder/libhead/error.dtd \
+		../ManualOrder/libhead/error.xml \
+		../../../../Qt/5.12.5/gcc_64/mkspecs/features/spec_pre.prf \
 		../../../../Qt/5.12.5/gcc_64/mkspecs/common/unix.conf \
 		../../../../Qt/5.12.5/gcc_64/mkspecs/common/linux.conf \
 		../../../../Qt/5.12.5/gcc_64/mkspecs/common/sanitize.conf \
@@ -236,10 +243,17 @@ DIST          = ../../../../Qt/5.12.5/gcc_64/mkspecs/features/spec_pre.prf \
 		../../../../Qt/5.12.5/gcc_64/mkspecs/features/exceptions.prf \
 		../../../../Qt/5.12.5/gcc_64/mkspecs/features/yacc.prf \
 		../../../../Qt/5.12.5/gcc_64/mkspecs/features/lex.prf \
-		../ManualOrder/ManualOrder.pro ../ManualOrder/orderform.h \
-		../ManualOrder/sqlhelper.h ../ManualOrder/main.cpp \
+		../ManualOrder/ManualOrder.pro ../ManualOrder/libhead/ThostFtdcMdApi.h \
+		../ManualOrder/libhead/ThostFtdcTraderApi.h \
+		../ManualOrder/libhead/ThostFtdcUserApiDataType.h \
+		../ManualOrder/libhead/ThostFtdcUserApiStruct.h \
+		../ManualOrder/libhead/json.hpp \
+		../ManualOrder/orderform.h \
+		../ManualOrder/sqlhelper.h \
+		../ManualOrder/tradewrapper.h ../ManualOrder/main.cpp \
 		../ManualOrder/orderform.cpp \
-		../ManualOrder/sqlhelper.cpp
+		../ManualOrder/sqlhelper.cpp \
+		../ManualOrder/tradewrapper.cpp
 QMAKE_TARGET  = ManualOrder
 DESTDIR       = 
 TARGET        = ManualOrder
@@ -623,8 +637,8 @@ distdir: FORCE
 	@test -d $(DISTDIR) || mkdir -p $(DISTDIR)
 	$(COPY_FILE) --parents $(DIST) $(DISTDIR)/
 	$(COPY_FILE) --parents ../../../../Qt/5.12.5/gcc_64/mkspecs/features/data/dummy.cpp $(DISTDIR)/
-	$(COPY_FILE) --parents ../ManualOrder/orderform.h ../ManualOrder/sqlhelper.h $(DISTDIR)/
-	$(COPY_FILE) --parents ../ManualOrder/main.cpp ../ManualOrder/orderform.cpp ../ManualOrder/sqlhelper.cpp $(DISTDIR)/
+	$(COPY_FILE) --parents ../ManualOrder/libhead/ThostFtdcMdApi.h ../ManualOrder/libhead/ThostFtdcTraderApi.h ../ManualOrder/libhead/ThostFtdcUserApiDataType.h ../ManualOrder/libhead/ThostFtdcUserApiStruct.h ../ManualOrder/libhead/json.hpp ../ManualOrder/orderform.h ../ManualOrder/sqlhelper.h ../ManualOrder/tradewrapper.h $(DISTDIR)/
+	$(COPY_FILE) --parents ../ManualOrder/main.cpp ../ManualOrder/orderform.cpp ../ManualOrder/sqlhelper.cpp ../ManualOrder/tradewrapper.cpp $(DISTDIR)/
 	$(COPY_FILE) --parents ../ManualOrder/orderform.ui $(DISTDIR)/
 
 
@@ -780,9 +794,14 @@ moc_orderform.cpp: ../ManualOrder/orderform.h \
 		../../../../Qt/5.12.5/gcc_64/include/QtSql/qsqlerror.h \
 		../../../../Qt/5.12.5/gcc_64/include/QtSql/QSqlQuery \
 		../../../../Qt/5.12.5/gcc_64/include/QtSql/qsqlquery.h \
+		../ManualOrder/tradewrapper.h \
+		../ManualOrder/libhead/ThostFtdcTraderApi.h \
+		../ManualOrder/libhead/ThostFtdcUserApiStruct.h \
+		../ManualOrder/libhead/ThostFtdcUserApiDataType.h \
+		../ManualOrder/libhead/json.hpp \
 		moc_predefs.h \
 		../../../../Qt/5.12.5/gcc_64/bin/moc
-	/home/leon/Qt/5.12.5/gcc_64/bin/moc $(DEFINES) --include /home/leon/CppJourney/CppWorkStream/ManualLog/build-ManualOrder-Desktop_Qt_5_12_5_GCC_64bit-Debug/moc_predefs.h -I/home/leon/Qt/5.12.5/gcc_64/mkspecs/linux-g++ -I/home/leon/CppJourney/CppWorkStream/ManualLog/ManualOrder -I/home/leon/Qt/5.12.5/gcc_64/include -I/home/leon/Qt/5.12.5/gcc_64/include/QtWidgets -I/home/leon/Qt/5.12.5/gcc_64/include/QtGui -I/home/leon/Qt/5.12.5/gcc_64/include/QtSql -I/home/leon/Qt/5.12.5/gcc_64/include/QtCore -I. -I/usr/include/c++/5 -I/usr/include/x86_64-linux-gnu/c++/5 -I/usr/include/c++/5/backward -I/usr/lib/gcc/x86_64-linux-gnu/5/include -I/usr/local/include -I/usr/lib/gcc/x86_64-linux-gnu/5/include-fixed -I/usr/include/x86_64-linux-gnu -I/usr/include ../ManualOrder/orderform.h -o moc_orderform.cpp
+	/home/leon/Qt/5.12.5/gcc_64/bin/moc $(DEFINES) --include /home/leon/CppJourney/CppWorkStream/ManualLog/build-ManualOrder-Desktop_Qt_5_12_5_GCC_64bit-Debug/moc_predefs.h -I/home/leon/Qt/5.12.5/gcc_64/mkspecs/linux-g++ -I/home/leon/CppJourney/CppWorkStream/ManualLog/ManualOrder -I/home/leon/CppJourney/CppWorkStream/ManualLog/ManualOrder/libfiles -I/home/leon/Qt/5.12.5/gcc_64/include -I/home/leon/Qt/5.12.5/gcc_64/include/QtWidgets -I/home/leon/Qt/5.12.5/gcc_64/include/QtGui -I/home/leon/Qt/5.12.5/gcc_64/include/QtSql -I/home/leon/Qt/5.12.5/gcc_64/include/QtCore -I. -I/usr/include/c++/5 -I/usr/include/x86_64-linux-gnu/c++/5 -I/usr/include/c++/5/backward -I/usr/lib/gcc/x86_64-linux-gnu/5/include -I/usr/local/include -I/usr/lib/gcc/x86_64-linux-gnu/5/include-fixed -I/usr/include/x86_64-linux-gnu -I/usr/include ../ManualOrder/orderform.h -o moc_orderform.cpp
 
 compiler_moc_objc_header_make_all:
 compiler_moc_objc_header_clean:
@@ -925,6 +944,11 @@ main.o: ../ManualOrder/main.cpp ../ManualOrder/orderform.h \
 		../../../../Qt/5.12.5/gcc_64/include/QtSql/qsqlerror.h \
 		../../../../Qt/5.12.5/gcc_64/include/QtSql/QSqlQuery \
 		../../../../Qt/5.12.5/gcc_64/include/QtSql/qsqlquery.h \
+		../ManualOrder/tradewrapper.h \
+		../ManualOrder/libhead/ThostFtdcTraderApi.h \
+		../ManualOrder/libhead/ThostFtdcUserApiStruct.h \
+		../ManualOrder/libhead/ThostFtdcUserApiDataType.h \
+		../ManualOrder/libhead/json.hpp \
 		../../../../Qt/5.12.5/gcc_64/include/QtWidgets/QApplication \
 		../../../../Qt/5.12.5/gcc_64/include/QtWidgets/qapplication.h \
 		../../../../Qt/5.12.5/gcc_64/include/QtCore/qcoreapplication.h \
@@ -1054,6 +1078,11 @@ orderform.o: ../ManualOrder/orderform.cpp ../ManualOrder/orderform.h \
 		../../../../Qt/5.12.5/gcc_64/include/QtSql/qsqlerror.h \
 		../../../../Qt/5.12.5/gcc_64/include/QtSql/QSqlQuery \
 		../../../../Qt/5.12.5/gcc_64/include/QtSql/qsqlquery.h \
+		../ManualOrder/tradewrapper.h \
+		../ManualOrder/libhead/ThostFtdcTraderApi.h \
+		../ManualOrder/libhead/ThostFtdcUserApiStruct.h \
+		../ManualOrder/libhead/ThostFtdcUserApiDataType.h \
+		../ManualOrder/libhead/json.hpp \
 		ui_orderform.h \
 		../../../../Qt/5.12.5/gcc_64/include/QtCore/QVariant \
 		../../../../Qt/5.12.5/gcc_64/include/QtWidgets/QApplication \
@@ -1184,6 +1213,13 @@ sqlhelper.o: ../ManualOrder/sqlhelper.cpp ../ManualOrder/sqlhelper.h \
 		../../../../Qt/5.12.5/gcc_64/include/QtCore/qsharedpointer.h \
 		../../../../Qt/5.12.5/gcc_64/include/QtCore/qsharedpointer_impl.h
 	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o sqlhelper.o ../ManualOrder/sqlhelper.cpp
+
+tradewrapper.o: ../ManualOrder/tradewrapper.cpp ../ManualOrder/tradewrapper.h \
+		../ManualOrder/libhead/ThostFtdcTraderApi.h \
+		../ManualOrder/libhead/ThostFtdcUserApiStruct.h \
+		../ManualOrder/libhead/ThostFtdcUserApiDataType.h \
+		../ManualOrder/libhead/json.hpp
+	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o tradewrapper.o ../ManualOrder/tradewrapper.cpp
 
 moc_orderform.o: moc_orderform.cpp 
 	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o moc_orderform.o moc_orderform.cpp

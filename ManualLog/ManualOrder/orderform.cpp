@@ -104,3 +104,13 @@ void OrderForm::on_pb_del_clicked()
         ui->te_log->setText("Deleted!");
     }
 }
+
+void OrderForm::on_pushButton_clicked()
+{
+    //test ctp connection
+    TradeWrapper tr("./cfg/j123.json");
+    tr.connect();
+    //test finish, exit
+    tr.release();
+
+}

@@ -58,7 +58,7 @@ int CTraderHandler::ReqUserLogin()
     memset(&reqUserLogin, 0, sizeof(reqUserLogin));
     std::strcpy(reqUserLogin.BrokerID, "9999");
     strcpy(reqUserLogin.UserID, "118907");
-    strcpy(reqUserLogin.Password, "Newpass");
+    strcpy(reqUserLogin.Password, "CTPp4ss");
     strcpy(reqUserLogin.TradingDay, "1108");
     static int RequestID = 0;
     return m_ptraderapi->ReqUserLogin(&reqUserLogin, ++RequestID);
@@ -76,7 +76,7 @@ void CTraderHandler::login()
 
     std::strcpy(t.UserID, "118907");
 
-    std::strcpy(t.Password, "Newpass");
+    std::strcpy(t.Password, "CTPp4ss");
 
     while (m_ptraderapi->ReqUserLogin(&t, 1)!=0)
         std::this_thread::sleep_for(std::chrono::seconds(1));//Sleep(1000);

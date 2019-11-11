@@ -6,6 +6,7 @@
 #include <QDateTime>
 #include <QTime>
 #include "sqlhelper.h"
+#include "tradewrapper.h"
 
 QT_BEGIN_NAMESPACE
 namespace Ui { class OrderForm; }
@@ -26,6 +27,8 @@ private slots:
     void on_pb_reset_clicked();
 
     void on_pb_del_clicked();
+
+    void on_pushButton_clicked();
 
 private:
     Ui::OrderForm *ui;
