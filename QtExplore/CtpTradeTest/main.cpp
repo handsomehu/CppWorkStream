@@ -21,7 +21,7 @@ int main(int argc, char *argv[])
 
     std::this_thread::sleep_for(std::chrono::seconds(2));//Sleep(1000);//Sleep(2000);
 
-    trader->orderinsert();
+    //trader->orderinsert();
 
     std::this_thread::sleep_for(std::chrono::seconds(1000));//Sleep(1000);//Sleep(2000);//Sleep(INFINITE);
 

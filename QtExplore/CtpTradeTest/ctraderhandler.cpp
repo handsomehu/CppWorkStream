@@ -17,7 +17,7 @@ void CTraderHandler::connect()
 
     m_ptraderapi->SubscribePrivateTopic(THOST_TERT_QUICK); //设置私有流订阅模式
 
-    m_ptraderapi->RegisterFront("tcp://127.0.0.1:41205");
+    m_ptraderapi->RegisterFront("tcp://180.168.146.187:10100");
 
     m_ptraderapi->Init();
 
@@ -31,10 +31,10 @@ int CTraderHandler::ReqAuthenticate()
 {
     CThostFtdcReqAuthenticateField field;
     memset(&field, 0, sizeof(field));
-    std::strcpy(field.BrokerID, "8000");
-    std::strcpy(field.UserID, "001888");
-    std::strcpy(field.AppID, "XY_Q7_V1.0.0");
-    std::strcpy(field.AuthCode, "5A5P4V7AZ5LCFEAK");
+    std::strcpy(field.BrokerID, "9999");
+    std::strcpy(field.UserID, "118907");
+    std::strcpy(field.AppID, "simnow_client_test");
+    std::strcpy(field.AuthCode, "0000000000000000");
     return m_ptraderapi->ReqAuthenticate(&field, 5);
 
 }
@@ -56,10 +56,10 @@ int CTraderHandler::ReqUserLogin()
     printf("====ReqUserLogin====,用户登录中...\n\n");
     CThostFtdcReqUserLoginField reqUserLogin;
     memset(&reqUserLogin, 0, sizeof(reqUserLogin));
-    std::strcpy(reqUserLogin.BrokerID, "8000");
-    strcpy(reqUserLogin.UserID, "001888");
-    strcpy(reqUserLogin.Password, "1");
-    strcpy(reqUserLogin.TradingDay, "20190715");
+    std::strcpy(reqUserLogin.BrokerID, "9999");
+    strcpy(reqUserLogin.UserID, "118907");
+    strcpy(reqUserLogin.Password, "Newpass");
+    strcpy(reqUserLogin.TradingDay, "1108");
     static int RequestID = 0;
     return m_ptraderapi->ReqUserLogin(&reqUserLogin, ++RequestID);
 }
@@ -72,11 +72,11 @@ void CTraderHandler::login()
 {
     CThostFtdcReqUserLoginField t = {0};
 
-    std::strcpy(t.BrokerID, "1701");
+    std::strcpy(t.BrokerID, "9999");
 
-    std::strcpy(t.UserID, "1701_admin");
+    std::strcpy(t.UserID, "118907");
 
-    std::strcpy(t.Password, "1701_admin");
+    std::strcpy(t.Password, "Newpass");
 
     while (m_ptraderapi->ReqUserLogin(&t, 1)!=0)
         std::this_thread::sleep_for(std::chrono::seconds(1));//Sleep(1000);
@@ -90,9 +90,9 @@ void CTraderHandler::settlementinfoConfirm()
 
     CThostFtdcSettlementInfoConfirmField t = {0};
 
-    std::strcpy(t.BrokerID, "1701");
+    std::strcpy(t.BrokerID, "9999");
 
-    std::strcpy(t.InvestorID, "00001");
+    std::strcpy(t.InvestorID, "118907");
 
     while (m_ptraderapi->ReqSettlementInfoConfirm(&t, 2)!=0)
         std::this_thread::sleep_for(std::chrono::seconds(1));//Sleep(1000);
@@ -111,9 +111,9 @@ void CTraderHandler::orderinsert()
 
     std::strcpy(t.BrokerID, "9999");
 
-    std::strcpy(t.InvestorID, "00001");
+    std::strcpy(t.InvestorID, "118907");
 
-    std::strcpy(t.UserID, "00001");
+    std::strcpy(t.UserID, "118907");
 
     t.Direction = THOST_FTDC_D_Buy;
 
@@ -123,7 +123,7 @@ void CTraderHandler::orderinsert()
 
     t.ContingentCondition = THOST_FTDC_CC_Immediately;
 
-    std::strcpy(t.InstrumentID, "sc1807");
+    std::strcpy(t.InstrumentID, "sc1912");
 
     t.ForceCloseReason = THOST_FTDC_FCC_NotForceClose;
 
@@ -156,7 +156,7 @@ void CTraderHandler::qryInstrument()
 
     std::strcpy(t.ExchangeID, "SHFE");
 
-    std::strcpy(t.InstrumentID, "zn1803");
+    std::strcpy(t.InstrumentID, "zn2001");
 
     while (m_ptraderapi->ReqQryInstrument(&t, 4) != 0)
         std::this_thread::sleep_for(std::chrono::seconds(1));//Sleep(1000);
@@ -196,6 +196,8 @@ void CTraderHandler::OnRspSettlementInfoConfirm(CThostFtdcSettlementInfoConfirmF
 {
 
     printf("OnRspSettlementInfoConfirm\n");
+    std::cout << std::string(pRspInfo->ErrorMsg) << std::endl;
+    //std::cout << pRspInfo-> << std::endl;
 
 }
 
