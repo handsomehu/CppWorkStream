@@ -33,6 +33,8 @@ private slots:
 private:
     Ui::OrderForm *ui;
     SqlHelper dbhelper;
+    TradeWrapper trade;
+    bool cnstatus;
 
 };
 #endif // ORDERFORM_H

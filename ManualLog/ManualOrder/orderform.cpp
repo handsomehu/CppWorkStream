@@ -5,6 +5,8 @@ OrderForm::OrderForm(QWidget *parent)
     : QMainWindow(parent)
     , ui(new Ui::OrderForm)
     , dbhelper("/home/leon/sqllitedb/tradelog_vnpy.db")
+    , trade("./cfg/j123.json")
+    , cnstatus(false)
 
 {
     ui->setupUi(this);
@@ -107,12 +109,16 @@ void OrderForm::on_pb_del_clicked()
 
 void OrderForm::on_pushButton_clicked()
 {
-    //test ctp connection
-    TradeWrapper tr("./cfg/j123.json");
-    std::cout << "wrapper created!" << std::endl;
-    tr.connect();
-    //test finish, exit
-    std::this_thread::sleep_for(std::chrono::seconds(20));//Sleep(1000);
-    tr.release();
+    if (!cnstatus)
+    {
+        //test ctp connection
+        std::cout << "try to connect!" << std::endl;
+        trade.connect();
+        std::cout << "connected!";
+        //test finish, exit
+        //std::this_thread::sleep_for(std::chrono::seconds(20));//Sleep(1000);
+        //tr.release();
+        cnstatus = true;
+    }
 
 }

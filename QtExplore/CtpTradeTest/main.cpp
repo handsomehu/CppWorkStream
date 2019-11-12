@@ -6,6 +6,7 @@ int main(int argc, char *argv[])
     CTraderHandler *trader = new CTraderHandler();
 
     trader->connect();
+    //return 1;
 
     std::this_thread::sleep_for(std::chrono::seconds(2));//Sleep(1000);//Sleep(2000);
 

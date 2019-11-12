@@ -6,6 +6,7 @@ TradeWrapper::TradeWrapper(const std::string &path):
   jfile(path)
 {
     nlohmann::json j;
+    std::cout << "before json";
     if (jfile)
     {
         jfile >> j;
@@ -23,6 +24,7 @@ TradeWrapper::TradeWrapper(const std::string &path):
           appid = j["appID"];
         if (j.find("authCode") != j.end())
           authcode = j["authCode"];
+        std::cout << "test constructor";
 
     }
 }
@@ -45,6 +47,7 @@ void TradeWrapper::connect()
     char tdads[tdaddress.size()+1];
     std::copy(tdaddress.begin(),tdaddress.end(),tdads);
     tdads[tdaddress.size()] = '\0';
+    std::cout << "\ntestit" << tdaddress <<  tdads << std::endl;
     m_ptraderapi->RegisterFront(tdads);
 
     m_ptraderapi->Init();
@@ -52,9 +55,10 @@ void TradeWrapper::connect()
     //输出API版本信息
 
     printf("%s\n", m_ptraderapi->GetApiVersion());
-    ReqAuthenticate();
+
 
 }
+
 int TradeWrapper::ReqAuthenticate()
 {
     //try something danngerous, cause I do not want to create
@@ -226,6 +230,7 @@ void TradeWrapper::OnFrontConnected()
 {
 
     printf("OnFrontConnected\n");
+    ReqAuthenticate();
 
 }
 
