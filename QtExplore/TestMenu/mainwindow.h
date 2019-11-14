@@ -2,8 +2,7 @@
 #define MAINWINDOW_H
 
 #include <QMainWindow>
-#include "logindlg.h"
-#include "myform.h"
+#include <iostream>
 
 QT_BEGIN_NAMESPACE
 namespace Ui { class MainWindow; }
@@ -19,14 +18,9 @@ public:
 
 private slots:
     void on_pushButton_clicked();
+    void clickSubCodeMenuAction(bool checked);
 
-    void on_pushButton_2_clicked();
-
-    void  ReceieveData(QString data);
-
-
-
-    //void on_actionAdd_triggered(bool checked);
+    void on_actionadd_triggered(bool checked);
 
 private:
     Ui::MainWindow *ui;

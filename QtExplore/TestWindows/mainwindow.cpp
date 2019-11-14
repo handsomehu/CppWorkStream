@@ -7,6 +7,10 @@ MainWindow::MainWindow(QWidget *parent)
     , ui(new Ui::MainWindow)
 {
     ui->setupUi(this);
+
+    //QAction::triggered()
+
+    //connect(padd,SINGAL(triggered(bool)),this,SLOT(onAddpress()));
 }
 
 MainWindow::~MainWindow()
@@ -32,3 +36,5 @@ void MainWindow::ReceieveData(QString Data)
 {
     ui->lineEdit->setText(Data);
 }
+
+

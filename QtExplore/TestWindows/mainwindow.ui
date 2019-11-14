@@ -60,26 +60,8 @@
      <height>27</height>
     </rect>
    </property>
-   <widget class="QMenu" name="menuOperation">
-    <property name="title">
-     <string>Operation</string>
-    </property>
-    <addaction name="actionAdd"/>
-    <addaction name="actionRemove"/>
-   </widget>
-   <addaction name="menuOperation"/>
   </widget>
   <widget class="QStatusBar" name="statusbar"/>
-  <action name="actionAdd">
-   <property name="text">
-    <string>Add</string>
-   </property>
-  </action>
-  <action name="actionRemove">
-   <property name="text">
-    <string>Remove</string>
-   </property>
-  </action>
  </widget>
  <resources/>
  <connections/>
