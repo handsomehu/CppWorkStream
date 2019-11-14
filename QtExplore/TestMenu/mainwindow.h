@@ -18,7 +18,7 @@ public:
 
 private slots:
     void on_pushButton_clicked();
-    void clickSubCodeMenuAction(bool checked);
+    void on_clickAction(bool checked);
 
     void on_actionadd_triggered(bool checked);
 

@@ -13,7 +13,7 @@ MainWindow::MainWindow(QWidget *parent)
     //把子菜单和父菜单关联
     menu->addAction(subCodeMenuAction);
     //添加信号槽
-    connect(subCodeMenuAction,SIGNAL(QAction::triggered(bool)),this,SLOT(clickSubCodeMenuAction(bool)));
+    connect(subCodeMenuAction,SIGNAL(triggered(bool)),this,SLOT(on_clickAction(bool)));
 
 }
 
@@ -28,7 +28,7 @@ void MainWindow::on_pushButton_clicked()
     std::cout << "test" << std::endl;
 }
 
-void MainWindow::clickSubCodeMenuAction(bool checked)
+void MainWindow::on_clickAction(bool checked)
 {
     std::cout << "menu pressed!" << std::endl;
 }
