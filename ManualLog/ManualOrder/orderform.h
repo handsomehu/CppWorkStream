@@ -2,11 +2,14 @@
 #define ORDERFORM_H
 
 #include <QMainWindow>
+#include <QDialog>
 #include <QDate>
 #include <QDateTime>
 #include <QTime>
 #include "sqlhelper.h"
 #include "tradewrapper.h"
+#include "createdlg.h"
+#include "removedlg.h"
 
 QT_BEGIN_NAMESPACE
 namespace Ui { class OrderForm; }
@@ -21,20 +24,13 @@ public:
     ~OrderForm();
 
 private slots:
-    void ClearInput();
-    void on_pb_order_clicked();
 
-    void on_pb_reset_clicked();
+    void on_actionCreate_triggered();
 
-    void on_pb_del_clicked();
-
-    void on_pushButton_clicked();
+    void on_actionRemove_triggered();
 
 private:
     Ui::OrderForm *ui;
-    SqlHelper dbhelper;
-    TradeWrapper trade;
-    bool cnstatus;
 
 };
 #endif // ORDERFORM_H

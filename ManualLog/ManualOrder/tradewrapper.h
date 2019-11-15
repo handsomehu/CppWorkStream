@@ -29,8 +29,10 @@ public:
     void settlementinfoConfirm();
     void orderinsert();
     void qryInstrument();
+    bool is_connected();
     //responsive method
     void OnFrontConnected();
+    void OnFrontDisconnected(int nReason);
     void OnRspUserLogin(CThostFtdcRspUserLoginField *pRspUserLogin, CThostFtdcRspInfoField *pRspInfo, int nRequestID, bool bIsLast);
     void OnRspSettlementInfoConfirm(CThostFtdcSettlementInfoConfirmField *pSettlementInfoConfirm, CThostFtdcRspInfoField *pRspInfo, int nRequestID, bool bIsLast);
     void OnRspQryInstrument(CThostFtdcInstrumentField *pInstrument, CThostFtdcRspInfoField *pRspInfo, int nRequestID, bool bIsLast);
@@ -49,6 +51,7 @@ private:
     std::string brokerid,mdaddress,tdaddress,
     userid, password, appid,authcode;
     std::ifstream jfile;
+    bool isconnected;
 
 
 

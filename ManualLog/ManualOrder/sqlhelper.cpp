@@ -82,6 +82,7 @@ int SqlHelper::insert(const QString &cmd)
     }
     else
     {
+        database.commit();
         qDebug() << "inserted successfully.";
         return 1;
     }
@@ -97,6 +98,7 @@ int SqlHelper::remove(const QString &cmd)
     }
     else
     {
+        database.commit();
         qDebug() << "deleted successfully.";
         return 1;
     }

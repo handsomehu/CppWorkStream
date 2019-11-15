@@ -16,23 +16,29 @@ DEFINES += QT_DEPRECATED_WARNINGS
 #DEFINES += QT_DISABLE_DEPRECATED_BEFORE=0x060000    # disables all the APIs deprecated before Qt 6.0.0
 
 SOURCES += \
+    createdlg.cpp \
     main.cpp \
     orderform.cpp \
+    removedlg.cpp \
     sqlhelper.cpp \
     tradewrapper.cpp
 
 HEADERS += \
+    createdlg.h \
     libhead/ThostFtdcMdApi.h \
     libhead/ThostFtdcTraderApi.h \
     libhead/ThostFtdcUserApiDataType.h \
     libhead/ThostFtdcUserApiStruct.h \
     libhead/json.hpp \
     orderform.h \
+    removedlg.h \
     sqlhelper.h \
     tradewrapper.h
 
 FORMS += \
-    orderform.ui
+    createdlg.ui \
+    orderform.ui \
+    removedlg.ui
 
 # Default rules for deployment.
 qnx: target.path = /tmp/$${TARGET}/bin

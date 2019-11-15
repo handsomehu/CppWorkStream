@@ -3,7 +3,7 @@ TradeWrapper::TradeWrapper(const std::string &path):
   m_ptraderapi(nullptr),
   cfgpath(path), brokerid(""),mdaddress(""),tdaddress(""),
   userid(""), password(""), appid(""),authcode(""),
-  jfile(path)
+  jfile(path),isconnected(false)
 {
     nlohmann::json j;
     std::cout << "before json";
@@ -56,6 +56,16 @@ void TradeWrapper::connect()
 
     printf("%s\n", m_ptraderapi->GetApiVersion());
 
+
+}
+//前置连接响应
+
+void TradeWrapper::OnFrontConnected()
+
+{
+
+    printf("OnFrontConnected\n");
+    ReqAuthenticate();
 
 }
 
@@ -223,16 +233,7 @@ void TradeWrapper::qryInstrument()
 
 
 
-//前置连接响应
 
-void TradeWrapper::OnFrontConnected()
-
-{
-
-    printf("OnFrontConnected\n");
-    ReqAuthenticate();
-
-}
 
 
 
@@ -243,10 +244,18 @@ void TradeWrapper::OnRspUserLogin(CThostFtdcRspUserLoginField *pRspUserLogin, CT
 {
 
     printf("OnRspUserLogin\n");
+    isconnected = true;
 
 }
-
-
+bool TradeWrapper::is_connected()
+{
+    return isconnected;
+}
+void TradeWrapper::OnFrontDisconnected(int nReason)
+{
+    isconnected = false;
+    std::cout << "disconnected!";
+}
 
 //结算单确认响应
 
