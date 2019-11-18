@@ -1,4 +1,10 @@
 #include "tradewrapper.h"
+
+void NewTradeEvent()
+{
+
+}
+
 TradeWrapper::TradeWrapper(const std::string &path):
   m_ptraderapi(nullptr),
   cfgpath(path), brokerid(""),mdaddress(""),tdaddress(""),
@@ -138,13 +144,26 @@ void TradeWrapper::release()
 
 void TradeWrapper::login()
 {
+    char bufstr[100];
+    char *tradingday = "20191111";
+
     CThostFtdcReqUserLoginField t = {0};
 
-    std::strcpy(t.BrokerID, "9999");
 
-    std::strcpy(t.UserID, "118907");
+    std::copy(brokerid.begin(),brokerid.end(),bufstr);
+    bufstr[brokerid.size()] = '\0';
+    std::strcpy(t.BrokerID, bufstr);
 
-    std::strcpy(t.Password, "CTPp4ss");
+    std::copy(userid.begin(),userid.end(),bufstr);
+    bufstr[userid.size()] = '\0';
+    std::strcpy(t.UserID, bufstr);
+
+    std::copy(password.begin(),password.end(),bufstr);
+    bufstr[password.size()] = '\0';
+    std::strcpy(t.Password, bufstr);
+    //std::copy(tradingday.begin(),tradingday.end(),bufstr);
+    //bufstr[tradingday.size()] = '\0';
+    std::strcpy(t.TradingDay, tradingday);
 
     while (m_ptraderapi->ReqUserLogin(&t, 1)!=0)
         std::this_thread::sleep_for(std::chrono::seconds(1));//Sleep(1000);
@@ -158,9 +177,14 @@ void TradeWrapper::settlementinfoConfirm()
 
     CThostFtdcSettlementInfoConfirmField t = {0};
 
-    std::strcpy(t.BrokerID, "9999");
+    char bufstr[100];
+    std::copy(brokerid.begin(),brokerid.end(),bufstr);
+    bufstr[brokerid.size()] = '\0';
+    std::strcpy(t.BrokerID, bufstr);
 
-    std::strcpy(t.InvestorID, "118907");
+    std::copy(userid.begin(),userid.end(),bufstr);
+    bufstr[userid.size()] = '\0';
+    std::strcpy(t.InvestorID, bufstr);
 
     while (m_ptraderapi->ReqSettlementInfoConfirm(&t, 2)!=0)
         std::this_thread::sleep_for(std::chrono::seconds(1));//Sleep(1000);
@@ -171,31 +195,45 @@ void TradeWrapper::settlementinfoConfirm()
 
 //报单
 
-void TradeWrapper::orderinsert()
+void TradeWrapper::orderinsert( std::string symbol,std::string dir, std::string kp, std::string exchange,double price, int vol)
 
 {
 
     CThostFtdcInputOrderField t = { 0 };
 
-    std::strcpy(t.BrokerID, "9999");
+    char bufstr[100];
+    std::copy(brokerid.begin(),brokerid.end(),bufstr);
+    bufstr[brokerid.size()] = '\0';
+    std::strcpy(t.BrokerID, bufstr);
 
-    std::strcpy(t.InvestorID, "118907");
+    std::copy(userid.begin(),userid.end(),bufstr);
+    bufstr[userid.size()] = '\0';
+    std::strcpy(t.InvestorID, bufstr);
+    std::strcpy(t.UserID, bufstr);
 
-    std::strcpy(t.UserID, "118907");
+    if (dir=="多")
+        t.Direction = THOST_FTDC_D_Buy;
+    else
+        t.Direction = THOST_FTDC_D_Sell;
 
-    t.Direction = THOST_FTDC_D_Buy;
+    if (kp == "开")
+        t.CombOffsetFlag[0] = THOST_FTDC_OF_Open;
+    else
+        t.CombOffsetFlag[0] = THOST_FTDC_OF_Close;
 
-    t.CombOffsetFlag[0] = THOST_FTDC_OF_Open;
+    //t.CombOffsetFlag[0] = THOST_FTDC_OF_Open;
 
     t.CombHedgeFlag[0] = THOST_FTDC_HF_Speculation;
 
     t.ContingentCondition = THOST_FTDC_CC_Immediately;
+    std::copy(symbol.begin(),symbol.end(),bufstr);
+    bufstr[brokerid.size()] = '\0';
 
-    std::strcpy(t.InstrumentID, "sc1912");
+    std::strcpy(t.InstrumentID, bufstr);
 
     t.ForceCloseReason = THOST_FTDC_FCC_NotForceClose;
 
-    t.LimitPrice = 490;
+    t.LimitPrice =  price;
 
     t.OrderPriceType = THOST_FTDC_OPT_LimitPrice;
 
@@ -203,11 +241,21 @@ void TradeWrapper::orderinsert()
 
     t.TimeCondition = THOST_FTDC_TC_GFD;
 
-    t.VolumeTotalOriginal = 1;
+    t.VolumeTotalOriginal = vol;
 
     std::strcpy(t.OrderRef, "0000001");
 
-    std::strcpy(t.ExchangeID, "INE");
+
+    if (exchange ==  "SHFE")
+        std::strcpy(t.ExchangeID, "SHFE");
+    if (exchange == "CZCE")
+        std::strcpy(t.ExchangeID, "ZCE");
+    if  (exchange == "DCE")
+        std::strcpy(t.ExchangeID, "DCE");
+    if  (exchange == "CFFEX")
+        std::strcpy(t.ExchangeID, "J");
+    if  (exchange == "INE")
+        std::strcpy(t.ExchangeID, "INE");
 
     while (m_ptraderapi->ReqOrderInsert(&t, 3) != 0)
         std::this_thread::sleep_for(std::chrono::seconds(1));//Sleep(1000);
@@ -264,6 +312,7 @@ void TradeWrapper::OnRspSettlementInfoConfirm(CThostFtdcSettlementInfoConfirmFie
 {
 
     printf("OnRspSettlementInfoConfirm\n");
+    //if (pRspInfo->
     std::cout << std::string(pRspInfo->ErrorMsg) << std::endl;
     //std::cout << pRspInfo-> << std::endl;
 
@@ -278,7 +327,7 @@ void TradeWrapper::OnRspQryInstrument(CThostFtdcInstrumentField *pInstrument, CT
 {
 
     printf("OnRspQryInstrument\n");
-
+    std::cout << pInstrument->InstrumentID << std::endl;
 }
 
 
@@ -289,6 +338,7 @@ void TradeWrapper::OnRtnOrder(CThostFtdcOrderField *pOrder)
 {
 
     printf("OnRtnOrder\n");
+    std::cout << pOrder->InstrumentID << "\t" << pOrder->OrderStatus << std::endl;
 
 }
 
@@ -301,6 +351,7 @@ void TradeWrapper::OnRtnTrade(CThostFtdcTradeField *pTrade)
 {
 
     printf("OnRtnTrade\n");
+    std::cout << pTrade->InstrumentID << "\t" <<pTrade->Volume << pTrade->TradeType << std::endl;
 
 }
 
@@ -326,4 +377,9 @@ void TradeWrapper::OnRspError(CThostFtdcRspInfoField *pRspInfo, int nRequestID, 
 
     printf("OnRspError\n");
 
+}
+
+void TradeWrapper::OnRtnTradingNotice(CThostFtdcTradingNoticeInfoField *pTradingNoticeInfo)
+{
+    std::cout << pTradingNoticeInfo->FieldContent  << std::endl;
 }

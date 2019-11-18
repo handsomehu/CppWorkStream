@@ -12,6 +12,7 @@
 #include "./libhead/json.hpp"
 #include <fstream>
 
+void NewTradeEvent();
 class TradeWrapper: public CThostFtdcTraderSpi
 {
 public:
@@ -27,7 +28,7 @@ public:
     void release();
     void login();
     void settlementinfoConfirm();
-    void orderinsert();
+    void orderinsert( std::string symbol, std::string dir, std::string kp, std::string exchange,double price, int vol);
     void qryInstrument();
     bool is_connected();
     //responsive method
@@ -40,6 +41,7 @@ public:
     void OnRtnTrade(CThostFtdcTradeField *pTrade);
     void OnRspOrderInsert(CThostFtdcInputOrderField *pInputOrder, CThostFtdcRspInfoField *pRspInfo, int nRequestID, bool bIsLast);
     void OnRspError(CThostFtdcRspInfoField *pRspInfo, int nRequestID, bool bIsLast);
+    void OnRtnTradingNotice(CThostFtdcTradingNoticeInfoField *pTradingNoticeInfo) ;
 
 
 private:
@@ -56,4 +58,6 @@ private:
 
 
 };
+
+
 #endif // TRADEWRAPPER_H

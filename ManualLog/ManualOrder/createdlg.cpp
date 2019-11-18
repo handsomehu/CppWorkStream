@@ -14,7 +14,8 @@ CreateDlg::CreateDlg(QWidget *parent) :
     ui->cb_offset->addItems({"开","平"});
     //qDebug() << dbhelper. getMaxId();
     ui->cb_strg->addItems({"DT_IntraDayCommonStrategy","TurtleUseCloseStrategy","JDualThrust_IntraDayStrategy"});
-    ui->cb_exch->addItems({"XSGE","XDCE","XZCE","XSIE"});
+    ui->cb_exch->addItems({"SHFE","DCE","CZCE","CFFEX","INE"});
+    connect(this, SIGNAL(LogOrder(const QString)), this, SLOT(OnTrade(const QString) ));
 }
 
 CreateDlg::~CreateDlg()
@@ -82,7 +83,11 @@ void CreateDlg::on_pb_order_clicked()
     insertsql+= "','"+dir+"','"+offset+"','"+prc+"','"+symbol+"','"+exc+"','"+dtstr+"')";
     if (cnstatus)
     {
-        trade.orderinsert();
+        trade.orderinsert(symbol.toStdString() ,dir.toStdString() ,offset.toStdString() ,exc.toStdString() ,prc.toDouble(),qty.toInt());
+        std::this_thread::sleep_for(std::chrono::seconds(5));
+        //want to trigger signal within OnRtnTrade event of trade
+        // However, did not find a easy way to work it out without inheriate from QObject.
+        //temporary solution is insert log 5 seconds later.
         emit LogOrder(insertsql);
 
     }
@@ -91,6 +96,7 @@ void CreateDlg::on_pb_order_clicked()
         // connect , login and so on
         ui->te_log->setText("not connected, reconnect!");
         trade.connect();
+
     }
 
 }
@@ -99,14 +105,28 @@ void CreateDlg::on_pb_reset_clicked()
 {
     ClearInput();
 }
-
+void CreateDlg::ConnActs()
+{
+    trade.connect();
+    std::this_thread::sleep_for(std::chrono::seconds(3));
+    if (!cnstatus)
+    {
+        trade.connect();
+        std::this_thread::sleep_for(std::chrono::seconds(3));
+    }
+    if(cnstatus)
+    {
+        //init activities
+        trade.settlementinfoConfirm();
+        std::this_thread::sleep_for(std::chrono::seconds(2));
+        trade.qryInstrument();
+        std::this_thread::sleep_for(std::chrono::seconds(2));
+        ui->te_log->setText("CTP Ready!");
+    }
+    else
+        ui->te_log->setText("Cannot Connect to CTP!");
+}
 void CreateDlg::on_pb_ctp_clicked()
 {
-  trade.connect();
-  std::this_thread::sleep_for(std::chrono::seconds(3));
-  if (!cnstatus)
-  {
-      trade.connect();
-      std::this_thread::sleep_for(std::chrono::seconds(3));
-  }
+    ConnActs();
 }

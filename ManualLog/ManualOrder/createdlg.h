@@ -36,6 +36,7 @@ private slots:
 
 private:
     void ClearInput();
+    void ConnActs();
     Ui::CreateDlg *ui;
     SqlHelper dbhelper;
     TradeWrapper trade;

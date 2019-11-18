@@ -12,5 +12,10 @@ reference cannot be made to refer to a different object after its initialization
 Such a statement of what is assumed
 to be true for a class is called a class invariant, or simply an invariant.
 
+Also, it is not possible to change
+the meaning of an operator for built-in types, so you can’t redefine + to subtract ints  ? cannot redefine plus?
 
-Page 59
+The curious =0 syntax says the function is pure virtual; that is, some class derived
+from Container must define the function  --- no baisc difenition , must override
+
+Page 65
