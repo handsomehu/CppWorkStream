@@ -293,6 +293,7 @@ void TradeWrapper::OnRspUserLogin(CThostFtdcRspUserLoginField *pRspUserLogin, CT
 
     printf("OnRspUserLogin\n");
     isconnected = true;
+    std::cout << pRspInfo->ErrorMsg << std::endl;
 
 }
 bool TradeWrapper::is_connected()

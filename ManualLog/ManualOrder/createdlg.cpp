@@ -15,7 +15,7 @@ CreateDlg::CreateDlg(QWidget *parent) :
     //qDebug() << dbhelper. getMaxId();
     ui->cb_strg->addItems({"DT_IntraDayCommonStrategy","TurtleUseCloseStrategy","JDualThrust_IntraDayStrategy"});
     ui->cb_exch->addItems({"SHFE","DCE","CZCE","CFFEX","INE"});
-    connect(this, SIGNAL(LogOrder(const QString)), this, SLOT(OnTrade(const QString) ));
+    connect(this, SIGNAL(LogOrder(QString)), this, SLOT(onTrade(QString) ));
 }
 
 CreateDlg::~CreateDlg()
@@ -33,7 +33,7 @@ void CreateDlg::ClearInput()
     ui->le_qty->clear();
 
 }
-void CreateDlg::onTrade(const QString insertsql)
+void CreateDlg::onTrade(QString insertsql)
 {
     int ret = 0;
     qDebug() << insertsql;

@@ -23,14 +23,15 @@ public:
     ~CreateDlg();
 
 signals:
-    void LogOrder(const QString insertsql);
-
+    void LogOrder(QString insertsql);
+public slots:
+    void onTrade(QString insertsql);
 private slots:
     void on_pb_order_clicked();
 
     void on_pb_reset_clicked();
 
-    void onTrade(const QString insertsql);
+
 
     void on_pb_ctp_clicked();
 
