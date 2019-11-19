@@ -9,7 +9,7 @@ TradeWrapper::TradeWrapper(const std::string &path):
   m_ptraderapi(nullptr),
   cfgpath(path), brokerid(""),mdaddress(""),tdaddress(""),
   userid(""), password(""), appid(""),authcode(""),
-  jfile(path),isconnected(false)
+  jfile(path),isconnected(false),goodorder(false)
 {
     nlohmann::json j;
     std::cout << "before json";
@@ -63,6 +63,16 @@ void TradeWrapper::connect()
     printf("%s\n", m_ptraderapi->GetApiVersion());
 
 
+}
+
+bool TradeWrapper::is_goodorder()
+{
+    return goodorder;
+}
+void TradeWrapper::reset_goodorder()
+{
+    std::this_thread::sleep_for(std::chrono::seconds(120));
+    goodorder = false;
 }
 //前置连接响应
 
@@ -227,7 +237,7 @@ void TradeWrapper::orderinsert( std::string symbol,std::string dir, std::string 
 
     t.ContingentCondition = THOST_FTDC_CC_Immediately;
     std::copy(symbol.begin(),symbol.end(),bufstr);
-    bufstr[brokerid.size()] = '\0';
+    bufstr[symbol.size()] = '\0';
 
     std::strcpy(t.InstrumentID, bufstr);
 
@@ -249,15 +259,15 @@ void TradeWrapper::orderinsert( std::string symbol,std::string dir, std::string 
     if (exchange ==  "SHFE")
         std::strcpy(t.ExchangeID, "SHFE");
     if (exchange == "CZCE")
-        std::strcpy(t.ExchangeID, "ZCE");
+        std::strcpy(t.ExchangeID, "CZCE");
     if  (exchange == "DCE")
         std::strcpy(t.ExchangeID, "DCE");
     if  (exchange == "CFFEX")
-        std::strcpy(t.ExchangeID, "J");
+        std::strcpy(t.ExchangeID, "CFFEX");
     if  (exchange == "INE")
         std::strcpy(t.ExchangeID, "INE");
-
-    while (m_ptraderapi->ReqOrderInsert(&t, 3) != 0)
+    static int reqid = 200;
+    while (m_ptraderapi->ReqOrderInsert(&t, ++reqid) != 0)
         std::this_thread::sleep_for(std::chrono::seconds(1));//Sleep(1000);
 
 }
@@ -270,9 +280,9 @@ void TradeWrapper::qryInstrument()
 
     CThostFtdcQryInstrumentField t = { 0 };
 
-    std::strcpy(t.ExchangeID, "SHFE");
+    std::strcpy(t.ExchangeID, "CFFEX");
 
-    std::strcpy(t.InstrumentID, "zn2001");
+    std::strcpy(t.InstrumentID, "T1912");
 
     while (m_ptraderapi->ReqQryInstrument(&t, 4) != 0)
         std::this_thread::sleep_for(std::chrono::seconds(1));//Sleep(1000);
@@ -294,6 +304,7 @@ void TradeWrapper::OnRspUserLogin(CThostFtdcRspUserLoginField *pRspUserLogin, CT
     printf("OnRspUserLogin\n");
     isconnected = true;
     std::cout << pRspInfo->ErrorMsg << std::endl;
+    std::cout << pRspInfo->ErrorID << std::endl;
 
 }
 bool TradeWrapper::is_connected()
@@ -302,7 +313,7 @@ bool TradeWrapper::is_connected()
 }
 void TradeWrapper::OnFrontDisconnected(int nReason)
 {
-    isconnected = false;
+    //isconnected = false;
     std::cout << "disconnected!";
 }
 
@@ -353,6 +364,8 @@ void TradeWrapper::OnRtnTrade(CThostFtdcTradeField *pTrade)
 
     printf("OnRtnTrade\n");
     std::cout << pTrade->InstrumentID << "\t" <<pTrade->Volume << pTrade->TradeType << std::endl;
+    goodorder = true;
+    reset_goodorder();
 
 }
 
@@ -382,5 +395,5 @@ void TradeWrapper::OnRspError(CThostFtdcRspInfoField *pRspInfo, int nRequestID, 
 
 void TradeWrapper::OnRtnTradingNotice(CThostFtdcTradingNoticeInfoField *pTradingNoticeInfo)
 {
-    std::cout << pTradingNoticeInfo->FieldContent  << std::endl;
+    //std::cout << pTradingNoticeInfo->FieldContent  << std::endl;
 }

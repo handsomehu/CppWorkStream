@@ -88,7 +88,18 @@ void CreateDlg::on_pb_order_clicked()
         //want to trigger signal within OnRtnTrade event of trade
         // However, did not find a easy way to work it out without inheriate from QObject.
         //temporary solution is insert log 5 seconds later.
-        emit LogOrder(insertsql);
+        int countdown = 120;
+        bool isbreak = false;
+        while(!trade.is_goodorder())
+        {
+
+            std::this_thread::sleep_for(std::chrono::seconds(1));
+            ++countdown;
+            if (countdown >120)
+                isbreak = true;
+        }
+        if (!isbreak)
+            emit LogOrder(insertsql);
 
     }
     else
@@ -109,6 +120,7 @@ void CreateDlg::ConnActs()
 {
     trade.connect();
     std::this_thread::sleep_for(std::chrono::seconds(3));
+    cnstatus = trade.is_connected();
     if (!cnstatus)
     {
         trade.connect();

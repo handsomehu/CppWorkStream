@@ -31,6 +31,8 @@ public:
     void orderinsert( std::string symbol, std::string dir, std::string kp, std::string exchange,double price, int vol);
     void qryInstrument();
     bool is_connected();
+    bool is_goodorder();
+    void reset_goodorder();
     //responsive method
     void OnFrontConnected();
     void OnFrontDisconnected(int nReason);
@@ -54,6 +56,7 @@ private:
     userid, password, appid,authcode;
     std::ifstream jfile;
     bool isconnected;
+    bool goodorder;
 
 
 
