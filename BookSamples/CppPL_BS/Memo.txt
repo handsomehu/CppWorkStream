@@ -52,4 +52,18 @@ for (auto p : v) delete p; // remember to delete elements
 
 // new within create and delete after use.
 
-Page 71
+For simple concrete types, memberwise copy is often exactly the right semantics for copy. For some
+sophisticated concrete types, such as Vector, memberwise copy is not the right semantics for copy,
+and for abstract types it almost never is.
+
+
+A move operation is applied when an rvalue reference is used as an initializer or as the righthand
+side of an assignment.
+
+Using the default copy or move for a class in a hierarchy is typically a disaster: given only a pointer
+to a base, we simply don’t know what members the derived class has (§3.2.2), so we can’t know
+how to copy them. So, the best thing to do is usually to delete the default copy and move operations,
+that is, to eliminate the default definitions of those two operations:
+
+
+page 77
