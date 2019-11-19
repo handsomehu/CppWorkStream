@@ -66,4 +66,4 @@ how to copy them. So, the best thing to do is usually to delete the default copy
 that is, to eliminate the default definitions of those two operations:
 
 
-page 77
+page 84  Need to write code test page 84 sample
