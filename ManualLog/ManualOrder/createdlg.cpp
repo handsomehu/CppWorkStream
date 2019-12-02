@@ -31,6 +31,7 @@ void CreateDlg::ClearInput()
     ui->te_rmk2->clear();
     ui->te_log->clear();
     ui->le_qty->clear();
+    ui->le_reqid->clear();
 
 }
 void CreateDlg::onTrade(QString insertsql)
@@ -47,7 +48,7 @@ void CreateDlg::onTrade(QString insertsql)
     }
     if (ret != 0)
     {
-        ClearInput();
+        //ClearInput();
         ui->te_log->setText("Inserted!");
     }
 }
@@ -55,7 +56,7 @@ void CreateDlg::onTrade(QString insertsql)
 void CreateDlg::on_pb_order_clicked()
 {
     QString insertsql,rmk1,rmk2,otimestr,strname,qty;
-    QString dir,offset,prc,symbol,exc,dtstr;
+    QString dir,offset,prc,symbol,exc,dtstr,reqidstr;
     int ret = 0;
     QDate dt = QDate::currentDate();
     QTime tm = QTime::currentTime();
@@ -74,6 +75,7 @@ void CreateDlg::on_pb_order_clicked()
     prc = ui->le_price->text();
     symbol = ui->le_symbol->text();
     exc = ui->cb_exch->currentText();
+    reqidstr = ui->le_reqid->text();
 
     insertsql = "INSERT INTO tradeorders";
     insertsql+= "(remark2,remark1,ordertime,strategyname,";
@@ -83,7 +85,7 @@ void CreateDlg::on_pb_order_clicked()
     insertsql+= "','"+dir+"','"+offset+"','"+prc+"','"+symbol+"','"+exc+"','"+dtstr+"')";
     if (cnstatus)
     {
-        trade.orderinsert(symbol.toStdString() ,dir.toStdString() ,offset.toStdString() ,exc.toStdString() ,prc.toDouble(),qty.toInt());
+        trade.orderinsert(symbol.toStdString() ,dir.toStdString() ,offset.toStdString() ,exc.toStdString() ,prc.toDouble(),qty.toInt(),reqidstr.toInt());
         std::this_thread::sleep_for(std::chrono::seconds(5));
         //want to trigger signal within OnRtnTrade event of trade
         // However, did not find a easy way to work it out without inheriate from QObject.

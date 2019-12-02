@@ -205,7 +205,7 @@ void TradeWrapper::settlementinfoConfirm()
 
 //报单
 
-void TradeWrapper::orderinsert( std::string symbol,std::string dir, std::string kp, std::string exchange,double price, int vol)
+void TradeWrapper::orderinsert( std::string symbol,std::string dir, std::string kp, std::string exchange,double price, int vol,int reqid)
 
 {
 
@@ -253,7 +253,7 @@ void TradeWrapper::orderinsert( std::string symbol,std::string dir, std::string 
 
     t.VolumeTotalOriginal = vol;
 
-    std::strcpy(t.OrderRef, "0000001");
+    //std::strcpy(t.OrderRef, "0000001");
 
 
     if (exchange ==  "SHFE")
@@ -266,8 +266,8 @@ void TradeWrapper::orderinsert( std::string symbol,std::string dir, std::string 
         std::strcpy(t.ExchangeID, "CFFEX");
     if  (exchange == "INE")
         std::strcpy(t.ExchangeID, "INE");
-    static int reqid = 200;
-    while (m_ptraderapi->ReqOrderInsert(&t, ++reqid) != 0)
+    //static int reqid = 200;
+    while (m_ptraderapi->ReqOrderInsert(&t, reqid) != 0)
         std::this_thread::sleep_for(std::chrono::seconds(1));//Sleep(1000);
 
 }

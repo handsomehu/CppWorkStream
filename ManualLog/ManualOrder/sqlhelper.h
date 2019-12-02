@@ -3,6 +3,8 @@
 #include <QSqlDatabase>
 #include <QSqlError>
 #include <QSqlQuery>
+#include <QString>
+#include <QFileInfo>
 //credit:https://blog.csdn.net/Empty_Android/article/details/80438497
 class SqlHelper
 {
@@ -22,6 +24,7 @@ public:
     ~SqlHelper();
 
 private:
+    bool fileExists(QString path);
     QSqlDatabase database;
     QSqlQuery sql_query; //bug 需要在方法中重新定义, 不然会出现 "Driver not loaded" 的错误
     int max_id;

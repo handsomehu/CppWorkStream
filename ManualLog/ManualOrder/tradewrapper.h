@@ -28,7 +28,7 @@ public:
     void release();
     void login();
     void settlementinfoConfirm();
-    void orderinsert( std::string symbol, std::string dir, std::string kp, std::string exchange,double price, int vol);
+    void orderinsert( std::string symbol, std::string dir, std::string kp, std::string exchange,double price, int vol,int reqid);
     void qryInstrument();
     bool is_connected();
     bool is_goodorder();
