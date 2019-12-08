@@ -805,6 +805,9 @@ moc_createdlg.cpp: ../ManualOrder/createdlg.h \
 		../../../../Qt/5.12.5/gcc_64/include/QtSql/qsqlerror.h \
 		../../../../Qt/5.12.5/gcc_64/include/QtSql/QSqlQuery \
 		../../../../Qt/5.12.5/gcc_64/include/QtSql/qsqlquery.h \
+		../../../../Qt/5.12.5/gcc_64/include/QtCore/QString \
+		../../../../Qt/5.12.5/gcc_64/include/QtCore/QFileInfo \
+		../../../../Qt/5.12.5/gcc_64/include/QtCore/qfileinfo.h \
 		../ManualOrder/tradewrapper.h \
 		../ManualOrder/libhead/ThostFtdcTraderApi.h \
 		../ManualOrder/libhead/ThostFtdcUserApiStruct.h \
@@ -936,6 +939,9 @@ moc_orderform.cpp: ../ManualOrder/orderform.h \
 		../../../../Qt/5.12.5/gcc_64/include/QtSql/qsqlerror.h \
 		../../../../Qt/5.12.5/gcc_64/include/QtSql/QSqlQuery \
 		../../../../Qt/5.12.5/gcc_64/include/QtSql/qsqlquery.h \
+		../../../../Qt/5.12.5/gcc_64/include/QtCore/QString \
+		../../../../Qt/5.12.5/gcc_64/include/QtCore/QFileInfo \
+		../../../../Qt/5.12.5/gcc_64/include/QtCore/qfileinfo.h \
 		../ManualOrder/tradewrapper.h \
 		../ManualOrder/libhead/ThostFtdcTraderApi.h \
 		../ManualOrder/libhead/ThostFtdcUserApiStruct.h \
@@ -1063,6 +1069,9 @@ moc_removedlg.cpp: ../ManualOrder/removedlg.h \
 		../../../../Qt/5.12.5/gcc_64/include/QtSql/qsqlerror.h \
 		../../../../Qt/5.12.5/gcc_64/include/QtSql/QSqlQuery \
 		../../../../Qt/5.12.5/gcc_64/include/QtSql/qsqlquery.h \
+		../../../../Qt/5.12.5/gcc_64/include/QtCore/QString \
+		../../../../Qt/5.12.5/gcc_64/include/QtCore/QFileInfo \
+		../../../../Qt/5.12.5/gcc_64/include/QtCore/qfileinfo.h \
 		moc_predefs.h \
 		../../../../Qt/5.12.5/gcc_64/bin/moc
 	/home/leon/Qt/5.12.5/gcc_64/bin/moc $(DEFINES) --include /home/leon/CppJourney/CppWorkStream/ManualLog/build-ManualOrder-Desktop_Qt_5_12_5_GCC_64bit-Debug/moc_predefs.h -I/home/leon/Qt/5.12.5/gcc_64/mkspecs/linux-g++ -I/home/leon/CppJourney/CppWorkStream/ManualLog/ManualOrder -I/home/leon/CppJourney/CppWorkStream/ManualLog/ManualOrder/libfiles -I/home/leon/Qt/5.12.5/gcc_64/include -I/home/leon/Qt/5.12.5/gcc_64/include/QtWidgets -I/home/leon/Qt/5.12.5/gcc_64/include/QtGui -I/home/leon/Qt/5.12.5/gcc_64/include/QtSql -I/home/leon/Qt/5.12.5/gcc_64/include/QtCore -I. -I/usr/include/c++/5 -I/usr/include/x86_64-linux-gnu/c++/5 -I/usr/include/c++/5/backward -I/usr/lib/gcc/x86_64-linux-gnu/5/include -I/usr/local/include -I/usr/lib/gcc/x86_64-linux-gnu/5/include-fixed -I/usr/include/x86_64-linux-gnu -I/usr/include ../ManualOrder/removedlg.h -o moc_removedlg.cpp
@@ -1215,6 +1224,9 @@ createdlg.o: ../ManualOrder/createdlg.cpp ../ManualOrder/createdlg.h \
 		../../../../Qt/5.12.5/gcc_64/include/QtSql/qsqlerror.h \
 		../../../../Qt/5.12.5/gcc_64/include/QtSql/QSqlQuery \
 		../../../../Qt/5.12.5/gcc_64/include/QtSql/qsqlquery.h \
+		../../../../Qt/5.12.5/gcc_64/include/QtCore/QString \
+		../../../../Qt/5.12.5/gcc_64/include/QtCore/QFileInfo \
+		../../../../Qt/5.12.5/gcc_64/include/QtCore/qfileinfo.h \
 		../ManualOrder/tradewrapper.h \
 		../ManualOrder/libhead/ThostFtdcTraderApi.h \
 		../ManualOrder/libhead/ThostFtdcUserApiStruct.h \
@@ -1384,6 +1396,9 @@ main.o: ../ManualOrder/main.cpp ../ManualOrder/orderform.h \
 		../../../../Qt/5.12.5/gcc_64/include/QtSql/qsqlerror.h \
 		../../../../Qt/5.12.5/gcc_64/include/QtSql/QSqlQuery \
 		../../../../Qt/5.12.5/gcc_64/include/QtSql/qsqlquery.h \
+		../../../../Qt/5.12.5/gcc_64/include/QtCore/QString \
+		../../../../Qt/5.12.5/gcc_64/include/QtCore/QFileInfo \
+		../../../../Qt/5.12.5/gcc_64/include/QtCore/qfileinfo.h \
 		../ManualOrder/tradewrapper.h \
 		../ManualOrder/libhead/ThostFtdcTraderApi.h \
 		../ManualOrder/libhead/ThostFtdcUserApiStruct.h \
@@ -1398,7 +1413,16 @@ main.o: ../ManualOrder/main.cpp ../ManualOrder/orderform.h \
 		../../../../Qt/5.12.5/gcc_64/include/QtCore/qeventloop.h \
 		../../../../Qt/5.12.5/gcc_64/include/QtWidgets/qdesktopwidget.h \
 		../../../../Qt/5.12.5/gcc_64/include/QtGui/qguiapplication.h \
-		../../../../Qt/5.12.5/gcc_64/include/QtGui/qinputmethod.h
+		../../../../Qt/5.12.5/gcc_64/include/QtGui/qinputmethod.h \
+		../../../../Qt/5.12.5/gcc_64/include/QtCore/QDir \
+		../../../../Qt/5.12.5/gcc_64/include/QtCore/qdir.h \
+		../../../../Qt/5.12.5/gcc_64/include/QtCore/QPluginLoader \
+		../../../../Qt/5.12.5/gcc_64/include/QtCore/qpluginloader.h \
+		../../../../Qt/5.12.5/gcc_64/include/QtCore/qlibrary.h \
+		../../../../Qt/5.12.5/gcc_64/include/QtCore/qplugin.h \
+		../../../../Qt/5.12.5/gcc_64/include/QtCore/qpointer.h \
+		../../../../Qt/5.12.5/gcc_64/include/QtCore/qjsonobject.h \
+		../../../../Qt/5.12.5/gcc_64/include/QtCore/qjsonvalue.h
 	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o main.o ../ManualOrder/main.cpp
 
 orderform.o: ../ManualOrder/orderform.cpp ../ManualOrder/orderform.h \
@@ -1523,6 +1547,9 @@ orderform.o: ../ManualOrder/orderform.cpp ../ManualOrder/orderform.h \
 		../../../../Qt/5.12.5/gcc_64/include/QtSql/qsqlerror.h \
 		../../../../Qt/5.12.5/gcc_64/include/QtSql/QSqlQuery \
 		../../../../Qt/5.12.5/gcc_64/include/QtSql/qsqlquery.h \
+		../../../../Qt/5.12.5/gcc_64/include/QtCore/QString \
+		../../../../Qt/5.12.5/gcc_64/include/QtCore/QFileInfo \
+		../../../../Qt/5.12.5/gcc_64/include/QtCore/qfileinfo.h \
 		../ManualOrder/tradewrapper.h \
 		../ManualOrder/libhead/ThostFtdcTraderApi.h \
 		../ManualOrder/libhead/ThostFtdcUserApiStruct.h \
@@ -1667,6 +1694,9 @@ removedlg.o: ../ManualOrder/removedlg.cpp ../ManualOrder/removedlg.h \
 		../../../../Qt/5.12.5/gcc_64/include/QtSql/qsqlerror.h \
 		../../../../Qt/5.12.5/gcc_64/include/QtSql/QSqlQuery \
 		../../../../Qt/5.12.5/gcc_64/include/QtSql/qsqlquery.h \
+		../../../../Qt/5.12.5/gcc_64/include/QtCore/QString \
+		../../../../Qt/5.12.5/gcc_64/include/QtCore/QFileInfo \
+		../../../../Qt/5.12.5/gcc_64/include/QtCore/qfileinfo.h \
 		ui_removedlg.h \
 		../../../../Qt/5.12.5/gcc_64/include/QtCore/QVariant \
 		../../../../Qt/5.12.5/gcc_64/include/QtWidgets/QApplication \
@@ -1731,33 +1761,38 @@ sqlhelper.o: ../ManualOrder/sqlhelper.cpp ../ManualOrder/sqlhelper.h \
 		../../../../Qt/5.12.5/gcc_64/include/QtSql/qsqlerror.h \
 		../../../../Qt/5.12.5/gcc_64/include/QtSql/QSqlQuery \
 		../../../../Qt/5.12.5/gcc_64/include/QtSql/qsqlquery.h \
-		../../../../Qt/5.12.5/gcc_64/include/QtCore/QDebug \
-		../../../../Qt/5.12.5/gcc_64/include/QtCore/qdebug.h \
-		../../../../Qt/5.12.5/gcc_64/include/QtCore/qalgorithms.h \
-		../../../../Qt/5.12.5/gcc_64/include/QtCore/qhash.h \
-		../../../../Qt/5.12.5/gcc_64/include/QtCore/qiterator.h \
+		../../../../Qt/5.12.5/gcc_64/include/QtCore/QString \
+		../../../../Qt/5.12.5/gcc_64/include/QtCore/QFileInfo \
+		../../../../Qt/5.12.5/gcc_64/include/QtCore/qfileinfo.h \
+		../../../../Qt/5.12.5/gcc_64/include/QtCore/qfile.h \
+		../../../../Qt/5.12.5/gcc_64/include/QtCore/qfiledevice.h \
+		../../../../Qt/5.12.5/gcc_64/include/QtCore/qiodevice.h \
+		../../../../Qt/5.12.5/gcc_64/include/QtCore/qobject.h \
+		../../../../Qt/5.12.5/gcc_64/include/QtCore/qobjectdefs.h \
+		../../../../Qt/5.12.5/gcc_64/include/QtCore/qobjectdefs_impl.h \
 		../../../../Qt/5.12.5/gcc_64/include/QtCore/qlist.h \
+		../../../../Qt/5.12.5/gcc_64/include/QtCore/qalgorithms.h \
+		../../../../Qt/5.12.5/gcc_64/include/QtCore/qiterator.h \
 		../../../../Qt/5.12.5/gcc_64/include/QtCore/qhashfunctions.h \
 		../../../../Qt/5.12.5/gcc_64/include/QtCore/qpair.h \
 		../../../../Qt/5.12.5/gcc_64/include/QtCore/qbytearraylist.h \
 		../../../../Qt/5.12.5/gcc_64/include/QtCore/qstringlist.h \
 		../../../../Qt/5.12.5/gcc_64/include/QtCore/qregexp.h \
 		../../../../Qt/5.12.5/gcc_64/include/QtCore/qstringmatcher.h \
-		../../../../Qt/5.12.5/gcc_64/include/QtCore/qmap.h \
-		../../../../Qt/5.12.5/gcc_64/include/QtCore/qtextstream.h \
-		../../../../Qt/5.12.5/gcc_64/include/QtCore/qiodevice.h \
-		../../../../Qt/5.12.5/gcc_64/include/QtCore/qobject.h \
-		../../../../Qt/5.12.5/gcc_64/include/QtCore/qobjectdefs.h \
-		../../../../Qt/5.12.5/gcc_64/include/QtCore/qobjectdefs_impl.h \
 		../../../../Qt/5.12.5/gcc_64/include/QtCore/qcoreevent.h \
 		../../../../Qt/5.12.5/gcc_64/include/QtCore/qscopedpointer.h \
 		../../../../Qt/5.12.5/gcc_64/include/QtCore/qmetatype.h \
 		../../../../Qt/5.12.5/gcc_64/include/QtCore/qvarlengtharray.h \
 		../../../../Qt/5.12.5/gcc_64/include/QtCore/qcontainerfwd.h \
 		../../../../Qt/5.12.5/gcc_64/include/QtCore/qobject_impl.h \
+		../../../../Qt/5.12.5/gcc_64/include/QtCore/qshareddata.h \
+		../../../../Qt/5.12.5/gcc_64/include/QtCore/qhash.h \
+		../../../../Qt/5.12.5/gcc_64/include/QtCore/QDebug \
+		../../../../Qt/5.12.5/gcc_64/include/QtCore/qdebug.h \
+		../../../../Qt/5.12.5/gcc_64/include/QtCore/qmap.h \
+		../../../../Qt/5.12.5/gcc_64/include/QtCore/qtextstream.h \
 		../../../../Qt/5.12.5/gcc_64/include/QtCore/qlocale.h \
 		../../../../Qt/5.12.5/gcc_64/include/QtCore/qvariant.h \
-		../../../../Qt/5.12.5/gcc_64/include/QtCore/qshareddata.h \
 		../../../../Qt/5.12.5/gcc_64/include/QtCore/qvector.h \
 		../../../../Qt/5.12.5/gcc_64/include/QtCore/qpoint.h \
 		../../../../Qt/5.12.5/gcc_64/include/QtCore/qset.h \

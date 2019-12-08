@@ -46,6 +46,8 @@ public:
     QComboBox *cb_offset;
     QLineEdit *le_qty;
     QPushButton *pb_ctp;
+    QLabel *label_reqid;
+    QLineEdit *le_reqid;
 
     void setupUi(QDialog *CreateDlg)
     {
@@ -76,7 +78,7 @@ public:
         label_offset->setFont(font);
         te_log = new QTextEdit(CreateDlg);
         te_log->setObjectName(QString::fromUtf8("te_log"));
-        te_log->setGeometry(QRect(680, 170, 211, 101));
+        te_log->setGeometry(QRect(680, 220, 211, 101));
         te_log->setFont(font);
         le_price = new QLineEdit(CreateDlg);
         le_price->setObjectName(QString::fromUtf8("le_price"));
@@ -120,7 +122,7 @@ public:
         label_dir->setFont(font);
         label_log = new QLabel(CreateDlg);
         label_log->setObjectName(QString::fromUtf8("label_log"));
-        label_log->setGeometry(QRect(510, 160, 112, 59));
+        label_log->setGeometry(QRect(510, 210, 112, 59));
         label_log->setFont(font);
         pb_order = new QPushButton(CreateDlg);
         pb_order->setObjectName(QString::fromUtf8("pb_order"));
@@ -144,7 +146,15 @@ public:
         le_qty->setFont(font);
         pb_ctp = new QPushButton(CreateDlg);
         pb_ctp->setObjectName(QString::fromUtf8("pb_ctp"));
-        pb_ctp->setGeometry(QRect(510, 230, 141, 41));
+        pb_ctp->setGeometry(QRect(510, 280, 141, 41));
+        label_reqid = new QLabel(CreateDlg);
+        label_reqid->setObjectName(QString::fromUtf8("label_reqid"));
+        label_reqid->setGeometry(QRect(510, 160, 151, 41));
+        label_reqid->setFont(font);
+        le_reqid = new QLineEdit(CreateDlg);
+        le_reqid->setObjectName(QString::fromUtf8("le_reqid"));
+        le_reqid->setGeometry(QRect(680, 160, 211, 38));
+        le_reqid->setFont(font);
 
         retranslateUi(CreateDlg);
 
@@ -167,6 +177,7 @@ public:
         pb_order->setText(QApplication::translate("CreateDlg", "Order", nullptr));
         label_symbol->setText(QApplication::translate("CreateDlg", "Symbol", nullptr));
         pb_ctp->setText(QApplication::translate("CreateDlg", "Connect CTP", nullptr));
+        label_reqid->setText(QApplication::translate("CreateDlg", "RequestID", nullptr));
     } // retranslateUi
 
 };
