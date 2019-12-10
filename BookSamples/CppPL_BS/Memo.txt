@@ -65,5 +65,21 @@ to a base, we simply don’t know what members the derived class has (§3.2.2), 
 how to copy them. So, the best thing to do is usually to delete the default copy and move operations,
 that is, to eliminate the default definitions of those two operations:
 
+A pointer can be implicitly converted to a bool (§10.5.2.5). A non-null pointer converts to true;
+pointers with the value nullptr convert to false.
 
-page 138
+The unsigned integer types are ideal for uses that treat storage as a bit array. Using an unsigned
+instead of an int to gain one more bit to represent positive integers is almost never a good idea.
+Attempts to ensure that some values are positive by declaring variables unsigned will typically be
+defeated by the implicit conversion rules
+
+A literal starting with zero followed by x or X (0x or 0X) is a hexadecimal (base 16) number. A
+literal starting with zero but not followed by x or X is an octal (base 8) number.
+
+
+The suffix U can be used to write explicitly unsigned literals. Similarly, the suffix L can be used
+to write explicitly long literals. For example, 3 is an int, 3U is an unsigned int, and 3L is a long int.
+Combinations of suffixes are allowed.
+
+
+page 146
