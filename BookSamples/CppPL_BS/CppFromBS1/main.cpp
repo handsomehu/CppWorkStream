@@ -3,6 +3,9 @@
 #include <iterator>
 #include <vector>
 #include <algorithm>
+#include <limits>
+#include <memory>
+#include <cstddef>
 
 using namespace std;
 int test_si()
@@ -27,6 +30,13 @@ void digits()
     int ci = c;
     cout << ci << std::endl;
 }
+void test_limit()
+{
+    cout << "size of long " << sizeof(1L) << '\n';
+    cout << "size of long long " << sizeof(1LL) << '\n';
+    cout << "largest float == " << std::numeric_limits<float>::max() << '\n';
+    cout << "char is signed == " << std::numeric_limits<char>::is_signed << '\n';
+}
 void g111(char c, signed char sc, unsigned char uc)
 {
     c = 255; // implementation-defined if plain chars are signed and have 8 bits
@@ -38,10 +48,25 @@ void g111(char c, signed char sc, unsigned char uc)
     uc = c; // OK: conversion to unsigned
 
 }
+void user123(const vector<int>& vx)
+{
+constexpr int bufmax = 1024;
+alignas(int) buffer[bufmax]; // uninitialized
+const int max = min(vx.size(),bufmax/sizeof(int));
+uninitialized_copy(vx.begin(),vx.begin()+max,buffer);
+// ...
+}
+void testuse()
+{
+    vector<int> tv{1,2,3};
+    user123(tv);
+}
+
 int main()
 {
     cout << "Hello World!" << endl;
     //test_si();
     digits();
+    test_limit();
     return 0;
 }

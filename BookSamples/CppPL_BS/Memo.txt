@@ -87,10 +87,12 @@ time to learn, or use double and hope for the best.
 
 Suffixes not starting with _ are reserved for the standard library.
 
+Sizes of C++ objects are expressed in terms of multiples of the size of a char, so by definition
+the size of a char is 1. The size of an object or type can be obtained using the sizeof operator
+(§10.3).
 
 
 
 
 
-
-page 146
+page 151
