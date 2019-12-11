@@ -85,6 +85,7 @@ Choosing the right precision for a problem where the choice matters requires sig
 of floating-point computation. If you don’t hav e that understanding, get advice, take the
 time to learn, or use double and hope for the best.
 
+
 Suffixes not starting with _ are reserved for the standard library.
 
 Sizes of C++ objects are expressed in terms of multiples of the size of a char, so by definition
@@ -93,6 +94,14 @@ the size of a char is 1. The size of an object or type can be obtained using the
 
 
 
+There must always be exactly one definition for each name in a C++ program (for the effects of
+#include, see §15.2.3). However, there can be many declarations.
+extern int error_number;
+extern int error_number; // OK: redeclaration
 
+Nonlocal names starting with an underscore are reserved for special facilities in the implementation
+and the run-time environment, so such names should not be used in application programs. Similarly,
+names starting with a double underscore (__) or an underscore followed by an uppercase letter
+(e.g., _Foo) are reserved (
+page 146
 
-page 151
