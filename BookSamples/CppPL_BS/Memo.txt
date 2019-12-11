@@ -103,5 +103,19 @@ Nonlocal names starting with an underscore are reserved for special facilities i
 and the run-time environment, so such names should not be used in application programs. Similarly,
 names starting with a double underscore (__) or an underscore followed by an uppercase letter
 (e.g., _Foo) are reserved (
-page 146
+
+Try to maintain a consistent naming style. For example, capitalize names of user-defined types
+and start names of non-type entities with a lowercase letter (for example, Shape and current_token).
+Also, use all capitals for macros (if you must use macros (§12.6); for example, HACK) and never for
+non-macros (not even for non-macro constants). Use underscores to separate words in an identifier;
+number_of_elements is more readable than numberOfElements.
+
+int x = 97;
+void f3()
+{
+int x = x; // per verse: initialize x with its own (uninitialized) value
+// it works, very funny. x hide global x after it's init.
+}
+
+159
 

@@ -51,15 +51,17 @@ void g111(char c, signed char sc, unsigned char uc)
 void user123(const vector<int>& vx)
 {
 constexpr int bufmax = 1024;
-alignas(int) buffer[bufmax]; // uninitialized
+alignas(int) int buffer[bufmax]; // uninitialized
 const int max = min(vx.size(),bufmax/sizeof(int));
 uninitialized_copy(vx.begin(),vx.begin()+max,buffer);
+cout << buffer[0] << endl;
 // ...
 }
 void testuse()
 {
-    vector<int> tv{1,2,3};
+    vector<int> tv{8,1,2,3};
     user123(tv);
+
 }
 
 int main()
@@ -68,5 +70,6 @@ int main()
     //test_si();
     digits();
     test_limit();
+    testuse();
     return 0;
 }

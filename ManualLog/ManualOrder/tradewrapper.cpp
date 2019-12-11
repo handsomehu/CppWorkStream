@@ -226,8 +226,15 @@ void TradeWrapper::orderinsert( std::string symbol,std::string dir, std::string 
     else
         t.Direction = THOST_FTDC_D_Sell;
 
-    if (kp == "开")
+    if (kp == "开仓")
         t.CombOffsetFlag[0] = THOST_FTDC_OF_Open;
+    else if (kp == "平仓")
+        t.CombOffsetFlag[0] = THOST_FTDC_OF_Close;
+    else if (kp == "平昨")
+
+        t.CombOffsetFlag[0] = THOST_FTDC_OF_CloseYesterday;
+    else if (kp == "平今")
+        t.CombOffsetFlag[0] = THOST_FTDC_OF_CloseToday;
     else
         t.CombOffsetFlag[0] = THOST_FTDC_OF_Close;
 
@@ -268,7 +275,10 @@ void TradeWrapper::orderinsert( std::string symbol,std::string dir, std::string 
         std::strcpy(t.ExchangeID, "INE");
     //static int reqid = 200;
     while (m_ptraderapi->ReqOrderInsert(&t, reqid) != 0)
-        std::this_thread::sleep_for(std::chrono::seconds(1));//Sleep(1000);
+    {std::this_thread::sleep_for(std::chrono::seconds(1));
+    std::cout << "wait to commit" << std::endl;
+    }//Sleep(1000);
+    std::cout << "commited" << std::endl;
 
 }
 

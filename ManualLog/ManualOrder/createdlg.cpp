@@ -85,6 +85,8 @@ void CreateDlg::on_pb_order_clicked()
     insertsql+= "','"+dir+"','"+offset+"','"+prc+"','"+symbol+"','"+exc+"','"+dtstr+"')";
     if (cnstatus)
     {
+        std::cout << "start insert!" << std::endl;
+        std::cout << offset.toStdString() << std::endl;
         trade.orderinsert(symbol.toStdString() ,dir.toStdString() ,offset.toStdString() ,exc.toStdString() ,prc.toDouble(),qty.toInt(),reqidstr.toInt());
         std::this_thread::sleep_for(std::chrono::seconds(5));
         //want to trigger signal within OnRtnTrade event of trade
