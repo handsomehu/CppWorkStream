@@ -71,7 +71,7 @@ bool TradeWrapper::is_goodorder()
 }
 void TradeWrapper::reset_goodorder()
 {
-    std::this_thread::sleep_for(std::chrono::seconds(120));
+    //std::this_thread::sleep_for(std::chrono::seconds(120));
     goodorder = false;
 }
 //前置连接响应
@@ -365,7 +365,6 @@ void TradeWrapper::OnRtnTrade(CThostFtdcTradeField *pTrade)
     printf("OnRtnTrade\n");
     std::cout << pTrade->InstrumentID << "\t" <<pTrade->Volume << pTrade->TradeType << std::endl;
     goodorder = true;
-    reset_goodorder();
 
 }
 
@@ -390,6 +389,16 @@ void TradeWrapper::OnRspError(CThostFtdcRspInfoField *pRspInfo, int nRequestID, 
 {
 
     printf("OnRspError\n");
+    std::vector<int> errcode = {15,22,23,24,27,28,29,30,31,32,33,50,51,78,79,80};
+    for(auto err:errcode)
+    {
+        if(err == pRspInfo->ErrorID)
+        {
+
+            reset_goodorder();
+            break;
+        }
+    }
 
 }
 

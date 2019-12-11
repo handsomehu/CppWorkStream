@@ -17,7 +17,7 @@ CXX           = g++
 DEFINES       = -DQT_DEPRECATED_WARNINGS -DQT_QML_DEBUG -DQT_CORE_LIB
 CFLAGS        = -pipe -g -Wall -W -D_REENTRANT -fPIC $(DEFINES)
 CXXFLAGS      = -pipe -g -std=gnu++11 -Wall -W -D_REENTRANT -fPIC $(DEFINES)
-INCPATH       = -I../MarketDataRecorder -I. -I../MarketDataRecorder/dependlibs -I../../../../Qt/5.12.5/gcc_64/include -I../../../../Qt/5.12.5/gcc_64/include/QtCore -I. -I../../../../Qt/5.12.5/gcc_64/mkspecs/linux-g++
+INCPATH       = -I../MarketDataRecorder -I. -I/home/leon/CppJourney/CppWorkStream/AveragePrice/MarketDataRecorder/dependlibs -I/home/leon/CppJourney/CppWorkStream/AveragePrice/MarketDataRecorder/dependlibs -I../Debug -I../../../../Qt/5.12.5/gcc_64/include -I../../../../Qt/5.12.5/gcc_64/include/QtCore -I. -I../../../../Qt/5.12.5/gcc_64/mkspecs/linux-g++
 QMAKE         = /home/leon/Qt/5.12.5/gcc_64/bin/qmake
 DEL_FILE      = rm -f
 CHK_DIR_EXISTS= test -d
@@ -40,7 +40,7 @@ DISTNAME      = MarketDataRecorder1.0.0
 DISTDIR = /home/leon/CppJourney/CppWorkStream/AveragePrice/build-MarketDataRecorder-Desktop_Qt_5_12_5_GCC_64bit-Debug/.tmp/MarketDataRecorder1.0.0
 LINK          = g++
 LFLAGS        = -Wl,-rpath,/home/leon/Qt/5.12.5/gcc_64/lib
-LIBS          = $(SUBLIBS) -L/home/leon/CppJourney/CppWorkStream/AveragePrice/MarketDataRecorder/dependlibs/ -lthostmduserapi_se /home/leon/Qt/5.12.5/gcc_64/lib/libQt5Core.so -lpthread   
+LIBS          = $(SUBLIBS) -L/home/leon/CppJourney/CppWorkStream/AveragePrice/MarketDataRecorder/dependlibs/ -lthosttraderapi_se -L/home/leon/CppJourney/CppWorkStream/AveragePrice/MarketDataRecorder/../Debug/ -lthostmduserapi_se /home/leon/Qt/5.12.5/gcc_64/lib/libQt5Core.so -lpthread   
 AR            = ar cqs
 RANLIB        = 
 SED           = sed

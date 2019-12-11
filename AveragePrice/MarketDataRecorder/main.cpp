@@ -43,7 +43,7 @@ int main(int argc, char *argv[])
 
     static int trycnt = 0;
     static bool loginOK = false;
-    std::vector<char*> symbollist = {"rb1910","ru2001","T1912"};
+    std::vector<char*> symbollist = {"rb2005","i2005","MA005"};
     std::cout << "C++ CTP Journey Begin, Wow!" << std::endl;
     std::shared_ptr<CmdWrapper> mdApi = std::make_shared<CmdWrapper>();
     //std::cout << getexepath() << std::endl;

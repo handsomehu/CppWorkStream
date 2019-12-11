@@ -11,7 +11,7 @@ CreateDlg::CreateDlg(QWidget *parent) :
     ui->setupUi(this);
     ui->cb_Dir->addItem("多");
     ui->cb_Dir->addItem("空");
-    ui->cb_offset->addItems({"开","平"});
+    ui->cb_offset->addItems({"开仓","平仓","平昨","平今"});
     //qDebug() << dbhelper. getMaxId();
     ui->cb_strg->addItems({"DT_IntraDayCommonStrategy","TurtleUseCloseStrategy","JDualThrust_IntraDayStrategy"});
     ui->cb_exch->addItems({"SHFE","DCE","CZCE","CFFEX","INE"});
@@ -90,15 +90,19 @@ void CreateDlg::on_pb_order_clicked()
         //want to trigger signal within OnRtnTrade event of trade
         // However, did not find a easy way to work it out without inheriate from QObject.
         //temporary solution is insert log 5 seconds later.
-        int countdown = 120;
+        int countdown = 0,maxcountdown = 300;
         bool isbreak = false;
         while(!trade.is_goodorder())
         {
 
             std::this_thread::sleep_for(std::chrono::seconds(1));
             ++countdown;
-            if (countdown >120)
+            if (countdown > maxcountdown)
+            {
                 isbreak = true;
+                std::cout << insertsql.toStdString() << std::endl;
+                break;
+            }
         }
         if (!isbreak)
             emit LogOrder(insertsql);

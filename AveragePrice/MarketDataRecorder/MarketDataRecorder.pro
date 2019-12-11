@@ -50,3 +50,10 @@ else:unix: LIBS += -L$$PWD/dependlibs/ -lthosttraderapi_se
 
 INCLUDEPATH += $$PWD/dependlibs
 DEPENDPATH += $$PWD/dependlibs
+
+win32:CONFIG(release, debug|release): LIBS += -L$$PWD/../Debug/release/ -lthostmduserapi_se
+else:win32:CONFIG(debug, debug|release): LIBS += -L$$PWD/../Debug/debug/ -lthostmduserapi_se
+else:unix: LIBS += -L$$PWD/../Debug/ -lthostmduserapi_se
+
+INCLUDEPATH += $$PWD/../Debug
+DEPENDPATH += $$PWD/../Debug

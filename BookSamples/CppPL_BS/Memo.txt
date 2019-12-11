@@ -81,5 +81,16 @@ The suffix U can be used to write explicitly unsigned literals. Similarly, the s
 to write explicitly long literals. For example, 3 is an int, 3U is an unsigned int, and 3L is a long int.
 Combinations of suffixes are allowed.
 
+Choosing the right precision for a problem where the choice matters requires significant understanding
+of floating-point computation. If you don’t hav e that understanding, get advice, take the
+time to learn, or use double and hope for the best.
+
+Suffixes not starting with _ are reserved for the standard library.
+
+
+
+
+
+
 
 page 146
