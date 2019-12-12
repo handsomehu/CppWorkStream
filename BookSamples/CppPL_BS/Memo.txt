@@ -117,5 +117,46 @@ int x = x; // per verse: initialize x with its own (uninitialized) value
 // it works, very funny. x hide global x after it's init.
 }
 
-159
+
+Local variables and objects created on the free store (sometimes called dynamic objects or heap
+objects; §11.2) are not initialized by default unless they are of user-defined types with a default
+constructor (§17.3.3). For example:
+void f()
+{
+int x; // x does not have a well-defined value
+char buf[1024]; // buf[i] does not have a well-defined value
+int∗ p {newint}; //*p does not have a well-defined value
+char∗ q {new char[1024]}; // q[i] does not have a well-defined value
+string s; // s=="" because of string’s default constructor
+vector<char> v; // v=={} because of vector’s default constructor
+string∗ ps {new string}; // *ps is "" because of string’s default constructor
+// ...
+}
+x is defined within a funciton f(), is that the reason x is in heap rather than stack?
+
+
+
+
+So, a classical lvalue is something that has identity and cannot be moved (because we could examine
+it after a move), and a classical rvalue is anything that we are allowed to move from. The other
+alternatives are prvalue (‘‘pure rvalue’’), glvalue (‘‘generalized lvalue’’), and xvalue (‘‘x’’ for ‘‘extraordinary’’
+or ‘‘expert only’’; the suggestions for the meaning of this ‘‘x’’ hav e been quite imaginative).
+
+
+Static objects can cause serious
+problems in a multi-threaded program because they are shared among all threads and
+typically require locking to avoid data races (§5.3.1, §42.3).
+
+
+Thread-local objects; that is, objects declared thread_local (§42.2.8): such objects are created
+when their thread is and destroyed when their thread is.
+
+typedef void(∗PtoF)(int); // equivalent to ‘‘using PtoF = void(*)(int);’’   WTF
+
+We cannot apply type specifiers, such as unsigned, to an alias. For example:
+using Char = char;
+using Uchar = unsigned Char; // error
+using Uchar = unsigned char; // OK
+
+Page 171
 
