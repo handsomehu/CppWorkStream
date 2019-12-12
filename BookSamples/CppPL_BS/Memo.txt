@@ -158,5 +158,31 @@ using Char = char;
 using Uchar = unsigned Char; // error
 using Uchar = unsigned char; // OK
 
-Page 171
+
+Consequently, the smallest object that can be independently allocated and
+pointed to using a built-in pointer type is a char
+
+
+The ∗, meaning ‘‘pointer to,’’ is used as a suffix for a type name. Unfortunately, pointers to
+arrays and pointers to functions need a more complicated notation:
+int∗pi; //pointer to int
+char∗∗ ppc; //pointer to pointer to char
+int∗ ap[15]; // array of 15 pointers to ints
+int (∗fp)(char∗); // pointer to function taking a char* argument; returns an int
+int∗ f(char∗); //function taking a char* argument; returns a pointer to int
+
+since BS said it is a suffix to type name, than I shall use this way consistantly.
+
+
+You can read
+void∗ as ‘‘pointer to an object of unknown type.’’
+
+A pointer to any type of object can be assigned to a variable of type void∗, but a pointer to function
+(§12.5) or a pointer to member (§20.6) cannot.In addition, a void∗ can be assigned to another
+void∗, void∗s can be compared for equality and inequality, and a void∗ can be explicitly converted to
+another type.
+
+
+Page 174
+
 

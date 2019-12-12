@@ -63,6 +63,49 @@ void testuse()
     user123(tv);
 
 }
+int testpf(char* str)
+{
+    if (str)
+        return 0;
+    else
+        return -1;
+}
+void testpv(int* pi)
+{
+    void* pv;
+    pv = pi;
+    int ti =  0;
+    //*pv ;
+    //++pv;
+    //cout << ti << endl;
+    int* pi2 = static_cast<int*>(pv);
+    cout << *pi2 << endl;
+
+}
+void testpointer()
+{
+    int i1{10};
+    int* pi; //pointer to int
+    pi = &i1;
+    cout << *pi << endl;
+    char** ppc;
+    char c1{'d'};
+    char* pc=&c1;
+    ppc = &pc;
+    cout << "address of pc:" << ppc << "value of pc" << *ppc << endl;
+    cout << "value of char:" << **ppc << endl;
+    int* ap[15];
+    cout << ap[0] << endl;
+    int (*fp)(char*) ;
+    fp = testpf;
+    char* tc= "Hello World";
+    cout << "result" << fp(tc) << endl;
+    testpv(pi);
+
+
+
+}
+
 
 int main()
 {
@@ -71,5 +114,6 @@ int main()
     digits();
     test_limit();
     testuse();
+    testpointer();
     return 0;
 }
