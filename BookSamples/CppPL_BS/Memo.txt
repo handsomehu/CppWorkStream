@@ -183,6 +183,34 @@ void∗, void∗s can be compared for equality and inequality, and a void∗ can
 another type.
 
 
-Page 174
+There is no built-in copy operation for arrays. You cannot initialize one array with another (not
+ev en of exactly the same type), and there is no array assignment:
+
+
+R"∗∗∗("quoted string containing the usual terminator ("))")∗∗∗"
+// "quoted string containing the usual terminator ("))"
+
+
+It usually surprises people to find that a[j]==j[a]. For example, 3["Texas"]=="Texas"[3]=='a'.
+
+Subtraction of pointers is defined only when both pointers point to elements of the same array
+
+When subtracting a pointer p
+from another pointer q, q−p, the result is the number of array elements in the sequence [p:q)
+
+// q is not include
+
+
+To
+declare a pointer itself, rather than the object pointed to, to be a constant, we use the declarator
+operator ∗const instead of plain ∗.
+
+
+The declarator operator that makes a pointer constant is ∗const. There is no const∗ declarator operator,
+so a const appearing before the ∗ is taken to be part of the base type.
+
+
+
+Page 189
 
 

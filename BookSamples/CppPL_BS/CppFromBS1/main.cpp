@@ -105,7 +105,15 @@ void testpointer()
 
 
 }
-
+void print_mij(int* m, int dim1, int dim2)
+{
+for (int i = 0; i!=dim1; i++)
+    {
+    for (int j = 0; j!=dim2; j++)
+        cout << m[i*dim2+j] << '\t'; // obscure
+    cout << '\n';
+    }
+}
 
 int main()
 {
