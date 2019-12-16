@@ -209,8 +209,32 @@ operator ∗const instead of plain ∗.
 The declarator operator that makes a pointer constant is ∗const. There is no const∗ declarator operator,
 so a const appearing before the ∗ is taken to be part of the base type.
 
+Thus, we cannot have a pointer to a reference. Furthermore, we cannot define
+an array of references. In that sense, a reference is not an object.
 
 
-Page 189
+// you can init a const reference from a rvalue(indirectly).
+double& dr = 1; // error : lvalue needed
+const double& cdr {1}; // OK
+The interpretation of this last initialization might be:
+double temp = double{1}; // first create a temporar y with the right value
+const double& cdr {temp}; // then use the temporar y as the initializer for cdr
+A
+
+
+
+using rr_i = int&&;
+using lr_i = int&;
+using rr_rr_i = rr_i&&; // ‘‘int && &&’’ is an int&&
+using lr_rr_i = rr_i&; // ‘‘int && &’’ is an int&
+using rr_lr_i = lr_i&&; // ‘‘int & &&’’ is an int&
+using lr_lr_i = lr_i&; // ‘‘int & &’’ is an int&
+In other words, lvalue reference always wins.This makes sense: nothing we can do with types can
+change the fact that an lvalue reference refers to an lvalue. This is sometimes known as reference
+collapse.
+
+It is not possible to (re)define an operator for a pair of built-in types, such as pointers
+
+Page 200
 
 
