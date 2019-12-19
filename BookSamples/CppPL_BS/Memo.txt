@@ -235,6 +235,39 @@ collapse.
 
 It is not possible to (re)define an operator for a pair of built-in types, such as pointers
 
-Page 200
+
+It is usually best to order members for readability and sort them by size only if there is a
+demonstrated need to optimize.
+
+
+template<typename T>
+void mycopy(T∗ to, const T∗ from, int count)
+{
+if (is_pod<T>::value)
+memcpy(to,from,count∗sizeof(T));
+else
+for (int i=0; i!=count; ++i)
+to[i]=from[i];
+}
+
+
+
+struct PPN { // R6000 Physical Page Number
+unsigned int PFN : 22; // Page Frame Number
+int : 3; // unused
+unsigned int CCA : 3; // Cache Coherency Algorithm
+bool nonreachable : 1;
+bool dirty : 1;
+bool valid : 1;
+bool global : 1;
+};
+This example also illustrates the other main use of fields: to name parts of an externally imposed
+layout. A field must be of an integral or enumeration type (§6.2.1). It is not possible to take the
+address of a field. Apart from that, however, it can be used exactly like other variables. Note that a
+bool field really can be represented by a single bit.
+
+
+
+Page 225
 
 
