@@ -266,8 +266,35 @@ layout. A field must be of an integral or enumeration type (§6.2.1). It is not 
 address of a field. Apart from that, however, it can be used exactly like other variables. Note that a
 bool field really can be represented by a single bit.
 
+enum E1 { a, b };
+enum class E2 { a, b };
+void f(E1 x, E2 y)
+{
+if (x) // OK
+// ...
+if (y) // error : no conversion to bool
+// ...
+if (y==E2::a) // OK
+// ...
+}
 
 
-Page 225
+switch (val) { // beware
+case 1:
+cout << "case 1\n";
+case 2:
+cout << "case 2\n";
+default:
+cout << "default: case not found\n";
+}
+Invoked with val==1, the output will greatly surprise the uninitiated:
+case 1
+case 2
+default: case not found
+
+c9 finish
+
+
+Page 248
 
 
