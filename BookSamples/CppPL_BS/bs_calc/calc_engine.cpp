@@ -1,5 +1,10 @@
 #include "basic_type.h"
 #include "token_stream.h"
+
+extern Token_stream ts;
+extern std::map<std::string,double> table;
+extern int no_of_errors;
+
 double expr(bool);
 double prim(bool get) // handle primar ies
 {
@@ -26,7 +31,7 @@ double prim(bool get) // handle primar ies
         {
             auto e = expr(true);
             if (ts.current().kind != Kind::rp)
-                return error("')' expected");
+                return error(std::string(") expected"));
             ts.get(); // eat ’)’
             return e;
         }
@@ -67,10 +72,30 @@ double expr(bool get) // add and subtract
             left += term(true);
             break;
         case Kind::minus:
-            left −= term(true);
+            left -= term(true);
             break;
         default:
             return left;
         }
+    }
+}
+
+double error(const std::string& s)
+{
+    no_of_errors++;
+    std::cerr << "error: " << s << '\n';
+    return 1;
+}
+
+void calculate()
+{
+    for (;;)
+    {
+        ts.get();
+        if (ts.current().kind == Kind::end)
+            break;
+        if (ts.current().kind == Kind::print)
+            continue;
+        std::cout << expr(false) << '\n';
     }
 }

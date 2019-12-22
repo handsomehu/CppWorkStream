@@ -636,7 +636,8 @@ calc_engine.o: ../bs_calc/calc_engine.cpp ../bs_calc/basic_type.h \
 		../bs_calc/token_stream.h
 	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o calc_engine.o ../bs_calc/calc_engine.cpp
 
-main.o: ../bs_calc/main.cpp ../bs_calc/basic_type.h
+main.o: ../bs_calc/main.cpp ../bs_calc/basic_type.h \
+		../bs_calc/token_stream.h
 	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o main.o ../bs_calc/main.cpp
 
 token_stream.o: ../bs_calc/token_stream.cpp ../bs_calc/token_stream.h \

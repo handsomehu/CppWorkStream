@@ -295,6 +295,6 @@ default: case not found
 c9 finish
 
 
-Page 248
+Page 254 first version of the calculator
 
 
