@@ -6,6 +6,7 @@
 #include <limits>
 #include <memory>
 #include <cstddef>
+#include <chrono>
 
 using namespace std;
 int test_si()
@@ -114,9 +115,27 @@ for (int i = 0; i!=dim1; i++)
     cout << '\n';
     }
 }
+ int isqrt_helper(int sq, int d, int a)
+{
+    int t1 = 0;
+    t1 = (sq <= a ? isqrt_helper(sq+d,d+2,a) : d);
+    cout << "helper" << t1 << endl;
+
+    return t1;
+}
+ int isqrt(int x)
+{
+    int t2 = 0;
+    t2 = (isqrt_helper(1,3,x)/2-1);
+    cout << "isqrt:" << t2 << endl;
+    return t2;
+}
 
 int main()
 {
+     //int s1 = isqrt(9); // s1 becomes 3
+     int s2 = isqrt(4);
+     cout << s2 << endl;
     cout << "Hello World!" << endl;
     //test_si();
     digits();
