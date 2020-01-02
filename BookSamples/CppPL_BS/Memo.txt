@@ -292,9 +292,30 @@ case 1
 case 2
 default: case not found
 
-c9 finish
+constexpr string ss = s; // error : s is not a constant expression
+constexpr int yy = y; // error : sqr t(x) is not a constant expression
+The reasons for the errors are that string is not a literal type (§10.4.3) and sqrt() is not a constexpr
+function (§12.1.6).
 
 
-Page 264 first version of the calculator
+
+When working with constexpr, the key thing to remember is that constexpr is all about values.
+There are no objects that can change values or side effects here: constexpr provides a miniature
+compile-time functional programming language.
+
+Note that a pointer to function or a pointer to member cannot be implicitly
+converted to a void∗
+
+A constant expression (§10.4) that evaluates to 0 can be implicitly converted to a null pointer of
+any pointer type. Similarly, a constant expression that evaluates to 0 can be implicitly converted to
+a pointer-to-member type (§20.6). For example:
+int∗ p = (1+2)∗(2∗(1−1)); // OK, but weird
+Prefer nullptr (§7.2.2).
+
+A T∗ can be implicitly converted to a const T∗ (§7.5). Similarly, a T& can be implicitly converted
+to a const T&.
+
+
+Page 271 Finish chapter 10
 
 
