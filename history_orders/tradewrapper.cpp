@@ -359,10 +359,14 @@ void TradeWrapper::qrySettlement(std::string tradedate)
 
 
     //strcpy_s(a.InvestorID, "1000001");
+    std::copy(tradedate.begin(),tradedate.end(),bufstr);
+    bufstr[tradedate.size()] = '\0';
+    //std::strcpy(t.InvestorID, bufstr);
+    std::strcpy(t.TradingDay,bufstr);
+    std::cout << "before query setmt" << std::endl;
 
-    std::strcpy(t.TradingDay,tradedate.c_str());
-
-    m_ptraderapi->ReqQrySettlementInfo(&t, nRequestID++);
+    int temprst = m_ptraderapi->ReqQrySettlementInfo(&t, nRequestID++);
+    std::cout << temprst << std::endl;
     std::cout << "query for date:" << tradedate << std::endl;
 }
 void TradeWrapper::OnRspQryInstrument(CThostFtdcInstrumentField *pInstrument, CThostFtdcRspInfoField *pRspInfo, int nRequestID, bool bIsLast)
@@ -376,7 +380,8 @@ void TradeWrapper::OnRspQryInstrument(CThostFtdcInstrumentField *pInstrument, CT
 void TradeWrapper::OnRspQrySettlementInfo(CThostFtdcSettlementInfoField *pSettlementInfo, CThostFtdcRspInfoField *pRspInfo, int nRequestID, bool bIsLast)
 {
     std::cout << "response settlement" << std::endl;
-    std::cout << pSettlementInfo->TradingDay << pSettlementInfo->Content << std::endl;
+    std::cout << pSettlementInfo->Content << std::endl;
+
 }
 
 //报单通知

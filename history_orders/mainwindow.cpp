@@ -32,6 +32,7 @@ void MainWindow::on_pb_query_clicked()
         {
 
             trader.qrySettlement(dt);
+            std::this_thread::sleep_for(std::chrono::seconds(3));
             std::cout << dt << std::endl;
         }
 
