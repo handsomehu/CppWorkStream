@@ -16,7 +16,7 @@ CC            = gcc
 CXX           = g++
 DEFINES       = -DQT_QML_DEBUG
 CFLAGS        = -pipe -g -Wall -W -fPIC $(DEFINES)
-CXXFLAGS      = -pipe -g -std=gnu++11 -Wall -W -fPIC $(DEFINES)
+CXXFLAGS      = -pipe -g -std=gnu++1y -Wall -W -fPIC $(DEFINES)
 INCPATH       = -I../AlgoExercisers -I. -I../../../../Qt/5.12.5/gcc_64/mkspecs/linux-g++
 QMAKE         = /home/leon/Qt/5.12.5/gcc_64/bin/qmake
 DEL_FILE      = rm -f

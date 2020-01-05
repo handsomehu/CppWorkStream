@@ -316,6 +316,41 @@ A T∗ can be implicitly converted to a const T∗ (§7.5). Similarly, a T& can 
 to a const T&.
 
 
-Page 271 Finish chapter 10
+if (state&(badbit|failbit)) // stream not good
+The extra parentheses are necessary because & has higher precedence than |
+
+A ∆ B = (A ∪ B) – (A ∩ B) 
+This is XOR, how beautiful it is!!!
+
+max = (a<=b) ? b : a;
+The parentheses around the condition are not necessary, but I find the code easier to read when they
+are used.
+
+
+void fct(int∗ p)
+{
+int i = (p) ? ∗p : std::runtime_error{"unexpected nullptr};
+// ...
+}//this is correct, a bit strange through
+
+
+
+about ++ and --:
+y=++x is equivalent to y=(x=x+1). // which means y = x and they both equal old x + 1
+The value of x++, howev er, is the old value of x. For example, y=x++ is equivalent to y=(t=x,x=x+1,t)
+// which means y = old x ; and x = old x + 1
+// for example int x = 5; y = x++; // then y = 5, x = 6
+
+BS explains thing so clear!
+
+c/c++ way of copy string literal: while (∗p++ = ∗q++) ;
+
+The delete operator may be applied only to a pointer returned by new or to the nullptr
+
+
+do not use new to create local objects
+
+
+Page 282 Finish chapter 10
 
 
