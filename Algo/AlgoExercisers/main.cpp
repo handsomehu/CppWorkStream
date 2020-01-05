@@ -91,6 +91,7 @@ void select_search2(std::list<int>& sample)
 
 }
 
+
 int fact_test(int val)
 {
     if (val == 1)
