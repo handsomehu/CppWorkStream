@@ -1,0 +1,2 @@
+1:sudo apt install swig
+2:swig -threads -c++ -python thosttraderapi.i
