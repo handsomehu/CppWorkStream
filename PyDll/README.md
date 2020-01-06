@@ -1,6 +1,6 @@
 To make it work:
-the linux need to install chinese support
-follow CSDN post to combile python wrapper
+      the linux need to install chinese support
+      follow CSDN post to combile python wrapper
 
 Chinse support(Ref：https://blog.csdn.net/kevin6216/article/details/7530625)
 
