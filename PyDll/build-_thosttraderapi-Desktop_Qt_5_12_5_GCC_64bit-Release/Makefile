@@ -17,7 +17,7 @@ CXX           = g++
 DEFINES       = -D_THOSTTRADERAPI_LIBRARY -DQT_DEPRECATED_WARNINGS
 CFLAGS        = -pipe -O2 -Wall -W -fPIC $(DEFINES)
 CXXFLAGS      = -pipe -O2 -std=gnu++11 -Wall -W -fPIC $(DEFINES)
-INCPATH       = -I../_thosttraderapi -I. -I../_thosttraderapi -I../../../../anaconda2/include -I../../../../anaconda2/lib -I../../../../anaconda2/include/python2.7 -I../../../../Qt/5.12.5/gcc_64/mkspecs/linux-g++
+INCPATH       = -I../_thosttraderapi -I. -I../_thosttraderapi -I../../../../anaconda2/include -I../../../../anaconda2/lib -I../../../../anaconda2/include/python2.7 -I../_thosttraderapi -I../../../../Qt/5.12.5/gcc_64/mkspecs/linux-g++
 QMAKE         = /home/leon/Qt/5.12.5/gcc_64/bin/qmake
 DEL_FILE      = rm -f
 CHK_DIR_EXISTS= test -d
@@ -40,7 +40,7 @@ DISTNAME      = _thosttraderapi1.0.0
 DISTDIR = /home/leon/CppJourney/CppWorkStream/PyDll/build-_thosttraderapi-Desktop_Qt_5_12_5_GCC_64bit-Release/.tmp/_thosttraderapi1.0.0
 LINK          = g++
 LFLAGS        = -Wl,-O1 -shared -Wl,-soname,lib_thosttraderapi.so.1
-LIBS          = $(SUBLIBS) -L/home/leon/CppJourney/CppWorkStream/PyDll/_thosttraderapi/./ -lthosttraderapi_se -L/home/leon/CppJourney/CppWorkStream/PyDll/_thosttraderapi/../../../../anaconda2/lib/ -lpython2.7   
+LIBS          = $(SUBLIBS) -L/home/leon/CppJourney/CppWorkStream/PyDll/_thosttraderapi/./ -L/home/leon/CppJourney/CppWorkStream/PyDll/_thosttraderapi/../../../../anaconda2/lib/ -lpython2.7 -lthosttraderapi_se   
 AR            = ar cqs
 RANLIB        = 
 SED           = sed

@@ -50,3 +50,10 @@ INCLUDEPATH += $$PWD/../../../../anaconda2/lib
 DEPENDPATH += $$PWD/../../../../anaconda2/lib
 INCLUDEPATH += $$PWD/../../../../anaconda2/include/python2.7
 DEPENDPATH += $$PWD/../../../../anaconda2/include/python2.7
+
+win32:CONFIG(release, debug|release): LIBS += -L$$PWD/./release/ -lthosttraderapi_se
+else:win32:CONFIG(debug, debug|release): LIBS += -L$$PWD/./debug/ -lthosttraderapi_se
+else:unix: LIBS += -L$$PWD/./ -lthosttraderapi_se
+
+INCLUDEPATH += $$PWD/.
+DEPENDPATH += $$PWD/.
