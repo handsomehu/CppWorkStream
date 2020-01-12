@@ -1,0 +1,25 @@
+[
+{
+    "arguments": [
+        "/usr/bin/g++",
+        "-c",
+        "--target=x86_64-linux-gnu",
+        "-m64",
+        "-pipe",
+        "-g",
+        "-std=gnu++1y",
+        "-Wall",
+        "-W",
+        "-fPIC",
+        "-I/home/leon/CppJourney/CppWorkStream/Algo/AlgoExercisers",
+        "-I/home/leon/CppJourney/CppWorkStream/Algo/build-AlgoExercisers-Desktop_Qt_5_12_5_GCC_64bit-Debug",
+        "-I/home/leon/Qt/5.12.5/gcc_64/mkspecs/linux-g++",
+        "-DQT_QML_DEBUG",
+        "-x",
+        "c++",
+        "/home/leon/CppJourney/CppWorkStream/Algo/AlgoExercisers/main.cpp"
+    ],
+    "directory": "/home/leon/CppJourney/CppWorkStream/Algo/build-AlgoExercisers-Desktop_Qt_5_12_5_GCC_64bit-Debug",
+    "file": "/home/leon/CppJourney/CppWorkStream/Algo/AlgoExercisers/main.cpp"
+}
+]

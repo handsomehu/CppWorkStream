@@ -72,6 +72,51 @@ std::list<int>::iterator select_search_max(std::list<int> & sample)
     return maxit;
 
 }
+
+int* fast_search(int* samples,int arrsize)
+{
+    int temp{0},baseval{0};
+    int j{0},k{0};
+    int* l;
+    int* r;
+    static int tm{0};
+    std::cout << "times: " << ++tm << std::endl;
+    if ( arrsize < 2 )
+        return samples;
+    else
+    {
+    //int fstest[5]{3,5,1,7,2};
+        temp = 0;
+        int l[arrsize]; // give size is 3, l[1], right[1]
+                     // give size is 4, l[2], right[1]
+        int r[arrsize];
+        baseval = samples[temp];
+        for(int i = 0+1;i!= arrsize;++i)
+        {
+            if (*(samples+i) <= baseval)
+                l[j++] = samples[i];
+            else if (*(samples+i) > baseval)
+                r[k++] = samples[i];
+
+        }
+        std:: cout << "j:" << j << " k:" << k << std::endl;
+        int* la = fast_search(l,j);
+        int* ra = fast_search(r,k);
+
+        if ((j + k +1 ) == arrsize)
+        {
+            for(int i1 = 0;i1!=j;++i1)
+                *(samples+i1) = la[i1];
+            *(samples+j) = baseval;
+            for(int i2 = 0;i2!=k;++k)
+                *(samples+j+i2+ 1)= ra[i2];
+        }
+        return samples;
+
+
+    }
+        //fast_search(samples+1,arrsize-1);
+}
 void select_search2(std::list<int>& sample)
 {
     std::list<int> tgt{};
@@ -113,5 +158,14 @@ int main()
     std::list<int> lt{1,2,3,4,5,6,7,8,9,10,24,34,36,40,50,56};
     select_search2(lt);
     std::cout << "factories of 5:" << fact_test(5) << std::endl;
+    std::cout << "start fast sort:" << std::endl;
+    constexpr int sz = 6;
+    int fstest[sz]{3,2,5,1,19,8};
+    int* p1;
+    p1 = fast_search(fstest,sz);
+    for(int iii=0;iii!=sz;++iii)
+    {    std::cout << *(p1+iii) << std::endl;
+
+    }
     return 0;
 }

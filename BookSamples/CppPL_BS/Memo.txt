@@ -350,7 +350,37 @@ The delete operator may be applied only to a pointer returned by new or to the n
 
 do not use new to create local objects
 
+The allocation and deallocation functions deal in untyped and uninitialized memory (often
+called ‘‘raw memory’’), as opposed to typed objects.
 
-Page 282 Finish chapter 10
+
+The implementation model for {}-lists comes in three parts:
+• If the {}-list is used as constructor arguments, the implementation is just as if you had used a
+()-list. List elements are not copied except as by-value constructor arguments.
+• If the {}-list is used to initialize the elements of an aggregate (an array or a class without a
+constructor), each list element initializes an element of the aggregate. List elements are not
+copied except as by-value arguments to aggregate element constructors.
+• If the {}-list is used to construct an initializer_list object each list element is used to initialize
+an element of the underlying array of the initializer_list. Elements are typically copied from
+the initializer_list to wherever we use them.
+
+For example, I might try to write a lambda to reverse the characters in a C-style string:
+auto rev = [&rev](char∗ b, char∗ e)
+{ if (1<e−b) { swap(∗b,∗−−e); rev(++b,e); } }; // error
+However, that’s not possible because I cannot use an auto variable before its type has been deduced.
+Instead, I can introduce a name and then use it:
+void f(string& s1, string& s2)
+{
+function<void(char∗ b, char∗ e)> rev =
+[&](char∗ b, char∗ e) { if (1<e−b) { swap(∗b,∗−−e); rev(++b,e); } };
+
+
+A lambda that captures nothing can be assigned to a pointer to function of an appropriate type. For
+example:
+double (∗p1)(double) = [](double a) { return sqrt(a); };
+double (∗p2)(double) = [&](double a) { return sqrt(a); }; // error : the lambda captures
+double (∗p3)(int) = [](int a) { return sqrt(a); }; // error
+
+Page 304 Finish chapter 10
 
 

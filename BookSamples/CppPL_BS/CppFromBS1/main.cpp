@@ -131,8 +131,32 @@ for (int i = 0; i!=dim1; i++)
     return t2;
 }
 
+ void test_prio()
+ {
+    //std::cout << (6 << 2) << std::endl;
+    //std::cout << (3 << 2) << std::endl;
+    //return;
+    int b = 2,c=3,d =1;
+    int a = ((b + (c*d)) << 2) & 8;
+    int x = b + c*d << 2 & 8;
+    a = 1;
+    b = a & 077 != 3;
+    a == b || a == c && c < 5;
+
+    std::cout << a << "," << x << std::endl;
+ }
+
+
+ void test_cast()
+ {
+     const int i = 8;
+     int j = std::const_cast<int>{i};
+
+ }
 int main()
 {
+    test_prio();
+    return 0;
      //int s1 = isqrt(9); // s1 becomes 3
      int s2 = isqrt(4);
      cout << s2 << endl;
