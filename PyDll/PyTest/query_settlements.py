@@ -6,7 +6,7 @@ import thosttraderapi as api
 import io
 import time
 from pyctpapi import CTradeSpi
-
+import pickle 
 
 def ReqorderfieldInsert(tradeapi):
 	print ("ReqOrderInsert Start")
@@ -38,6 +38,7 @@ def save_file(filename, contents):
 
 		
 def main():
+	txdates = ["20200113","20200114","20200115",]
 	tradeapi=api.CThostFtdcTraderApi_CreateFtdcTraderApi()
 	tradespi=CTradeSpi(tradeapi)
 	tradeapi.RegisterSpi(tradespi)
@@ -46,9 +47,21 @@ def main():
 	FrontAddr1="tcp://180.168.146.187:10130"
 	tradeapi.RegisterFront(FrontAddr1)	
 	tradeapi.Init()
-
-
-	tradeapi.Join()
+	qryinfofield = api.CThostFtdcQrySettlementInfoField()
+	qryinfofield.BrokerID="118907"
+	qryinfofield.InvestorID="118907"
+	#qryinfofield.TradingDay="20200113"
+	lv_reqid = 10000		
+	for dt in txdates:
+		lv_reqid += 1
+		qryinfofield.TradingDay=dt
+		tradeapi.ReqQrySettlementInfo(qryinfofield,lv_reqid)
+		time.sleep(5)
+	
+	rst = tradespi.allsettle
+	filehandler = open("./tx.pkl", 'w') 
+	pickle.dump(rst, filehandler)
+	#tradeapi.Join()
 	
 if __name__ == '__main__':
 	main()

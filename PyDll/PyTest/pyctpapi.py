@@ -78,6 +78,8 @@ class CTradeSpi(api.CThostFtdcTraderSpi):
 		self.PASSWORD=cfg["password"].encode('ascii', 'ignore')
 		self.APPID=cfg["appID"].encode('ascii', 'ignore')
 		AUTHCODE=cfg["authCode"].encode('ascii', 'ignore')
+		
+	
 	def OnFrontConnected(self):
 		print "OnFrontConnected"
 		#print self.BROKERID
@@ -136,15 +138,17 @@ class CTradeSpi(api.CThostFtdcTraderSpi):
 
 	def OnRspQrySettlementInfo(self, pSettlementInfo, pRspInfo, nRequestID, bIsLast) :
 		print ("OnRspQrySettlementInfo")
-		if not pRspInfo.ErrorID :
-			if    pSettlementInfo is not None :
-				self.daysettle.append(pSettlementInfo.Content)
-			else :
-			    print "content null"
-			if bIsLast :
+		#print str(pRspInfo.ErrorID)
+
+		if pSettlementInfo is not None :
+			self.daysettle.append(pSettlementInfo.Content)
+		else :
+		    print "content null"
+		if bIsLast :
+			if len(self.daysettle) > 0:
 				self.allsettle.append(self.daysettle)
 				self.daysettle.clear()
-				print "confirmed date" + self.theqrydate 
+			print "confirmed date"
 		
 	def OnRspSettlementInfoConfirm(self, pSettlementInfoConfirm, pRspInfo, nRequestID, bIsLast) :
 		print "OnRspSettlementInfoConfirm"
