@@ -82,9 +82,9 @@ def main():
 		lv_reqid += 1
 		qryinfofield.TradingDay=dt
 		tradeapi.ReqQrySettlementInfo(qryinfofield,lv_reqid)
-		time.sleep(5)
+		time.sleep(6)
 		print dt
-	time.sleep(10)
+	time.sleep(30)
 	rst = tradespi.allsettle
 	filehandler = open("./tx.pkl", 'w') 
 	pickle.dump(rst, filehandler)
