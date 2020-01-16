@@ -138,17 +138,17 @@ class CTradeSpi(api.CThostFtdcTraderSpi):
 
 	def OnRspQrySettlementInfo(self, pSettlementInfo, pRspInfo, nRequestID, bIsLast) :
 		print ("OnRspQrySettlementInfo")
-		#print str(pRspInfo.ErrorID)
-
-		if pSettlementInfo is not None :
-			self.daysettle.append(pSettlementInfo.Content)
-		else :
-		    print "content null"
-		if bIsLast :
-			if len(self.daysettle) > 0:
-				self.allsettle.append(self.daysettle)
-				self.daysettle.clear()
-			print "confirmed date"
+		if pRspInfo is not None:
+			if not pRspInfo.ErrorID: 
+				if pSettlementInfo is not None :
+					self.daysettle.append(pSettlementInfo.Content)
+				else :
+				    print "content null"
+				if bIsLast :
+					if len(self.daysettle) > 0:
+						self.allsettle.append(self.daysettle)
+						self.daysettle.clear()
+					print "confirmed date"
 		
 	def OnRspSettlementInfoConfirm(self, pSettlementInfoConfirm, pRspInfo, nRequestID, bIsLast) :
 		print "OnRspSettlementInfoConfirm"
