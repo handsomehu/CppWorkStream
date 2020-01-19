@@ -90,6 +90,11 @@ int* fast_search(int* samples,int arrsize)
         int l[arrsize]; // give size is 3, l[1], right[1]
                      // give size is 4, l[2], right[1]
         int r[arrsize];
+        for(int temp1 = 0;temp1!=arrsize;++temp1)
+        {
+            l[temp1] = 0;
+            r[temp1] = 0;
+        }
         baseval = samples[temp];
         for(int i = 0+1;i!= arrsize;++i)
         {
