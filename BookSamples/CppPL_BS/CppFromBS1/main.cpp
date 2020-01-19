@@ -9,6 +9,9 @@
 #include <chrono>
 
 using namespace std;
+
+constexpr int ftbl[] { 1, 2, 3, 5, 8, 13 };
+
 int test_si()
 {
 string from, to;
@@ -147,15 +150,16 @@ for (int i = 0; i!=dim1; i++)
  }
 
 
- void test_cast()
+ constexpr int fib(int n)
  {
-     const int i = 8;
-     int j = std::const_cast<int>{i};
-
+    return (n<sizeof(ftbl)/sizeof(*ftbl)) ? ftbl[n] : fib(n);
  }
+
 int main()
 {
     test_prio();
+    cout << "start fib" << std::endl;
+    cout << fib(7) << std::endl;
     return 0;
      //int s1 = isqrt(9); // s1 becomes 3
      int s2 = isqrt(4);
