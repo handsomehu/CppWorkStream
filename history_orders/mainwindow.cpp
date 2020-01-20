@@ -17,7 +17,7 @@ MainWindow::~MainWindow()
 void MainWindow::on_pb_query_clicked()
 {
     std::string cfgpath = "./cfg/j123.json";
-    std::vector<std::string> vdate{"20191230","20191231","20200102"};
+    std::vector<std::string> vdate{"20200117"};
     bool cnstatus = 0;
     //= trader.is_connected();
     TradeWrapper trader{cfgpath};

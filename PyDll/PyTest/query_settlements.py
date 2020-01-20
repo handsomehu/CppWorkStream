@@ -70,26 +70,31 @@ def main():
 	tradeapi.RegisterSpi(tradespi)
 	tradeapi.SubscribePrivateTopic(api.THOST_TERT_QUICK)
 	tradeapi.SubscribePublicTopic(api.THOST_TERT_QUICK)
-	FrontAddr1="tcp://180.168.146.187:10100"
+	FrontAddr1="tcp://180.168.146.187:10130"
 	tradeapi.RegisterFront(FrontAddr1)	
 	tradeapi.Init()
+	time.sleep(10)
 	qryinfofield = api.CThostFtdcQrySettlementInfoField()
 	qryinfofield.BrokerID="118907"
 	qryinfofield.InvestorID="118907"
 	#qryinfofield.TradingDay="20200113"
-	lv_reqid = 10000		
+	lv_reqid = 30000	
+	#txdates = ["20200117"]	
 	for dt in txdates:
+		print "before"
 		lv_reqid += 1
 		qryinfofield.TradingDay=dt
 		tradeapi.ReqQrySettlementInfo(qryinfofield,lv_reqid)
-		time.sleep(6)
+		time.sleep(2)
+		print "after"
 		print dt
 	time.sleep(30)
 	rst = tradespi.allsettle
-	filehandler = open("./tx.pkl", 'w') 
+	filehandler = open("./tx1.pkl", 'w') 
 	pickle.dump(rst, filehandler)
 	#tradeapi.Join()
 	
 if __name__ == '__main__':
+	#time.sleep(7500)
 	main()
 
