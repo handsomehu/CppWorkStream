@@ -123,27 +123,23 @@ class CTradeSpi(api.CThostFtdcTraderSpi):
 		print "TradingDay=",pRspUserLogin.TradingDay
 		print "SessionID=",pRspUserLogin.SessionID
 		print "ErrorID=",pRspInfo.ErrorID
-		print "ErrorMsg=",pRspInfo.ErrorMsg
-
+		print "ErrorMsg=",pRspInfo.ErrorMsg		
+	
+	def ReqQryHist(self,dt,reqid):
 		qryinfofield = api.CThostFtdcQrySettlementInfoField()
-		qryinfofield.BrokerID=self.BROKERID
-		qryinfofield.InvestorID=self.USERID
-		qryinfofield.TradingDay="20200113"
-		self.reqid += 1
-		pSettlementInfoConfirm=api.CThostFtdcSettlementInfoConfirmField()
-		pSettlementInfoConfirm.BrokerID=self.BROKERID
-		pSettlementInfoConfirm.InvestorID=self.USERID
-		self.tapi.ReqSettlementInfoConfirm(pSettlementInfoConfirm,self.reqid)
+		qryinfofield.BrokerID=self.BROKERID#"118907"
+		qryinfofield.InvestorID=self.BROKERID
+		qryinfofield.TradingDay=dt.encode('ascii', 'ignore')
+		ret = self.tapi.ReqQrySettlementInfo(qryinfofield,reqid)
+		print("query settle",ret)
 		
-
 	def OnRspQrySettlementInfo(self, pSettlementInfo, pRspInfo, nRequestID, bIsLast) :
 		print ("OnRspQrySettlementInfo")
-		if pRspInfo is not None:
-			print "rsp not none"
-		#if not pRspInfo.ErrorID: 
-		if pSettlementInfo is not None :
+		#print (pSettlementInfo.Content)
+		if  pSettlementInfo is not None :
+			print ("content:",pSettlementInfo.Content)
 			self.daysettle.append(pSettlementInfo.Content)
-			print(pSettlementInfo.Content)
+			#print(pSettlementInfo.Content)
 		else :
 		    print "content null"
 		if bIsLast :
