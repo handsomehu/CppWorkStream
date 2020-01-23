@@ -1,5 +1,43 @@
 #include "tradewrapper.h"
 
+
+
+int GbkToUtf8(char *str_str, size_t src_len, char *dst_str, size_t dst_len)
+{
+    iconv_t cd;
+    char **pin = &str_str;
+    char **pout = &dst_str;
+
+    cd = iconv_open("utf8", "gbk");
+    if (cd == 0)
+        return -1;
+    memset(dst_str, 0, dst_len);
+    if (iconv(cd, pin, &src_len, pout, &dst_len) == -1)
+        return -1;
+    iconv_close(cd);
+    **pout = '\0';
+
+    return 0;
+}
+
+int Utf8ToGbk(char *src_str, size_t src_len, char *dst_str, size_t dst_len)
+{
+    iconv_t cd;
+    char **pin = &src_str;
+    char **pout = &dst_str;
+
+    cd = iconv_open("gbk", "utf8");
+    if (cd == 0)
+        return -1;
+    memset(dst_str, 0, dst_len);
+    if (iconv(cd, pin, &src_len, pout, &dst_len) == -1)
+        return -1;
+    iconv_close(cd);
+    **pout = '\0';
+
+    return 0;
+}
+
 TradeWrapper::TradeWrapper(const std::string &path):
   m_ptraderapi(nullptr),
   cfgpath(path), brokerid(""),mdaddress(""),tdaddress(""),
@@ -184,6 +222,7 @@ void TradeWrapper::settlementinfoConfirm()
 
     CThostFtdcSettlementInfoConfirmField t = {0};
 
+
     char bufstr[100];
     std::copy(brokerid.begin(),brokerid.end(),bufstr);
     bufstr[brokerid.size()] = '\0';
@@ -337,7 +376,7 @@ void TradeWrapper::OnRspSettlementInfoConfirm(CThostFtdcSettlementInfoConfirmFie
 
 }
 
-std::vector<std::vector<std::wstring>> TradeWrapper::getsettlements()
+std::vector<std::vector<std::string>> TradeWrapper::getsettlements()
 {
     return alldays;
 }
@@ -398,20 +437,23 @@ wchar_t* TradeWrapper::MBCS2Unicode(wchar_t* buff, const char* str)
 }
 void TradeWrapper::OnRspQrySettlementInfo(CThostFtdcSettlementInfoField *pSettlementInfo, CThostFtdcRspInfoField *pRspInfo, int nRequestID, bool bIsLast)
 {
-    std::wstring tempstr;
+    std::string tempstr;
     wchar_t wbuff[501];
     wchar_t* bufftype;
+    char dst_utf8[1024] = {0};
+
     std::cout << "start query" << std::endl;
     if (pRspInfo )
     {
+        std::cout << "rspinfo ok" << std::endl;
         if(pRspInfo->ErrorID == 0)
         {
             std::cout << "no error" << std::endl;
             if (pSettlementInfo->Content !=nullptr)
             {
-                bufftype = MBCS2Unicode(bufftype,pSettlementInfo->Content);
+                GbkToUtf8(pSettlementInfo->Content, strlen(pSettlementInfo->Content), dst_utf8, sizeof(dst_utf8));
                 std::cout << "content" << std::endl;
-                tempstr = std::wstring(bufftype);//(std::begin(pSettlementInfo->Content), std::end(pSettlementInfo->Content));
+                tempstr = std::string(dst_utf8);//(std::begin(pSettlementInfo->Content), std::end(pSettlementInfo->Content));
                 oneday.push_back(tempstr);
                 if (bIsLast)
                 {
@@ -425,6 +467,7 @@ void TradeWrapper::OnRspQrySettlementInfo(CThostFtdcSettlementInfoField *pSettle
     }
 
     std::cout << "response settlement" << std::endl;
+    std::cout << "content" << std::endl;
     std::cout << pSettlementInfo->Content << std::endl;
 
 }

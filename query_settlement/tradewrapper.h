@@ -4,7 +4,9 @@
 //#include "traderApi.h"
 #include <string.h>
 #include <cstring>
+#include <stdlib.h>
 #include <stdio.h>
+#include <iconv.h>
 #include <memory>
 #include <chrono>
 #include <array>
@@ -15,6 +17,12 @@
 #include <fstream>
 
 void NewTradeEvent();
+
+
+int GbkToUtf8(char *str_str, size_t src_len, char *dst_str, size_t dst_len);
+int Utf8ToGbk(char *src_str, size_t src_len, char *dst_str, size_t dst_len);
+
+
 //TThostFtdcContentType
 class TradeWrapper: public CThostFtdcTraderSpi
 {
@@ -38,7 +46,7 @@ public:
     bool is_goodorder();
     void reset_goodorder();
     wchar_t* MBCS2Unicode(wchar_t* buff, const char* str);
-    std::vector<std::vector<std::wstring>> getsettlements() ;
+    std::vector<std::vector<std::string>> getsettlements() ;
     //responsive method
     void OnFrontConnected();
     void OnFrontDisconnected(int nReason);
@@ -64,8 +72,8 @@ private:
     std::ifstream jfile;
     bool isconnected;
     bool goodorder;
-    std::vector<std::wstring> oneday;
-    std::vector<std::vector<std::wstring>> alldays;
+    std::vector<std::string> oneday;
+    std::vector<std::vector<std::string>> alldays;
 };
 
 
