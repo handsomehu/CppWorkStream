@@ -70,15 +70,15 @@ def main():
 	tradeapi.RegisterSpi(tradespi)
 	tradeapi.SubscribePrivateTopic(api.THOST_TERT_QUICK)
 	tradeapi.SubscribePublicTopic(api.THOST_TERT_QUICK)
-	FrontAddr1="tcp://180.168.146.187:10100"#"tcp://180.168.146.187:10100"
+	FrontAddr1="tcp://222.66.192.247:43205"#"tcp://180.168.146.187:10100"
 	Userid ="60039860" 
 	tradeapi.RegisterFront(FrontAddr1.encode('ascii', 'ignore'))	
 	tradeapi.Init()
-	time.sleep(10)
+	time.sleep(15)
 
 	#qryinfofield.TradingDay="20200113"
-	lv_reqid = 30000	
-	#txdates = ["20200113","20200117"]	
+	lv_reqid = 40000	
+	txdates = ["20200113","20200117"]	
 	for dt in txdates:
 		#print "before"
 		lv_reqid += 1

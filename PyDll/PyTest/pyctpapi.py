@@ -88,18 +88,20 @@ class CTradeSpi(api.CThostFtdcTraderSpi):
 		print "aaaaa"
 		#loginfield = api.CThostFtdcReqUserLoginField()
 		authfield.BrokerID=self.BROKERID
-		print "ddd"
+		print authfield.BrokerID
 		authfield.UserID=self.USERID
-		print "ddd"
-		#authfield.Password=PASSWORD
+		print authfield.UserID
+		authfield.Password=self.PASSWORD
 		authfield.UserProductInfo="python dll"
 		authfield.AuthCode = self.AUTHCODE
 		authfield.AppID = self.APPID
-		print "ddd"
+		print authfield.AuthCode
 		self.reqid += 1
 		
 		print self.BROKERID,self.USERID,self.AUTHCODE,self.APPID
-		self.tapi.ReqAuthenticate(authfield,self.reqid)
+		t1 = 999
+		t1 = self.tapi.ReqAuthenticate(authfield,888)
+		print t1
 		#self.tapi.ReqUserLogin(loginfield,0)
 		print "send auth request ok"
 	def OnRspAuthenticate(self, pRspAuthenticateField, pRspInfo, nRequestID, bIsLast):	
@@ -133,7 +135,7 @@ class CTradeSpi(api.CThostFtdcTraderSpi):
 		ret = self.tapi.ReqQrySettlementInfo(qryinfofield,reqid)
 		print("query settle",ret)
 		
-	def OnRspQrySettlementInfo(self, pSettlementInfo, pRspInfo, nRequestID, bIsLast) :
+	def OnRspQrySettlementInfo1(self, pSettlementInfo, pRspInfo, nRequestID, bIsLast) :
 		print ("OnRspQrySettlementInfo")
 		#print (pSettlementInfo.Content)
 		if  pSettlementInfo is not None :
@@ -148,7 +150,14 @@ class CTradeSpi(api.CThostFtdcTraderSpi):
 				self.daysettle.clear()
 			print "confirmed date"
 		print self.daysettle
-		
+	def OnRspQrySettlementInfo(self, pSettlementInfo, pRspInfo, nRequestID, bIsLast) :
+		print ("OnRspQrySettlementInfo")
+		if  pSettlementInfo is not None :
+			print ("content:",pSettlementInfo.Content)
+		else :
+			print ("content null")
+		if bIsLast :
+			print ("send ReqSettlementInfoConfirm ok")		
 	def OnRspSettlementInfoConfirm(self, pSettlementInfoConfirm, pRspInfo, nRequestID, bIsLast) :
 		print "OnRspSettlementInfoConfirm"
 		print "ErrorID=",pRspInfo.ErrorID
