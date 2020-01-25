@@ -37,7 +37,7 @@ int main()
         GbkToUtf8(gbkstr, strlen(gbkstr), dst_utf8, sizeof(dst_utf8));
         std::cout << std::string(dst_utf8) << std::endl ;
     }
-    return 0;
+    //return 0;
 
 
 

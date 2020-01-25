@@ -466,6 +466,18 @@ using Pn = void(int) noexcept; // error : noexcept in alias
 I recommend using macros only for conditional compilation (§12.6.1) and in particular for
 include guards (§15.3.3).
 
-Page 343 Finish chapter 12
+In particular, the scope and storage class (§6.3.4, §6.4.2) of variables are not affected, so g1 is still a
+global variable – and is still defined rather than just declared. To declare but not define a variable,
+you must apply the keyword extern directly in the declaration. For example:
+extern "C" int g3; // declaration, not definition
+extern "C" { int g4; } // definition
+
+
+An implementation in which C and C++ use the same calling conventions might accept the declarations
+marked error as a language extension. However, even for compatible C and C++ implementations,
+std::function (§33.5.3) or lambdas with any form of capture (§11.4.3) cannot cross the language
+barrier.
+
+Page 447 start part III
 
 

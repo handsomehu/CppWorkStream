@@ -52,8 +52,10 @@ OBJECTS_DIR   = ./
 
 ####### Files
 
-SOURCES       = ../CppFromBS1/main.cpp 
-OBJECTS       = main.o
+SOURCES       = ../CppFromBS1/main.cpp \
+		../CppFromBS1/vector.cpp 
+OBJECTS       = main.o \
+		vector.o
 DIST          = /home/leon/Qt/5.12.5/gcc_64/mkspecs/features/spec_pre.prf \
 		/home/leon/Qt/5.12.5/gcc_64/mkspecs/common/unix.conf \
 		/home/leon/Qt/5.12.5/gcc_64/mkspecs/common/linux.conf \
@@ -225,7 +227,8 @@ DIST          = /home/leon/Qt/5.12.5/gcc_64/mkspecs/features/spec_pre.prf \
 		/home/leon/Qt/5.12.5/gcc_64/mkspecs/features/exceptions.prf \
 		/home/leon/Qt/5.12.5/gcc_64/mkspecs/features/yacc.prf \
 		/home/leon/Qt/5.12.5/gcc_64/mkspecs/features/lex.prf \
-		../CppFromBS1/CppFromBS1.pro  ../CppFromBS1/main.cpp
+		../CppFromBS1/CppFromBS1.pro vector.h ../CppFromBS1/main.cpp \
+		../CppFromBS1/vector.cpp
 QMAKE_TARGET  = CppFromBS1
 DESTDIR       = 
 TARGET        = CppFromBS1
@@ -627,6 +630,9 @@ compiler_clean:
 
 main.o: ../CppFromBS1/main.cpp 
 	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o main.o ../CppFromBS1/main.cpp
+
+vector.o: ../CppFromBS1/vector.cpp ../CppFromBS1/vector.h
+	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o vector.o ../CppFromBS1/vector.cpp
 
 ####### Install
 

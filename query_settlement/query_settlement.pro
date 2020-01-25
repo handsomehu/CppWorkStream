@@ -5,7 +5,8 @@ CONFIG -= qt
 
 SOURCES += \
         main.cpp \
-        tradewrapper.cpp
+        tradewrapper.cpp \
+        vector.cpp
 
 DISTFILES += \
     libhead/error.dtd \
@@ -17,7 +18,8 @@ HEADERS += \
     libhead/ThostFtdcUserApiDataType.h \
     libhead/ThostFtdcUserApiStruct.h \
     libhead/json.hpp \
-    tradewrapper.h
+    tradewrapper.h \
+    vector.h
 
 win32:CONFIG(release, debug|release): LIBS += -L$$PWD/libfiles/release/ -lthosttraderapi_se
 else:win32:CONFIG(debug, debug|release): LIBS += -L$$PWD/libfiles/debug/ -lthosttraderapi_se
