@@ -478,6 +478,43 @@ marked error as a language extension. However, even for compatible C and C++ imp
 std::function (§33.5.3) or lambdas with any form of capture (§11.4.3) cannot cross the language
 barrier.
 
-Page 447 start part III
+
+By default, declare a constructor that can be called with a single argument explicit. You need a
+good reason not to do so (as for complex). If you define an implicit constructor, it is best to document
+your reason or a maintainer may suspect that you were forgetful (or ignorant).
+
+We can define a member of a class to be mutable, meaning that it can be modified even in a const
+object:
+
+In multi-threaded code, static data members require some kind of locking or access discipline to
+avoid race conditions
+
+
+A member class (often called a nested class) can refer to types and static members of its enclosing
+class. It can only refer to non-static members when it is given an object of the enclosing class to
+refer to.
+
+A nested class has access to members of its enclosing class, even to private members (just as a
+member function has), but has no notion of a current object of the enclosing class.
+
+
+
+template<typename T>
+void Tree::Node::f(Tree∗ p)
+{
+top = right; // error : no object of type Tree specified
+p−>top = right; // OK
+value_type v = left−>value; // OK: value_type is not associated with an object
+}
+
+A class does not have any special access rights to the members of its nested class. For example:
+template<typename T>
+void Tree::g(Tree::Node∗ p)
+{
+value_type val = right−>value; //error : no object of type Tree::Node
+value_type v = p−>right−>value; // error : Node::r ight is private
+p−>f(this); //OK
+}
+Page 481 start Charter 17
 
 

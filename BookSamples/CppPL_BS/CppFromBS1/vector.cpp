@@ -20,12 +20,15 @@ vector<T,A>::vector(size_type n, const T& val, const A& a) // warning: naive imp
 :alloc{a} //copy the allocator
 {
     elem = alloc.allocate(n); // get memory for elements
-    try {
-    uninitialized_fill(elem,elem+n,val); // copy elements
-    space = last = elem+n;
+    try
+    {
+        uninitialized_fill(elem,elem+n,val); // copy elements
+        space = last = elem+n;
     }
-    catch (...) {
-    alloc.deallocate(elem,n); // free memory
-    throw; // rethrow
+    catch (...)
+    {
+        alloc.deallocate(elem,n); // free memory
+        throw; // rethrow
+    }
 
 }
