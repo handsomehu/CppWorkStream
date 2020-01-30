@@ -7,7 +7,7 @@
 #include <memory>
 #include <cstddef>
 #include <chrono>
-
+#include "bsstring.h"
 using namespace std;
 
 constexpr int ftbl[] { 1, 2, 3, 5, 8, 13 };
@@ -155,8 +155,32 @@ for (int i = 0; i!=dim1; i++)
     return (n<sizeof(ftbl)/sizeof(*ftbl)) ? ftbl[n] : fib(n);
  }
 
+void test_string()
+{
+    String s ("abcdefghij");
+    cout << s << '\n';
+    s += 'k';
+    s += 'l';
+    s += 'm';
+    s += 'n';
+    cout << s << '\n';
+    String s2 { "Hell"};
+    s2 += String{" and high water"};
+    cout << s2 << '\n';
+    String s3 { "qwerty"};
+    s3 = s3;
+    String s4 {"the quick bro wn fox jumped over the lazy dog"};
+    s4 = s4;
+    cout << s3 << " " << s4 << "\n";
+    cout << s + String{". "} + s3 + String(". ") + String{"Horsefeathers\n"};
+    String buf;
+    while (cin>>buf && buf!=String{"quit"})
+    cout << buf << " " << buf.size() << " " << buf.capacity() << '\n';
+}
 int main()
 {
+    test_string();
+    return 0;
     test_prio();
     cout << "start fib" << std::endl;
     cout << fib(7) << std::endl;

@@ -53,9 +53,11 @@ OBJECTS_DIR   = ./
 ####### Files
 
 SOURCES       = ../CppFromBS1/bs_date.cpp \
+		../CppFromBS1/bsstring.cpp \
 		../CppFromBS1/main.cpp \
 		../CppFromBS1/vector.cpp 
 OBJECTS       = bs_date.o \
+		bsstring.o \
 		main.o \
 		vector.o
 DIST          = /home/leon/Qt/5.12.5/gcc_64/mkspecs/features/spec_pre.prf \
@@ -230,7 +232,9 @@ DIST          = /home/leon/Qt/5.12.5/gcc_64/mkspecs/features/spec_pre.prf \
 		/home/leon/Qt/5.12.5/gcc_64/mkspecs/features/yacc.prf \
 		/home/leon/Qt/5.12.5/gcc_64/mkspecs/features/lex.prf \
 		../CppFromBS1/CppFromBS1.pro bs_date.h \
+		bsstring.h \
 		vector.h ../CppFromBS1/bs_date.cpp \
+		../CppFromBS1/bsstring.cpp \
 		../CppFromBS1/main.cpp \
 		../CppFromBS1/vector.cpp
 QMAKE_TARGET  = CppFromBS1
@@ -635,7 +639,10 @@ compiler_clean:
 bs_date.o: ../CppFromBS1/bs_date.cpp ../CppFromBS1/bs_date.h
 	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o bs_date.o ../CppFromBS1/bs_date.cpp
 
-main.o: ../CppFromBS1/main.cpp 
+bsstring.o: ../CppFromBS1/bsstring.cpp ../CppFromBS1/bsstring.h
+	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o bsstring.o ../CppFromBS1/bsstring.cpp
+
+main.o: ../CppFromBS1/main.cpp ../CppFromBS1/bsstring.h
 	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o main.o ../CppFromBS1/main.cpp
 
 vector.o: ../CppFromBS1/vector.cpp ../CppFromBS1/vector.h

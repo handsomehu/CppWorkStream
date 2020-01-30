@@ -5,9 +5,11 @@ CONFIG -= qt
 
 SOURCES += \
         bs_date.cpp \
+        bsstring.cpp \
         main.cpp \
         vector.cpp
 
 HEADERS += \
     bs_date.h \
+    bsstring.h \
     vector.h

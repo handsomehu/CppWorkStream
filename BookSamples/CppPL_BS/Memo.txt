@@ -515,6 +515,329 @@ value_type val = right−>value; //error : no object of type Tree::Node
 value_type v = p−>right−>value; // error : Node::r ight is private
 p−>f(this); //OK
 }
-Page 481 start Charter 17
+
+
+Constructors and destructors interact correctly with class hierarchies (§3.2.4, Chapter 20). A constructor
+builds a class object ‘‘from the bottom up’’:
+[1] first, the constructor invokes its base class constructors,
+[2] then, it invokes the member constructors, and
+[3] finally, it executes its own body.
+A destructor ‘‘tears down’’ an object in the reverse order:
+[1] first, the destructor executes its own body,
+[2] then, it invokes its member destructors, and
+[3] finally, it inv okes its base class destructors.
+
+A class can only have one desctructor and with on argument.
+
+Consider a container that
+(like std::vector) maintains a pool of memory into which it can grow and shrink (e.g., using
+push_back() and pop_back()). When we add an element, the container must invoke its constructor
+for a specific address:
+void C::push_back(const X& a)
+{
+// ...
+new(p) X{a}; // copy constr uct an X with the value a in address p
+// ...
+}
+This use of a constructor is known as ‘‘placement new’’ (§11.2.4).
+Conversely, when we remove an element, the container needs to invoke its destructor:
+void C::pop_back()
+{
+// ...
+p−>˜X(); // destroy the X in address p
+}
+
+class Nonlocal {
+public:
+// ...
+void destroy() { this−>˜Nonlocal(); } // explicit destruction
+private:
+// ...
+˜Nonlocal(); //don’t destroy implicitly
+};
+void user()
+{
+Nonlocal x; // error : cannot destroy a Nonlocal
+X∗ p = new Nonlocal; // OK
+// ...
+delete p; // error : cannot destroy a Nonlocal
+p.destroy(); //OK
+}
+
+If you want guaranteed initialization or simply dislike surprises,
+supply an initializer, such as {}.
+
+If a class has a private non-static data member, it needs a constructor to initialize it.
+
+
+Note that the default constructor (§17.3.3) disappears when you define a constructor requiring arguments;
+after all, X(int) states that an int is required to construct an X. Howev er, the copy constructor
+does not disappear (§17.3.3); the assumption is that an object can be copied (once properly constructed).
+
+Note that the {}-initializer notation does not allow narrowing (§2.2.2). That is another reason to
+prefer the {} style over () or =.
+
+
+References and consts must be initialized (§7.7, §7.5). Therefore, a class containing such members
+cannot be default constructed unless the programmer supplies in-class member initializers
+(§17.4.4) or defines a default constructor that initializes them (§17.4.1).
+
+
+For selecting a constructor, default and initializer
+lists take precedence. Consider:
+struct X {
+X(initializer_list<int>);
+X();
+X(int);
+};
+X x0 {}; // empty list: default constructor or initializer-list constructor? (the default constructor)
+X x1 {1}; // one integer: an int argument or a list of one element? (the initializer-list constructor)
+
+
+The rules are:
+• If either a default constructor or an initializer-list constructor could be invoked, prefer the
+default constructor.
+• If both an initializer-list constructor and an ‘‘ordinary constructor’’ could be invoked, prefer
+the initializer-list constructor.
+
+
+An initializer_list<T> is passed by value. That is required by the overload resolution rules
+(§12.3) and does not impose overhead because an initializer_list<T> object is just a small handle
+(typically two words) to an array of Ts.
+
+
+That is, a member-style initializer using the class’s own name (its constructor name) calls another
+constructor as part of the construction. Such a constructor is called a delegating constructor (and
+occasionally a forwarding constructor).
+You cannot both delegate and explicitly initialize a member.
+
+
+If a member is initialized by both an in-class initializer and a constructor, only the constructor’s
+initialization is done (it ‘‘overrides’’ the default).
+
+It is a bad idea to hide subtle dependencies on global data in member initializers.
+
+
+A copy constructor and a copy assignment differ in that a copy constructor initializes uninitialized
+memory, whereas the copy assignment operator must correctly deal with an object that has already
+been constructed and may own resources.
+
+
+The Matrix copy assignment operator has the property that if a copy of an element throws an
+exception, the target of the assignment may be left with a mixture of its old value and the new.
+That is, that Matrix assignment provided the basic guarantee, but not the strong guarantee (§13.2).
+If that is not considered acceptable, we can avoid it by the fundamental technique of first making a
+copy and then swapping representations:
+Matrix& Matrix::operator=(const Matrix& m) // copy assignment
+{
+Matrix tmp {m}; // make a copy
+swap(tmp,∗this); // swap tmp’s representation with *this’s
+return ∗this;
+}
+
+Copy operations that provide equivalence and independence
+lead to simpler and more maintainable code.
+
+
+Here I violated the rule of independence. After the ‘‘copy’’ of x into y, we can manipulate part of
+x’s state through y. This is sometimes called shallow copy and (too) often praised for ‘‘efficiency.’’
+The obvious alternative of copying the complete state of an object is called deep copy. Often, the
+better alternative to deep copy is not a shallow copy, but a move operation, which minimizes copying
+without adding complexity (§3.3.2, §17.5.2).
+
+
+copy on write:
+Note that an immutable shared state is not a problem. Unless we compare addresses, we cannot
+tell whether two equal values happen to be represented as one or two copies. This is a useful observation
+because many copies are never modified. For example, objects passed by value are rarely
+written to. This observation leads to the notion of copy-on-write. The idea is that a copy doesn’t
+actually need independence until a shared state is written to, so we can delay the copying of the
+shared state until just before the first write to it. Consider:
+class Image {
+public:
+// ...
+Image(const Image& a); // copy constr uctor
+// ...
+void write_block(Descriptor);
+// ...
+private:
+Representation∗ clone(); // copy *rep
+Representation∗ rep;
+bool shared;
+};
+Assume that a Representation can be huge and that a write_block() is expensive compared to testing
+a bool. Then, depending on the use of Images, it can make sense to implement the copy constructor
+as a shallow copy:
+Image::Image(const Image& a) // do shallow copy and prepare for copy-on-wr ite
+:rep{a.rep},
+shared{true}
+{
+}
+We protect the argument to that copy constructor by copying the Representation before a write:void write_block(Descriptor d)
+{
+if (shared) {
+rep =clone(); // make a copy of *rep
+shared = false; // no more sharing
+}
+// ... now we can safely write to our own copy of rep ...
+}// a very wise way
+
+
+A pointer to a derived class implicitly converts to a pointer to its public base class.
+
+The variables b2 and bb contain copies of the Base part of d, that is, a copy of d.b. The member d.d
+is not copied. This phenomenon is called slicing. It may be exactly what you intended (e.g., see
+the copy constructor for D in §17.5.1.2 where we pass selected information to a base class), but typically
+it is a subtle bug. If you don’t want slicing, you have two major tools to prevent it:
+[1] Prohibit copying of the base class: delete the copy operations (§17.6.4).
+[2] Prevent conversion of a pointer to a derived to a pointer to a base: make the base class a
+private or protected base (§20.5).
+
+How does the compiler know when it can use a move operation rather than a copy operation?
+In a few cases, such as for a return value, the language rules say that it can (because the next action
+is defined to destroy the element). However, in general we have to tell it by giving an rvalue reference
+argument. For example:
+template<class T>
+void swap(T& a, T& b) // "perfect swap" (almost)
+{
+T tmp = std::move(a);
+a = std::move(b);
+b = std::move(tmp);
+}
+
+For a return value, the move constructor is chosen.
+
+
+The move() is a standard-library function returning an rvalue reference to its argument (§35.5.1):
+move(x) means ‘‘give me an rvalue reference to x.’’ That is, std::move(x) does not move anything;
+instead, it allows a user to move x.
+
+
+you have to be careful about data structures containing pointers (§3.3.1). In particular,
+don’t assume that a moved-from pointer is set to nullptr.
+
+• If the programmer declares any constructor for a class, the default constructor is not generated
+for that class.
+• If the programmer declares a copy operation, a move operation, or a destructor for a class,
+no copy operation, move operation, or destructor is generated for that class.
+Unfortunately, the second rule is only incompletely enforced: for backward compatibility, copy
+constructors and copy assignments are generated even if a destructor is defined. However, that generation
+is deprecated in the ISO standard (§iso.D), and you should expect a modern compiler to
+warn against it.
+
+
+Wherever possible
+[1] Establish an invariant in a constructor (including possibly resource acquisition).
+[2] Maintain the invariant with copy and move operations (with the usual names and types).
+[3] Do any needed cleanup in the destructor (incl. possibly resource release).
+
+In general, if a class has a pointer member, the
+default copy and move operations should be considered suspicious. If that pointer member represents
+ownership, memberwise copy is wrong. If that pointer member does not represent ownership
+and memberwise copy is appropriate, explicit =default and a comment are most likely a good idea.
+
+
+If we wanted copy construction, we could define something like:
+template<class T>
+class Handle {
+// ...
+Handle(const T& a) :p{new T{∗a.p}} { } // clone
+};
+
+We defined copy assignment, so we must also define the destructor. 
+
+
+[1] Is a default constructor needed (because the default one is not adequate or has been suppressed
+by another constructor)?
+[2] Is a destructor needed (e.g., because some resource needs to be released)?
+[3] Are copy operations needed (because the default copy semantics is not adequate, e.g.,
+because the class is meant to be a base class or because it contains pointers to objects that
+must be deleted by the class)?
+[4] Are move operations needed (because the default semantics is not adequate, e.g., because
+an empty object doesn’t make sense)?
+
+
+template<class T>
+T∗ clone(T∗ p) // return copy of *p
+{
+return new T{∗p};
+};
+Foo∗ clone(Foo∗) = delete; // don’t try to clone a Foo
+void f(Shape∗ ps, Foo∗ pf)
+{
+Shape∗ ps2 = clone(ps); // fine
+Foo∗ pf2 = clone(pf); // error : clone(Foo*) deleted
+}
+
+In addition, user-defined literals (§19.2.6) are defined by using the operator"" notation. This is a
+kind of syntactic subterfuge because there is no operator called "". Similarly, operator T() defines a
+conversion to a type T
+
+
+The operators operator= (§18.2.2), operator[] (§19.2.1), operator() (§19.2.2), and operator−>
+(§19.2.3) must be non-static member functions.
+
+The default meaning of &&, ||, and , (comma) involves sequencing: the first operand is evaluated
+before the second (and for && and || the second operand is not always evaluated). This special rule
+does not hold for user-defined versions of &&, ||, and , (comma); instead these operators are treated
+exactly like other binary operators.
+
+
+If a function simply passes an object to another function, an rvalue reference argument should
+be used
+
+
+Consider a binary operator @. If x is of type X and y is of type Y, x@y is resolved like this:
+• IfX is a class, look for operator@ as a member of X or as a member of a base of X; and
+• look for declarations of operator@ in the context surrounding x@y; and
+• ifX is defined in namespace N, look for declarations of operator@ in N; and
+• ifY is defined in namespace M, look for declarations of operator@ in M.
+
+
+If we don’t want implicit conversions, we can use explicit to suppress them (§16.2.6, §18.4.2).
+An operator[]() must be a non-static member function.
+
+
+Overloading −> is primarily useful for creating ‘‘smart pointers,’’ that is, objects that act like pointers
+and in addition perform some action whenever an object is accessed through them. The standard-
+library ‘‘smart pointers’’ unique_ptr and shared_ptr (§5.2.1) provide operator −>.
+
+
+Operator −> must be a non-static member function. If used, its return type must be a pointer or
+an object of a class to which you can apply −>.
+
+
+A more selective, and often better, approach is to supply these operations for a specific class.
+This class might be the base for many derived classes. For example, we might like to hav e a class
+Employee provide a specialized allocator and deallocator for itself and all of its derived classes:
+class Employee {
+public:
+// ...
+void∗ operator new(siz e_t);
+void operator delete(void∗, siz e_t);
+void∗ operator new[](siz e_t);
+void operator delete[](void∗, siz e_t);
+};
+
+
+Member operator new()s and operator delete()s are implicitly static members. Consequently, they
+don’t hav e a this pointer and do not modify an object. They provide storage that a constructor can
+initialize and a destructor can clean up.
+
+
+A template literal operator is a literal operator that takes its argument as a template parameter
+pack, rather than as a function argument.
+
+
+In particular, I used a form of union called an anonymous union
+(§8.3.2), which is specifically designed to allow a class to manage alternative representations of
+objects.
+
+
+Thus, a friend function should be explicitly declared in an enclosing scope or take an argument of
+its class or a class derived from that. If not, the friend cannot be called.
+
+
+Page 577 start Charter 20
 
 
