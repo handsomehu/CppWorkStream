@@ -837,7 +837,50 @@ objects.
 Thus, a friend function should be explicitly declared in an enclosing scope or take an argument of
 its class or a class derived from that. If not, the friend cannot be called.
 
+Interface inheritance is often referred to as run-time polymorphism (or dynamic polymorphism). In
+contrast, the uniform use of classes not related by inheritance provided by templates (§3.4, Chapter
+23) is often referred to as compile-time polymorphism (or static polymorphism).
 
-Page 577 start Charter 20
+A member of a derived class can use the public – and protected (see §20.5) – members of a base
+class as if they were declared in the derived class itself.
+However, a derived class cannot access private members of a base class:
+
+
+Typically, the cleanest solution is for the derived class to use only the public members of its
+base class. For example:
+void Manager::print() const
+{
+Employee::print(); // print Employee infor mation
+cout << level; // print Manager-specific infor mation
+// ...
+}
+Note that :: must be used because print() has been redefined in Manager. Such reuse of names is typical.
+The unwary might write this:
+void Manager::print() const
+{
+print(); // oops!
+// print Manager-specific infor mation
+}
+The result is a sequence of recursive calls ending with some form of program crash.
+
+
+As usual, constructors and destructors are as essential:
+• Objects are constructed from the bottom up (base before member and member before
+derived) and destroyed top-down (derived before member and member before base);
+§17.2.3.
+• Each class can initialize its members and bases (but not directly members or bases of its
+bases); §17.4.1.
+• Typically, destructors in a hierarchy need to be virtual; §17.2.5.
+• Copy constructors of classes in a hierarchy should be used with care (if at all) to avoid slicing;
+§17.5.1.4.
+• The resolution of a virtual function call, a dynamic_cast, or a typeid() in a constructor or destructor
+reflects the stage of construction and destruction (rather than the type of the yet-tobe-
+completed object); §22.4.
+
+
+A function from a derived class with the same name and the same set of argument types as a virtual
+function in a base is said to override the base class version of the virtual function.
+
+Page 588 start Charter 20
 
 
