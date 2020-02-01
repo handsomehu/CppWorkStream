@@ -881,6 +881,216 @@ completed object); §22.4.
 A function from a derived class with the same name and the same set of argument types as a virtual
 function in a base is said to override the base class version of the virtual function.
 
-Page 588 start Charter 20
+
+A virtual function invoked from a constructor or a destructor reflects that the object is partially
+constructed or partially destroyed (§22.4). It is therefore typically a bad idea to call a virtual function
+from a constructor or a destructor.
+
+for larger hierarchies
+more specific controls are useful:
+• virtual: The function may be overridden (§20.3.2).
+• =0: The function must be virtual and must be overridden (§20.4).
+• override: The function is meant to override a virtual function in a base class (§20.3.4.1).
+• final: The function is not meant to be overridden (§20.3.4.2).
+
+
+The override specifier comes last in a declaration, after all other parts.
+
+
+struct Node { // interface class
+virtual Type type() = 0;
+// ...
+};
+class If_statement : public Node {
+public:
+Type type() override final; // prevent further overr iding
+// ...
+};
+
+
+We can make every virtual member function of a class final; just add final after the class name. 
+For good and bad, adding final to the class not only prevents overriding, it also prevents further
+derivation from a class.
+For example:
+class For_statement final : public Node {
+public:
+Type type() override;
+// ...
+};
+
+
+A final specifier is not part of the type of a function and cannot be repeated in an out-of-class
+definition.
+
+
+Functions do not overload across scopes (§12.3.3). For example:
+struct Base {
+void f(int);
+};
+struct Derived : Base {
+void f(double);
+};
+void use(Derived d)
+{
+d.f(1); // call Derived::f(double)
+Base& br = d
+br.f(1); // call Base::f(int)
+}
+
+
+We solve the problem by simply saying that the constructors should be inherited:
+template<class T>
+struct Vector : std::vector<T> {
+using vector<T>::vector; // inherit constr uctors
+
+There is a relaxation of the rule that the type of an overriding function must be the same as the type
+of the virtual function it overrides. That is, if the original return type was B∗, then the return type of
+the overriding function may be D∗, provided B is a public base of D. Similarly, a return type of B&
+may be relaxed to D&. This is sometimes called the covariant return rule.
+This relaxation applies only to return types that are pointers or references, and not to ‘‘smart
+pointers’’ such as unique_ptr (§5.2.1).
+
+
+A class with one or more pure virtual functions is an abstract class, and no objects of that abstract
+class can be created:
+
+A pure virtual function that is not defined in a derived class remains a pure virtual function, so the
+derived class is also an abstract class. This allows us to build implementations in stages:
+class Polygon : public Shape { // abstract class
+public:
+bool is_closed() const override { return true; }
+// ... draw and rotate not overr idden ...
+};
+Polygon b {p1,p2,p3,p4}; // error : declaration of object of abstract class Polygon
+Polygon is still abstract because we did not override draw() and rotate(). Only when that is done do
+we have a class from which we can create objects
+
+The compiler may decide for m2 to precede m1 in the layout of an S object. Such reordering could
+come as a surprise to the programmer and is implementation-dependent, so don’t use multiple
+access specifiers for data members without good reason.
+
+
+Like a member, a base class can be declared private, protected, or public. For example:
+class X : public B { /* ... */ };
+class Y : protected B { /* ... */ };
+class Z : private B { /* ... */ };
+The different access specifiers serve different design needs:
+• public derivation makes the derived class a subtype of its base. For example, X is a kind of
+B. This is the most common form of derivation.
+• private bases are most useful when defining a class by restricting the interface to a base so
+that stronger guarantees can be provided. For example, B is an implementation detail of Z.
+The Vector of pointers template that adds type checking to its Vector<void∗> base from §25.3
+is a good example.
+• protected bases are useful in class hierarchies in which further derivation is the norm. Like
+private derivation, protected derivation is used to represent implementation details. The
+Ival_slider from §21.2.2 is a good example.
+
+The access specifier for a base class can be left out. In that case, the base defaults to a private base
+for a class and a public base for a struct. For example:
+class XX : B { /* ... */ }; // B is a private base
+struct YY : B { /* ... */ }; // B is a public base
+
+The access specifier for a base class controls the access to members of the base class and the
+conversion of pointers and references from the derived class type to the base class type. Consider a
+class D derived from a base class B:
+• IfB is a private base, its public and protected members can be used only by member functions
+and friends of D. Only friends and members of D can convert a D∗ to a B∗.
+• IfB is a protected base, its public and protected members can be used only by member functions
+and friends of D and by member functions and friends of classes derived from D. Only
+friends and members of D and friends and members of classes derived from D can convert a
+D∗ to a B∗.
+• IfB is a public base, its public members can be used by any function. In addition, its protected
+members can be used by members and friends of D and members and friends of
+classes derived from D. Any function can convert a D∗ to a B∗.
+
+
+static is not ambiguous
+struct B {
+int m;
+static int sm;
+// ...
+}
+class X1 : public B { /* ... */ } ;
+class X2 : public B { /* ... */ } ;
+class XX : public X1, public X2 { /* ... */ };
+XX∗ pxx = new XX;
+int i1 = pxx−>m; // error, ambiguous: XX::X1::B::m or XX::X2::B::m?
+int i2 = pxx−>sm; // OK: there is only one B::sm in an XX (sm is a static member)
+
+A pointer to member cannot be assigned to a void∗ or any other ordinary pointer. A null pointer
+(e.g., nullptr) can be assigned to a pointer to member and then represents ‘‘no member.’’
+
+
+Pointer to member function, very tricky, did not copy notes, same as pointer to data member
+A derived class has at least the members that it inherits from its base classes. Often it has more.
+This implies that we can safely assign a pointer to a member of a base class to a pointer to a member
+of a derived class, but not the other way around. This property is often called contravariance.
+class Text : public Std_interface {
+public:
+void start();
+void suspend();
+// ...
+virtual void print();
+private:
+vector s;
+};
+void (Std_interface::∗ pmi)() = &Text::print; // error
+void (Text::∗pmt)() = &Std_interface::start; // OK
+
+
+To some people, the words ‘‘multiple inheritance’’ indicate something complicated and scary.
+However, the use of one base class for implementation details and another for interface (the abstract
+class) is common to all languages supporting inheritance and compile-time checked interfaces. In
+particular, the use of the abstract class Ival_box is almost identical to the use of an interface in Java
+or C#.
+
+A function declared in a derived class overrides all functions of the same name and type in its base
+classes. Typically, that is exactly the right thing to do because it is generally a bad idea to use the
+same name for operations with different semantics in a single class.
+
+
+Given this apparently minor change to Storable, we must change the design of Radio. All parts of
+an object must share a single copy of Storable. Otherwise, we could get two parts of something
+derived from Storable multiple times using different files. We avoid replication by declaring a base
+virtual: every virtual base of a derived class is represented by the same (shared) object.
+
+
+
+class Transmitter : public virtual Storable {
+public:
+void write() override;
+// ...
+};
+class Receiver : public virtual Storable {
+public:
+void write() override;
+// ...
+};
+class Radio : public Transmitter, public Receiver {
+public:
+void write() override;
+// ...
+};
+
+
+Knowledge of a virtual base and the obligation to initialize it ‘‘bubbles
+up’’ to the most derived class. A virtual base is always considered a direct base of its most derived 
+class. The fact that both B and C initialized V is irrelevant because the compiler has no idea which
+of those two initializers to prefer. Thus, only the initializer provided by the most derived class is
+used.
+
+In practice, this is not quite as localized as we would prefer. In particular, if we derive another
+class, DD, from D, then DD has to do work to initialize the virtual bases. Unless we can simply
+inherit D’s constructors (§20.3.5.1), that can be a nuisance. That ought to encourage us not to
+overuse virtual base classes.
+This logical problem with constructors does not exist for destructors. They are simply invoked
+in reverse order of construction (§20.2.2). In particular, a destructor for a virtual base is invoked
+exactly once.
+
+
+A class that provides some – but not all – of the implementation for a virtual base class is often
+called a mixin.
+
+Page 641 start Charter 22
 
 
