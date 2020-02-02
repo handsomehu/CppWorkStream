@@ -1091,6 +1091,175 @@ exactly once.
 A class that provides some – but not all – of the implementation for a virtual base class is often
 called a mixin.
 
-Page 641 start Charter 22
+
+A dynamic_cast to void∗ can be used to determine the address of the beginning of an object of polymorphic
+type. For example:
+void g(Ival_box∗ pb, Date∗ pd)
+{
+void∗ pb2 = dynamic_cast<void∗>(pb); // OK
+void∗ pd2 = dynamic_cast<void∗>(pd); // error : Date not polymorphic
+}
+
+
+There is no dynamic_cast from void∗ (because there would be no way of knowing
+where to find the vptr; §22.2.3).
+
+
+The difference in results of a failed dynamic pointer cast and a failed dynamic reference cast
+reflects a fundamental difference between references and pointers. If a user wants to protect against
+bad casts to references, a suitable handler must be provided. For example:
+void g(BB_ival_slider& slider, BB_ival_dial& dial)
+{
+try {
+fp(&slider); // pointer to BB_ival_slider passed as Ival_box*
+fr(slider); // reference to BB_ival_slider passed as Ival_box&
+fp(&dial); // pointer to BB_ival_dial passed as Ival_box*
+fr(dial); // dial passed as Ival_box
+}
+catch (bad_cast) { // §30.4.1.1
+// ...
+}
+}
+
+A dynamic_cast can cast from a polymorphic virtual base class to a derived class or a sibling class
+(§22.2.1). A static_cast (§11.5.2) does not examine the object it casts from, so it cannot:
+void g(Radio& r)
+{
+Receiver∗ prec = &r; // Receiver is an ordinary base of Radio
+Radio∗ pr = static_cast<Radio∗>(prec); // OK, unchecked
+pr = dynamic_cast<Radio∗>(prec); // OK, run-time checked
+Storable∗ ps = &r; // Storable is a virtual base of Radio
+pr = static_cast<Radio∗>(ps); //error : cannot cast from virtual base
+pr = dynamic_cast<Radio∗>(ps); // OK, run-time checked
+}
+
+
+The compiler cannot assume anything about the memory pointed to by a void∗. This implies
+that dynamic_cast – which must look into an object to determine its type – cannot cast from a void∗.
+For that, a static_cast is needed.
+
+
+Both dynamic_cast and static_cast respect const and access controls.
+
+From a design perspective, dynamic_cast (§22.2.1) can be seen as a mechanism for asking an object
+if it provides a given interface.
+
+// check on visitor pattern in youtube
+It is best to avoid calling virtual functions during construction and destruction.
+
+Charpter 22
+
+It is not possible to overload a class template name, so if a class template is declared in a scope,
+no other entity can be declared there with the same name. For example:
+template<typename T>
+class String { /* ... */ };
+class String { /* ... */ }; // error : double definition
+
+
+A concept is not (yet) a language construct in
+C++; it is a notion that we can use to reason about requirements on template arguments, use in
+comments, and sometimes support with our own code (§24.3).
+
+Types generated from a single template by different template arguments are different types. In
+particular, generated types from related arguments are not automatically related. For example,
+assume that a Circle is a kind of Shape:
+Shape∗ p {new Circle(p,100)}; //Circle* converts to Shape*
+vector<Shape>∗ q {new vector<Circle>{}}; // error : no vector<Circle>* to vector<Shape>* conversion
+vector<Shape> vs {vector<Circle>{}}; // error : no vector<Circle> to vector<Shape> conversion
+vector<Shape∗> vs {vector<Circle∗>{}}; //
+
+
+Non-static data members can be const, but unfortunately not constexpr.
+a member function of a template can be virtual or not. However, a virtual member function
+cannot also be a member function template
+
+template<typename T>
+class Vector {
+public:
+using value_type = T;
+using iterator = Vector_iter<T>; // Vector_iter is defined elsewhere
+// ...
+};
+The template argument name, T, is only accessible to the template itself, so for other code to refer
+to the element type, we must provide an alias.
+
+A static member need only be defined if it is used (§iso.3.2, §iso.9.4.2, §16.2.12). For example:
+template<typename T>
+struct X {
+static int a;
+static int b;
+};
+int∗ p = &X<int>::a;
+If this is all the mention of X<int> in a program, we will get a ‘‘not defined’’ error for X<int>::a, but
+not for X<int>::b.
+
+
+The out-of-class definition of a member enumeration is only allowed for an enumeration for which
+we know the underlying type (§8.4).
+As usual, the enumerators of a non-class enum are placed in the scope of the enumeration; that
+is, for a member enumeration, the enumerators are in the scope of its class.
+
+
+A member template cannot be virtual. For example:
+class Shape {
+// ...
+template<typename T>
+virtual bool intersect(const T&) const =0; // error : vir tual template
+};
+
+
+My rule of thumb is ‘‘A void nested types in templates
+unless they genuinely rely on every template parameter.’’ This is a special case of the general rule
+to avoid unnecessary dependencies in code.
+
+
+template<typename T> class Matrix;
+template<typename T>
+class Vector {
+T v[4];
+public:
+friend Vector operator∗<>(const Matrix<T>&, const Vector&);
+// ...
+};
+template<typename T>
+class Matrix {
+Vector<T> v[4];
+public:
+friend Vector<T> operator∗<>(const Matrix&, const Vector<T>&);
+// ...
+};
+The <> after the name of the friend function is needed to make clear that the friend is a template
+function. Without the <>, a non-template function would be assumed. The multiplication operator
+can then be defined to access data from Vector and Matrix directly:
+
+
+A compiler can deduce a type template argument, T or TT, and a non-type template argument, I,
+from a template function argument with a type composed of the following constructs
+(§iso.14.8.2.1):
+T const T volatile T
+T∗ T& T[constant_expression]
+type[I] class_template_name<T> class_template_name<I>
+TT<T> T<I> T<>
+T type::∗ T T::∗ type T::∗
+T (∗)(args) type(T::∗)(args) T(type::∗)(args)
+type (type::∗)(args_TI) T (T::∗)(args_TI) type(T::∗)(args_TI)
+T (type::∗)(args_TI) type (∗)(args_TI)
+Here, args_TI is a parameter list from which a T or an I can be determined by recursive application
+of these rules, and args is a parameter list that does not allow deduction. If not all parameters can
+be deduced in this way, a call is ambiguous.
+
+Lvalues and rvalues are distinguished by template argument deduction: an lvalue of type X is
+deduced as an X& and an rvalue as X.
+
+"Here" is an rvalue, so forward(string&&) is called, passing along an rvalue, so that Xref(int,string&&)
+is called to move from the string holding "Here".
+The more interesting (subtle) case is:
+auto p2 = make_unique<Xref<string>>(9,x);
+Here, x is an lvalue, so forward(string&) is called, passing along an lvalue: forward()’s T is deduced to
+string& so that the return value becomes string& &&, which means string& (§7.7.3). Thus,
+Xref(int,string&) is called for the lvalue x, so that x is copied.
+
+Page 689 start Charter 23
+stock on the move till page 98
 
 
