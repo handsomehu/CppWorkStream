@@ -43,7 +43,7 @@ int main()
 
     //return 0;
 
-    std::vector<std::string> datelist{"20200123"};
+    std::vector<std::string> datelist{"20200113"};
     TradeWrapper api("./cfg/j123.json");
     api.connect();
     std::this_thread::sleep_for(std::chrono::seconds(5));
@@ -59,6 +59,10 @@ int main()
     //strcpy(result,one); // copy string one into the result.
      // append string two to the result.
     auto rst = api.getsettlements();
+    nlohmann::json jsonj;
+    jsonj["data"]=rst;
+    std::ofstream os1("test_all.json");
+    os1 << jsonj.dump(0) << std::endl;
     int iii=0,jjj=0;
     for (auto set:rst)
     {
@@ -72,16 +76,18 @@ int main()
             //strcpy(oneline,part);
             strcat(resultsets,part);
             std::cout << ++jjj << std::endl;
+            std::cout << "size of: " << sizeof(part) << std::endl;
+            std::cout << part << std::endl;
         }
         char dst_utf8_set[200001] = {0};
         GbkToUtf8(resultsets, strlen(resultsets), dst_utf8_set, sizeof(dst_utf8_set));
         std::cout << "gbk to utf8: " << dst_utf8_set << std::endl;
 
         std::cout << std::endl;
-         nlohmann::json jj;
-         jj["data"]=dst_utf8_set;
-         std::ofstream os("test.json");
-         os << jj.dump(0) << std::endl;
+        nlohmann::json jj;
+        jj["data"]=dst_utf8_set;
+        std::ofstream os("test.json");
+        os << jj.dump(0) << std::endl;
     }
 
     std::cout << "finish it" << std::endl;
