@@ -376,9 +376,9 @@ void TradeWrapper::OnRspSettlementInfoConfirm(CThostFtdcSettlementInfoConfirmFie
 
 }
 
-std::vector<std::vector<std::string>> TradeWrapper::getsettlements()
+std::vector<std::vector<char*>> TradeWrapper::getsettlements()
 {
-    return alldays;
+    return pcalldays;
 }
 
 //查询合约响应
@@ -440,35 +440,40 @@ void TradeWrapper::OnRspQrySettlementInfo(CThostFtdcSettlementInfoField *pSettle
     std::string tempstr;
     wchar_t wbuff[501];
     wchar_t* bufftype;
-    char dst_utf8[1024] = {0};
+    char dst_utf8[501] = {0};
 
     std::cout << "start query" << std::endl;
-    if (pRspInfo )
-    {
+    //if (pRspInfo )
+    //{
         std::cout << "rspinfo ok" << std::endl;
-        if(pRspInfo->ErrorID == 0)
-        {
+        //if(pRspInfo->ErrorID == 0)
+        //{
             std::cout << "no error" << std::endl;
             if (pSettlementInfo->Content !=nullptr)
             {
+                std::cout << "get content" << std::endl;
                 GbkToUtf8(pSettlementInfo->Content, strlen(pSettlementInfo->Content), dst_utf8, sizeof(dst_utf8));
-                std::cout << "content" << std::endl;
+                //std::cout << "content" << std::endl;
                 tempstr = std::string(dst_utf8);//(std::begin(pSettlementInfo->Content), std::end(pSettlementInfo->Content));
                 oneday.push_back(tempstr);
+                //std::cout << tempstr << std::endl;
+                pconeday.push_back(pSettlementInfo->Content);
                 if (bIsLast)
                 {
 
                     alldays.push_back(oneday);
+                    pcalldays.push_back(pconeday);
                     oneday.clear();
+                    pconeday.clear();
                 }
             }
-        }
+        //}
 
-    }
+    //}
 
     std::cout << "response settlement" << std::endl;
-    std::cout << "content" << std::endl;
-    std::cout << pSettlementInfo->Content << std::endl;
+    //std::cout << "content" << std::endl;
+    //std::cout << pSettlementInfo->Content << std::endl;
 
 }
 //报单通知

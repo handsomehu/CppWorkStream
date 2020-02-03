@@ -46,7 +46,7 @@ public:
     bool is_goodorder();
     void reset_goodorder();
     wchar_t* MBCS2Unicode(wchar_t* buff, const char* str);
-    std::vector<std::vector<std::string>> getsettlements() ;
+    std::vector<std::vector<char*>> getsettlements() ;
     //responsive method
     void OnFrontConnected();
     void OnFrontDisconnected(int nReason);
@@ -74,6 +74,8 @@ private:
     bool goodorder;
     std::vector<std::string> oneday;
     std::vector<std::vector<std::string>> alldays;
+    std::vector<char*> pconeday;
+    std::vector<std::vector<char*>> pcalldays;
 };
 
 

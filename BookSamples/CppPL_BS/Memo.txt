@@ -1259,7 +1259,122 @@ Here, x is an lvalue, so forward(string&) is called, passing along an lvalue: fo
 string& so that the return value becomes string& &&, which means string& (§7.7.3). Thus,
 Xref(int,string&) is called for the lvalue x, so that x is copied.
 
-Page 689 start Charter 23
+
+[1] Find the set of function template specializations (§23.2.2) that will take part in overload
+resolution. Do this by considering each function template and deciding which template
+arguments, if any, would be used if no other function templates or functions of the same
+name were in scope. For the call sqrt(z), this makes sqrt<double>(complex<double>) and
+sqrt<complex<double>>(complex<double>) candidates. See also §23.5.3.2.
+[2] If two function templates can be called and one is more specialized than the other
+(§25.3.3), consider only the most specialized template function in the following steps.
+For the call sqrt(z), this means that sqrt<double>(complex<double>) is preferred over
+sqrt<complex<double>>(complex<double>): any call that matches sqrt<T>(complex<T>) also
+matches sqrt<T>(T).
+[3] Do overload resolution for this set of functions, plus any ordinary functions, as for ordinary
+functions (§12.3). If a function template’s argument has been determined by template
+argument deduction (§23.5.2), that argument cannot also have promotions, standard
+conversions, or user-defined conversions applied. For sqrt(2), sqrt<int>(int) is an exact
+match, so it is preferred over sqrt(double).
+[4] If a function and a specialization are equally good matches, the function is preferred.
+Consequently, sqrt(double) is preferred over sqrt<double>(double) for sqrt(2.0).
+[5] If no match is found, the call is an error. If we end up with two or more equally good
+matches, the call is ambiguous and is an error.
+
+
+Templates offer:
+• The ability to pass types (as well as values and templates) as arguments without loss of
+information. This implies excellent opportunities for inlining, of which current implementations
+take great advantage.
+• Delayed type checking (done at instantiation time). This implies opportunities to weave
+together information from different contexts.
+• The ability to pass constant values as arguments. This implies the ability to do compile-time
+computation.
+In other words, templates provide a powerful mechanism for compile-time computation and type
+manipulation that can lead to very compact and efficient code. Remember that types (classes) can
+contain both code and values.
+
+
+charpter 24
+
+[1] First, we look at our (initial) implementation and determine which properties (operations,
+functions, member types, etc.) it uses from its parameter types (and the meaning of those
+operations). The resulting list is the minimal requirements for that particular template
+implementation.
+[2] Next, we look at plausible alternative template implementations and list their requirements
+on their template arguments. Doing so, we may decide that we should place more
+or stricter requirements on the template arguments to allow for alternative implementations.
+Alternatively, we might decide to prefer an implementation that makes fewer
+and/or simpler requirements.
+[3] Finally, we look at the resulting list (or lists) of required properties and compare it to lists
+of requirements (concepts) that we have used for other templates. We try to find simple,
+preferably common, concepts that can express what would otherwise be many long lists
+of requirements. The aim here is to make our design benefit from general work on classification.
+The resulting concepts are easier to give meaningful names and easier to
+remember. They should also maximize the degree of interoperability of templates and
+types by limiting variations in concepts to what is essential.
+
+Charpter 25
+
+To be used as a template argument, a type must be in scope and accessible.
+
+
+
+An argument for a template value parameter can be (§iso.14.3.2):
+• An integral constant expression (§10.4)
+• A pointer or a reference to an object or a function with external linkage (§15.2)
+• A nonoverloaded pointer to member (§20.6)
+• A null pointer (§7.2.2)
+
+
+A pointer used as a template argument must be of the form &of, where of is the name of an object or
+a function, or of the form f, where f is the name of a function. A pointer to member must be of the
+form &X::of, where of is the name of a member. In particular, a string literal is not acceptable as a
+template argument
+
+This restriction, like the one against floating-point template value arguments, exists to simplify
+implementation of separately compiled translation units. It is best to think of template value arguments
+as a mechanism for passing integers and pointers to functions. Resist the temptation to try
+something more clever
+
+An integer template argument must be a constant.
+
+
+Consequently, a sorting criterion is not built into the container type or into the element type. In
+principle, the notion of sorting criteria for a map could be represented as:
+[1] A template value argument (e.g., a pointer to a comparison function)
+[2] A template type argument to the map template determining the type of a comparison
+object
+
+Passing the comparison operations as a function object has significant benefits compared to passing
+pointers to functions:
+• A simple class member function defined in-class is trivial to inline, whereas inlining a call
+through a pointer to function requires exceptional attention from a compiler.
+• A function object with no data members can be passed with no run-time cost.
+• Sev eral operations can be passed as a single object with no additional run-time cost.
+
+
+If we had only one use of a comparison criterion in our program, it might make sense to use a
+lambda to express the function object version a bit more tersely:
+map<string,int,Cmp> c3 {[](const string& x, const string& y) const { return x<y; }}; // error
+Unfortunately, that doesn’t work because there is no conversion of a lambda to a function object
+type. We could name the lambda and then use that name:
+auto cmp = [](const string& x, const string& y) const { return x<y; }
+map<string,int,decltype(cmp)> c4 {cmp};
+
+
+Only class templates can be template arguments.
+The common case in which a template needs only a container or two is often better handled by
+passing the container types (§31.5.1). For example:
+template<typename C, typename C2>
+class Xrefd2 {
+C mems;
+C2 refs;
+// ...
+};
+Xrefd2<vector<Entry>,set<Entry∗>> x;
+
+
+Page 689  730 start Charter 25
 stock on the move till page 98
 
 
