@@ -1374,7 +1374,116 @@ C2 refs;
 Xrefd2<vector<Entry>,set<Entry∗>> x;
 
 
-Page 689  730 start Charter 25
+Fortunately, there is an obvious solution. Containers of pointers can share a single implementation.
+This can be expressed through specialization. First, we define a version (a specialization) of
+Vector for pointers to void:
+template<>
+class Vector<void∗>{ // complete specialization
+void∗∗ p;
+// ...
+void∗& operator[](int i);
+};
+This specialization can then be used as the common implementation for all Vectors of pointers.
+Another use would be to implement unique_ptr<T> based on a single shared implementation class
+storing a void∗.
+The template<> prefix says that this is a specialization that can be specified without a template
+parameter. The template arguments for which the specialization is to be used are specified in <>
+brackets after the name. That is, the <void∗> says that this definition is to be used as the implementation
+of every Vector for which T is void∗.
+
+Note that the scalar assignment operators take reference arguments. That’s not efficient for floats,
+so complex<float> passes those by value:
+template<>
+class complex<float> {
+public:
+// ...
+complex<float>& operator= (float);
+complex<float>& operator+=(float);
+// ...
+complex<float>& operator=(const complex<float>&);
+// ...
+};
+
+Specialization can be used to provide alternative implementations of a class template for a specific
+set of template parameters. In that case, a specialization can even provide a representation that differs
+from that of the general template.
+
+Charpter 26
+
+
+It is necessary to generate a specialization of a class template only if the class’s definition is needed
+(§iso.14.7.1). In particular, to declare a pointer to some class, the actual definition of a class is not
+needed. For example:
+class X;
+X∗ p; // OK: no definition of X needed
+X a; // error : definition of X needed
+
+
+An explicit instantiation request (often simply called an explicit instantiation) is a declaration of a
+specialization prefixed by the keyword template (not followed by <):
+template class vector<int>; // class
+template int& vector<int>::operator[](int); // member function
+template int conver t<int,double>(double); // nonmember function
+A template declaration starts with template<, whereas plain template starts an instantiation request.
+Note that template prefixes a complete declaration; just stating a name is not sufficient:
+template vector<int>::operator[]; // syntax error
+template conver t<int,double>; // syntax error
+
+
+By default, a dependent name is assumed to name something that is not a type. So, to use a
+dependent name as a type, you have to say so, using the keyword typename. For example:
+template<typename Container>
+void fct(Container& c)
+{
+Container::value_type v1 = c[7]; // syntax error: value_type is assumed to be a non-type name
+typename Container::value_type v2 = c[9]; // OK: value_type assumed to name a type
+auto v3 = c[11]; // OK: let the compiler figure it out
+// ...
+}
+
+
+Naming a member template after a . (dot), −>, or :: requires similar use of the keyword template.
+For example:
+class Pool { // some allocator
+public:
+template<typename T> T∗ get();
+template<typename T> void release(T∗);
+// ...
+};
+template<typename Alloc>
+void f(Alloc& all)
+{
+int∗ p1 = all.get<int>(); // syntax error: get is assumed to name a non-template
+int∗ p2 = all.template get<int>(); // OK: get() is assumed to be a template
+// ...
+}
+
+One use of this is to place the explicit instantiation in a shared library.
+
+The point of instantiation for f<int>() is outside h(). This is essential to ensure that the g() called in
+f() is the global g(int) rather than the local g(double). An unqualified name used in a template definition
+can never be bound to a local name. Ignoring local names is essential to prevent a lot of nasty
+macro-like behavior
+
+namespace N {
+class A { /* ... */ };
+char f(A);
+}
+char f(int);
+template<typename T>
+char g(T t)
+{
+return f(t); // choose f() depending on what T is
+}
+char f(double);
+char c1 = g(N::A()); // causes N::f(N::A) to be called
+char c2 = g(2); // causes f(int) to be called
+char c3 = g(2.1); // causes f(int) to be called; f(double) not considered
+Here, f(t) is clearly dependent, so we can’t bind f at the point of definition. To generate a specialization
+for g<N::A>(N::A), the implementation looks in namespace N for functions called f() and finds
+N::f(N::A).
+
+Page 689  741 start Charter 26
 stock on the move till page 98
 
 

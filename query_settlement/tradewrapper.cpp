@@ -437,19 +437,6 @@ wchar_t* TradeWrapper::MBCS2Unicode(wchar_t* buff, const char* str)
 }
 void TradeWrapper::OnRspQrySettlementInfo(CThostFtdcSettlementInfoField *pSettlementInfo, CThostFtdcRspInfoField *pRspInfo, int nRequestID, bool bIsLast)
 {
-    std::string tempstr;
-    wchar_t wbuff[501];
-    wchar_t* bufftype;
-    char dst_utf8[501] = {0};
-
-    //char tempchar[501]= {};
-    std::cout << "start query" << std::endl;
-    //if (pRspInfo )
-    //{
-        std::cout << "rspinfo ok" << std::endl;
-        //if(pRspInfo->ErrorID == 0)
-        //{
-            std::cout << "no error" << std::endl;
             if (pSettlementInfo->Content !=nullptr)
             {
                 //std::shared_ptr<char*> upcontent{std::make_unique<char*>(new char[501])};
@@ -457,29 +444,13 @@ void TradeWrapper::OnRspQrySettlementInfo(CThostFtdcSettlementInfoField *pSettle
 
                 std::cout << "get content" << std::endl;
                 std::strcpy(upcontent.get(), pSettlementInfo->Content);
-                tempstr = std::string(upcontent.get());//(std::begin(pSettlementInfo->Content), std::end(pSettlementInfo->Content));
-                std::cout << tempstr << "\n" << pSettlementInfo->Content << std::endl;
-                //GbkToUtf8(pSettlementInfo->Content, strlen(pSettlementInfo->Content), dst_utf8, sizeof(dst_utf8));
-                //std::cout << "content" << std::endl;
-                oneday.push_back(tempstr);
-
                 pconeday.push_back(upcontent);
                 if (bIsLast)
                 {
-
-                    alldays.push_back(oneday);
                     pcalldays.push_back(pconeday);
-                    oneday.clear();
                     pconeday.clear();
                 }
             }
-        //}
-
-    //}
-
-    std::cout << "response settlement" << std::endl;
-    //std::cout << "content" << std::endl;
-    //std::cout << pSettlementInfo->Content << std::endl;
 
 }
 //报单通知

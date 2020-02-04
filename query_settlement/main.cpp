@@ -43,7 +43,7 @@ int main()
 
     //return 0;
 
-    std::vector<std::string> datelist{"20200203"};
+    std::vector<std::string> datelist{"20200123","20200203"};
     TradeWrapper api("./cfg/j123.json");
     api.connect();
     std::this_thread::sleep_for(std::chrono::seconds(5));
@@ -84,12 +84,10 @@ int main()
         char dst_utf8_set[200001] = {0};
         GbkToUtf8(resultsets, strlen(resultsets), dst_utf8_set, sizeof(dst_utf8_set));
         std::cout << "gbk to utf8: " << dst_utf8_set << std::endl;
+        std::string fname = "./data/trade_"+std::to_string(iii)+".txt";
+        std::ofstream os(fname);
+        os << fname;
 
-        std::cout << std::endl;
-        nlohmann::json jj;
-        jj["data"]=dst_utf8_set;
-        std::ofstream os("test.json");
-        os << jj.dump(0) << std::endl;
     }
 
     std::cout << "finish it" << std::endl;
