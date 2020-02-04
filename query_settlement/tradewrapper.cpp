@@ -376,7 +376,7 @@ void TradeWrapper::OnRspSettlementInfoConfirm(CThostFtdcSettlementInfoConfirmFie
 
 }
 
-std::vector<std::vector<char*>> TradeWrapper::getsettlements()
+std::vector<std::vector<std::shared_ptr<char>>> TradeWrapper::getsettlements()
 {
     return pcalldays;
 }
@@ -442,6 +442,7 @@ void TradeWrapper::OnRspQrySettlementInfo(CThostFtdcSettlementInfoField *pSettle
     wchar_t* bufftype;
     char dst_utf8[501] = {0};
 
+    //char tempchar[501]= {};
     std::cout << "start query" << std::endl;
     //if (pRspInfo )
     //{
@@ -451,13 +452,18 @@ void TradeWrapper::OnRspQrySettlementInfo(CThostFtdcSettlementInfoField *pSettle
             std::cout << "no error" << std::endl;
             if (pSettlementInfo->Content !=nullptr)
             {
+                //std::shared_ptr<char*> upcontent{std::make_unique<char*>(new char[501])};
+                std::shared_ptr<char> upcontent(new char[501], std::default_delete<char[]>());
+
                 std::cout << "get content" << std::endl;
-                GbkToUtf8(pSettlementInfo->Content, strlen(pSettlementInfo->Content), dst_utf8, sizeof(dst_utf8));
+                std::strcpy(upcontent.get(), pSettlementInfo->Content);
+                tempstr = std::string(upcontent.get());//(std::begin(pSettlementInfo->Content), std::end(pSettlementInfo->Content));
+                std::cout << tempstr << "\n" << pSettlementInfo->Content << std::endl;
+                //GbkToUtf8(pSettlementInfo->Content, strlen(pSettlementInfo->Content), dst_utf8, sizeof(dst_utf8));
                 //std::cout << "content" << std::endl;
-                tempstr = std::string(dst_utf8);//(std::begin(pSettlementInfo->Content), std::end(pSettlementInfo->Content));
                 oneday.push_back(tempstr);
-                //std::cout << tempstr << std::endl;
-                pconeday.push_back(pSettlementInfo->Content);
+
+                pconeday.push_back(upcontent);
                 if (bIsLast)
                 {
 

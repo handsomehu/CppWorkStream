@@ -43,7 +43,7 @@ int main()
 
     //return 0;
 
-    std::vector<std::string> datelist{"20200113"};
+    std::vector<std::string> datelist{"20200203"};
     TradeWrapper api("./cfg/j123.json");
     api.connect();
     std::this_thread::sleep_for(std::chrono::seconds(5));
@@ -60,25 +60,27 @@ int main()
      // append string two to the result.
     auto rst = api.getsettlements();
     nlohmann::json jsonj;
-    jsonj["data"]=rst;
-    std::ofstream os1("test_all.json");
-    os1 << jsonj.dump(0) << std::endl;
+    //jsonj["data"]=rst;
+    //std::ofstream os1("test_all.json");
+    //os1 << jsonj.dump(0) << std::endl;
     int iii=0,jjj=0;
     for (auto set:rst)
     {
 
         std::cout << ++iii << std::endl;
-        char ts1[10]{0};
+        char ts1[501]{0};
         //resultsets[0]='\0';
         strcpy(resultsets,ts1);
         for(auto part:set)
         {
             //strcpy(oneline,part);
-            strcat(resultsets,part);
+            std::copy(part.get(),part.get()+501,ts1);
+            strcat(resultsets,ts1);//not safe, find a way to fix it later.
             std::cout << ++jjj << std::endl;
             std::cout << "size of: " << sizeof(part) << std::endl;
             std::cout << part << std::endl;
         }
+        std::cout << resultsets << std::endl;
         char dst_utf8_set[200001] = {0};
         GbkToUtf8(resultsets, strlen(resultsets), dst_utf8_set, sizeof(dst_utf8_set));
         std::cout << "gbk to utf8: " << dst_utf8_set << std::endl;
