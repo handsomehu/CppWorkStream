@@ -83,10 +83,10 @@ int main()
         std::cout << resultsets << std::endl;
         char dst_utf8_set[200001] = {0};
         GbkToUtf8(resultsets, strlen(resultsets), dst_utf8_set, sizeof(dst_utf8_set));
-        std::cout << "gbk to utf8: " << dst_utf8_set << std::endl;
+        //std::cout << "gbk to utf8: " << dst_utf8_set << std::endl;
         std::string fname = "./data/trade_"+std::to_string(iii)+".txt";
         std::ofstream os(fname);
-        os << fname;
+        os << dst_utf8_set;
 
     }
 
