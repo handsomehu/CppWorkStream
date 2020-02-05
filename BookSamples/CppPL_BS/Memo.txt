@@ -1483,7 +1483,33 @@ Here, f(t) is clearly dependent, so we can’t bind f at the point of definition
 for g<N::A>(N::A), the implementation looks in namespace N for functions called f() and finds
 N::f(N::A).
 
-Page 689  741 start Charter 26
+Note that no explicit cast was needed to get this disaster:
+• Prefer containers over built-in arrays.
+• Consider interfaces such as void f(T∗ p, int count) highly suspect; when T can be a base class
+and count is an element count, trouble awaits.
+• Consider . (dot) suspect when applied to something that is supposed to be run-time polymorphic
+unless it is obviously applied to a reference.
+
+
+The template parameter lists of a template and one of its template members cannot be combined.
+For example:
+template<typename T, typename T2> // error
+Ptr<T>::operator Ptr<T2>()
+{
+return Ptr<T2>(p);
+}
+
+
+Parameterizing a huge class hierarchy
+with many virtual member functions is typically a poor idea.
+
+Charpter 28: headache, go through very quick without understanding.
+All template staff is boring and headache.
+
+Charpter 29, very good example, skip first and catch up later when have time.
+
+
+Page 885 start Charter 26
 stock on the move till page 98
 
 
