@@ -1626,7 +1626,14 @@ Simple_alloc happens to be the simplest standards-conforming allocator. Note the
 char∗: allocate() does not invoke constructors and deallocate() does not invoke destructors; they deal
 in memory, not typed objects.
 
-Page 1074 start Charter 32
+
+If a pointer to a function is the target of >>, that function will be invoked with the istream as its
+argument. For example, cin>>pf yields pf(cin). This is the basis for the input manipulators, such as
+skipws (§38.4.5.2). Output stream manipulators are more common than input stream manipulators,
+so the technique is explained further in §38.4.3.
+
+
+Page 1191 start Charter 41,42 left, other go through, did not read carefully.
 stock on the move till page 98
 
 

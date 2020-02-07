@@ -179,6 +179,8 @@ void test_string()
 }
 int main()
 {
+    locale loc("");
+    cout << loc.name() << '\n';
     test_string();
     return 0;
     test_prio();

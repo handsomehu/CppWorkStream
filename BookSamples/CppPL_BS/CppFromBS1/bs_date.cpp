@@ -4,10 +4,10 @@ using namespace BsChrono;
 Date::Date(int dd, Month mm, int yy)
 :d{dd}, m{static_cast<int>(mm)}, y{yy}
 {
-if (y == 0) y = default_date().year();
-if (m == static_cast<int>(Month{})) m = static_cast<int>(default_date().month());
-if (d == 0) d = default_date().day();
-if (!is_valid()) throw Bad_date();
+//if (y == 0) y = default_date().year();
+//if (m == static_cast<int>(Month{})) m = static_cast<int>(default_date().month());
+//if (d == 0) d = default_date().day();
+//if (!is_valid()) throw Bad_date();
 }
 
 bool Date::is_valid()
@@ -48,7 +48,7 @@ bool BsChrono::is_date(int d, Month m, int y)
     switch (m)
     {
         case Month::feb:
-        ndays = 28+is_leapyear(y);
+        //ndays = 28+is_leapyear(y);
         break;
         case Month::apr: case Month::jun: case Month::sep: case Month::nov:
         ndays = 30;
