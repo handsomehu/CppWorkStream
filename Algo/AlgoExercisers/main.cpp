@@ -61,7 +61,7 @@ std::vector<int> selectsort1(std::vector<int>& data)
 
 
 }
-std::list<int>::iterator select_search_max(std::list<int> & sample)
+std::list<int>::iterator select_sort_max(std::list<int> & sample)
 {
     int idx{0},temp{0};
     std::list<int>::iterator maxit{sample.begin()};
@@ -73,63 +73,68 @@ std::list<int>::iterator select_search_max(std::list<int> & sample)
 
 }
 
-int* fast_search(int* samples,int arrsize)
+int qs_part1(int samples[],int low, int high)
 {
-    int temp{0},baseval{0};
-    int j{0},k{0};
-    int* l;
-    int* r;
-    static int tm{0};
-    std::cout << "times: " << ++tm << std::endl;
-    if ( arrsize < 2 )
-        return samples;
-    else
+    int p_index{low},temp{0};
+    int pivot = samples[low];
+    for(int i = low+1;i<=high;++i)
     {
-    //int fstest[5]{3,5,1,7,2};
-        temp = 0;
-        int l[arrsize]; // give size is 3, l[1], right[1]
-                     // give size is 4, l[2], right[1]
-        int r[arrsize];
-        for(int temp1 = 0;temp1!=arrsize;++temp1)
+        if (samples[i]<=pivot)
         {
-            l[temp1] = 0;
-            r[temp1] = 0;
-        }
-        baseval = samples[temp];
-        for(int i = 0+1;i!= arrsize;++i)
-        {
-            if (*(samples+i) <= baseval)
-                l[j++] = samples[i];
-            else if (*(samples+i) > baseval)
-                r[k++] = samples[i];
+            temp = samples[p_index];
 
+            samples[p_index]=samples[i];
+            samples[i] = temp;
+            ++p_index;
         }
-        std:: cout << "j:" << j << " k:" << k << std::endl;
-        int* la = fast_search(l,j);
-        int* ra = fast_search(r,k);
-
-        if ((j + k +1 ) == arrsize)
-        {
-            for(int i1 = 0;i1!=j;++i1)
-                *(samples+i1) = la[i1];
-            *(samples+j) = baseval;
-            for(int i2 = 0;i2!=k;++k)
-                *(samples+j+i2+ 1)= ra[i2];
-        }
-        return samples;
-
 
     }
-        //fast_search(samples+1,arrsize-1);
+    return p_index;
 }
-void select_search2(std::list<int>& sample)
+
+int qs_part(int samples[],int low, int high)
+{
+    int pivot{samples[high]};
+    int p_index = low;
+    int temp{0};
+
+    for( int i = low;i< high;++i)
+    {
+        //std::cout << std::to_string(i) << std::endl;
+        if (samples[i]<=pivot)
+        {
+            temp = samples[p_index];
+            samples[p_index] = samples[i];
+            samples[i]=temp;
+            ++p_index ;
+        }
+
+    }
+    temp = samples[p_index];
+    samples[p_index] = samples[high];
+    samples[high] = temp;
+
+    return p_index;
+}
+void quick_sort(int samples[],int low, int high)
+{
+    int idx{0};
+    if (low < high)
+    {   idx = qs_part1(samples,low, high);
+        //return;
+        quick_sort(samples,low,idx-1);
+        quick_sort(samples,idx+1,high);
+    }
+
+}
+void select_sort2(std::list<int>& sample)
 {
     std::list<int> tgt{};
     std::list<int>::iterator temp{};
     int scnt = sample.size();
     for (auto idx = 0;idx != scnt;++idx)
     {
-        temp = select_search_max(sample);
+        temp = select_sort_max(sample);
         tgt.push_back(*temp);
         sample.erase(temp);
     }
@@ -161,16 +166,20 @@ int main()
         std::cout << x << " ";
     std::cout << std::endl;
     std::list<int> lt{1,2,3,4,5,6,7,8,9,10,24,34,36,40,50,56};
-    select_search2(lt);
+    select_sort2(lt);
     std::cout << "factories of 5:" << fact_test(5) << std::endl;
     std::cout << "start fast sort:" << std::endl;
-    constexpr int sz = 6;
-    int fstest[sz]{3,2,5,1,19,8};
-    int* p1;
-    p1 = fast_search(fstest,sz);
-    for(int iii=0;iii!=sz;++iii)
-    {    std::cout << *(p1+iii) << std::endl;
+    constexpr int sz = 15;
+    int fstest[sz]{8,19,1,5,2,3,34,21,50,48,66,38,77,55,88};
+    //int* p1;
+    quick_sort(fstest,0,14);
+    std::vector<int> fsv{3,2,5,1} ;//{3,2,5,1,19,8};
 
+    for(int iii=0;iii!=sz;++iii)
+    {
+        std::cout << fstest[iii] << " ";
     }
-    return 0;
+    std::cout << std::endl;
+    return 0 ;
+
 }

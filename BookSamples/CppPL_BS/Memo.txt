@@ -1633,7 +1633,108 @@ skipws (§38.4.5.2). Output stream manipulators are more common than input strea
 so the technique is explained further in §38.4.3.
 
 
-Page 1191 start Charter 41,42 left, other go through, did not read carefully.
-stock on the move till page 98
+The thread constructors are variadic templates (§28.6). This implies that to pass a reference to a
+thread constructor, we must use a reference wrapper (§33.5.1). For example:
+void my_task(vector<double>& arg);
+void test(vector<double>& v)
+{
+thread my_thread1 {my_task,v}; // oops: pass a copy of v
+thread my_thread2 {my_task,ref(v)}; // OK: pass v by reference
+thread my_thread3 {[&v]{ my_task(v); }}; // OK: dodge the ref() problem
+// ...
+}
+The problem is that the variadic template uses bind() or some equivalent mechanism, so that a reference
+is by default dereferenced and the result copied. So, if v was {1,2,3} and my_task increments
+elements, thread1 would never hav e any effect on v. Note that all three threads hav e a data race on
+v; this is an example of calling conventions, not of good concurrent programming style.
+
+
+
+Obviously, the thread destructor destroys the thread object. To prevent a system thread from accidentally
+outliving its thread, the thread destructor calls terminate() to terminate the program if the
+thread is joinable() (that is, if get_id()!=id{}). For example:
+void heartbeat()
+{
+while(true) {
+output(steady_clock::now());
+this_thread::sleep_for(second{1}); // §42.2.6
+}
+}
+void run()
+{
+thread t {heartbeat};
+} //terminate because heartbeat() is still running at the end of t’s scope
+
+
+As mentioned in §42.2.3, trying to have a thread execute past the end of its scope (or more generally,
+after its destructor is run) without calling detach() is considered a fatal (for the program)
+error.
+
+
+This is a potential data race: which thread gets to first execute set_default()?
+Adding thread_local helps:
+template<typename K, typename V>
+class Map {
+// ...
+private:
+static thread_local pair<const K,V> default_value;
+};
+Now, there is no longer a potential data race. However, there is no longer a single default_value
+shared among all users either. In the example, thread 1 will never see the effect of a set_default() in
+thread 2. As often as not, that was not what was intended in the original code, so by adding
+thread_local, we simply exchanged one error for another. Consider static data members suspect
+(always, because you don’t know if your code might someday be executed as part of a concurrent
+system), and do not consider thread_local a panacea.
+
+
+template<typename Arg, typename... Args>
+void write(Arg a, Args tail...)
+{
+cout_mutex.lock();
+cout << a;
+write(tail...);
+cout_mutex.unlock();
+}
+Now, if a thread calls write("Hello,","World!"), it will deadlock with itself when it tries the recursive
+call for the tail.
+Recursive and mutually recursive calls are common enough for the standard to provide a solution.
+A recursive_mutex is just like a plain mutex, except that a single thread can acquire it repeatedly.
+For example:
+recursive_mutex cout_mutex; // changed to recursive_mutex to avoid deadlock
+template<typename Arg, typename... Args>
+void write(Arg a, Args tail...)
+{
+cout_mutex.lock();
+cout << a;
+write(tail...);
+cout_mutex.unlock();
+}
+Now the recursive call of write() is correctly handled by cout_mutex.
+
+
+Given lock(), the buggy task() can be simplified and corrected:
+void task(mutex& m1, mutex& m2)
+{
+unique_lock lck1 {m1,defer_lock_t};
+unique_lock lck2 {m1,defer_lock_t};
+lock(lck1,lck2);
+// ... use resources ...
+}
+Note that applying lock() directly to the mutexes, lock(m1,m2), rather than to the unique_locks would
+have left the programmer with the obligation to explicitly release m1 and m2.
+
+Also, beware that capturing members of an
+object using [this] (§11.4.3.3) implies that the members of the object are accessed indirectly
+(through this), rather than copied, so that the object is subject to data races unless you make certain
+that it is not. If in doubt, copy (pass or capture by value, [=]).
+
+
+It is often important that we can select a scheduling policy ‘‘late’’ and change it as needed. For
+example, I might use launch::deferred for initial debugging. That would eliminate errors related to
+concurrency until I had eliminated sequential errors. Also, I can often go back to launch::deferred
+to determine if an error really is related to concurrency.
+
+
+Done, starting from template did not go through carefully except thread and concurency.
 
 
