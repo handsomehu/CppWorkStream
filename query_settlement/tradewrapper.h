@@ -15,6 +15,10 @@
 #include <wchar.h>
 #include "./libhead/json.hpp"
 #include <fstream>
+#include <queue>
+#include <mutex>
+#include <condition_variable>
+#include <thread>
 
 void NewTradeEvent();
 
@@ -46,7 +50,7 @@ public:
     bool is_goodorder();
     void reset_goodorder();
     wchar_t* MBCS2Unicode(wchar_t* buff, const char* str);
-    std::vector<std::vector<std::shared_ptr<char>>> getsettlements() ;
+    std::vector<std::shared_ptr<char>> getsettlements() ;
     //responsive method
     void OnFrontConnected();
     void OnFrontDisconnected(int nReason);
@@ -60,6 +64,9 @@ public:
     void OnRspError(CThostFtdcRspInfoField *pRspInfo, int nRequestID, bool bIsLast);
     void OnRtnTradingNotice(CThostFtdcTradingNoticeInfoField *pTradingNoticeInfo) ;
 
+    void put_setmt(const std::vector<std::shared_ptr<char>>& val);
+    void put_setmt(std::vector<std::shared_ptr<char>>&& val);
+    void get_setmt(std::vector<std::shared_ptr<char>>& val);
 
 private:
 
@@ -75,7 +82,10 @@ private:
     std::vector<std::string> oneday;
     std::vector<std::vector<std::string>> alldays;
     std::vector<std::shared_ptr<char>> pconeday;
-    std::vector<std::vector<std::shared_ptr<char>>> pcalldays;
+    std::queue<std::vector<std::shared_ptr<char>>> pcalldays;
+    //std::
+    std::mutex mtx;
+    std::condition_variable cond;
 };
 
 

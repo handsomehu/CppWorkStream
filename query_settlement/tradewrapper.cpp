@@ -375,10 +375,31 @@ void TradeWrapper::OnRspSettlementInfoConfirm(CThostFtdcSettlementInfoConfirmFie
     //std::cout << pRspInfo-> << std::endl;
 
 }
-
-std::vector<std::vector<std::shared_ptr<char>>> TradeWrapper::getsettlements()
+void TradeWrapper::put_setmt(const std::vector<std::shared_ptr<char>>& val)
 {
-    return pcalldays;
+    std::lock_guard<std::mutex> lck(mtx);
+    pcalldays.push(val);
+    cond.notify_one();
+}
+void TradeWrapper::put_setmt(std::vector<std::shared_ptr<char>>&& val)
+{
+    std::lock_guard<std::mutex> lck(mtx);
+    pcalldays.push(val);
+    cond.notify_one();
+}
+void TradeWrapper::get_setmt(std::vector<std::shared_ptr<char>>& val)
+{
+    std::unique_lock<std::mutex> lck(mtx);
+    cond.wait(lck,[this]{ return !pcalldays.empty(); });
+    val=pcalldays.front();
+    pcalldays.pop();
+    //return val;
+}
+std::vector<std::shared_ptr<char>> TradeWrapper::getsettlements()
+{
+    std::vector<std::shared_ptr<char>> val;
+    get_setmt(val);
+    return val;
 }
 
 //查询合约响应
@@ -439,15 +460,13 @@ void TradeWrapper::OnRspQrySettlementInfo(CThostFtdcSettlementInfoField *pSettle
 {
             if (pSettlementInfo->Content !=nullptr)
             {
-                //std::shared_ptr<char*> upcontent{std::make_unique<char*>(new char[501])};
                 std::shared_ptr<char> upcontent(new char[501], std::default_delete<char[]>());
-
-                std::cout << "get content" << std::endl;
                 std::strcpy(upcontent.get(), pSettlementInfo->Content);
                 pconeday.push_back(upcontent);
                 if (bIsLast)
                 {
-                    pcalldays.push_back(pconeday);
+
+                    put_setmt(std::move(pconeday));
                     pconeday.clear();
                 }
             }
