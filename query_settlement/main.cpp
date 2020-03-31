@@ -1,5 +1,6 @@
 #include <iostream>
 #include <fstream>
+#include <time.h>
 //#include <codecvt>
 #include "tradewrapper.h"
 
@@ -7,10 +8,31 @@
 
 //extern int GbkToUtf8(char *str_str, size_t src_len, char *dst_str, size_t dst_len);
 //extern int Utf8ToGbk(char *src_str, size_t src_len, char *dst_str, size_t dst_len);
+std::vector<std::string>&& getdate()
+{
+    std::vector<std::string> dates{};
+    struct tm date;
+
+    date.tm_mon = 1;
+    date.tm_mday = 1;
+    date.tm_year = 2019 - 1900;
+
+    time_t end = time(NULL);
+
+    for (; mktime(&date) < end; ++date.tm_mday) {
+        char buffer[16];
+
+        strftime(buffer, sizeof(buffer), "%Y%m%d", &date);
+        std::cout << buffer << "\n";
+        dates.push_back(std::string(buffer));
+    }
+    return std::move(dates);
+
+}
 
 int main()
 {
-    std::vector<std::string> datelist{"20200123","20200203"};
+    std::vector<std::string> datelist=getdate();
     TradeWrapper api("./cfg/j123.json");
     api.connect();
     std::this_thread::sleep_for(std::chrono::seconds(5));

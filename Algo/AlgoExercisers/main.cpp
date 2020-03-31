@@ -2,6 +2,8 @@
 #include <vector>
 #include <list>
 #include <iterator>
+#include "algofuncs.h"
+
 //some example from book grokking algorithms
 int binsort(std::vector<int>& sorted,int target)
 {
@@ -145,7 +147,21 @@ void select_sort2(std::list<int>& sample)
     std::cout << std::endl;
 
 }
+// remove duplicated from a sorted table
+int rm_duplval(std::vector<int>& arr)
+{
+    int idx{1};
+    if (arr.size() ==0)
+        return 0;
+    for (int i=1;i<arr.size();++i)
+    {
+        if(arr[i] != arr[idx-1])
 
+            arr[idx++] =  arr[i]; }
+
+    return idx;
+
+}
 
 int fact_test(int val)
 {
@@ -155,7 +171,15 @@ int fact_test(int val)
         return val*fact_test(val-1);
 }
 int main()
+
 {
+    std::vector<int> tt{1,2,9,8,9,5,6,4};
+    int idx = fcpeak(tt,0,tt.size());
+    std::cout << "idx is : " << idx << std::endl;
+    std::cout << int(1/2) << std::endl;
+    std::vector<int> arr{1,1,2,2,2,2,3,6,6,6,7};
+    std::cout << std::to_string(rm_duplval(arr));
+    return 0;
     std::cout << "Hello World!" << std::endl;
     int tofind =0;
     std::vector<int> v1{1,2,3,4,5,6,7,8,9,10,24,34,36,40,50,56};

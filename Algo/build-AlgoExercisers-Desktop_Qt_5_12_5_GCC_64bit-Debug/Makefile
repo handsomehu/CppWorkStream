@@ -52,8 +52,10 @@ OBJECTS_DIR   = ./
 
 ####### Files
 
-SOURCES       = ../AlgoExercisers/main.cpp 
-OBJECTS       = main.o
+SOURCES       = ../AlgoExercisers/algofuncs.cpp \
+		../AlgoExercisers/main.cpp 
+OBJECTS       = algofuncs.o \
+		main.o
 DIST          = ../../../../Qt/5.12.5/gcc_64/mkspecs/features/spec_pre.prf \
 		../../../../Qt/5.12.5/gcc_64/mkspecs/common/unix.conf \
 		../../../../Qt/5.12.5/gcc_64/mkspecs/common/linux.conf \
@@ -225,7 +227,8 @@ DIST          = ../../../../Qt/5.12.5/gcc_64/mkspecs/features/spec_pre.prf \
 		../../../../Qt/5.12.5/gcc_64/mkspecs/features/exceptions.prf \
 		../../../../Qt/5.12.5/gcc_64/mkspecs/features/yacc.prf \
 		../../../../Qt/5.12.5/gcc_64/mkspecs/features/lex.prf \
-		../AlgoExercisers/AlgoExercisers.pro  ../AlgoExercisers/main.cpp
+		../AlgoExercisers/AlgoExercisers.pro algofuncs.h ../AlgoExercisers/algofuncs.cpp \
+		../AlgoExercisers/main.cpp
 QMAKE_TARGET  = AlgoExercisers
 DESTDIR       = 
 TARGET        = AlgoExercisers
@@ -624,7 +627,10 @@ compiler_clean:
 
 ####### Compile
 
-main.o: ../AlgoExercisers/main.cpp 
+algofuncs.o: ../AlgoExercisers/algofuncs.cpp ../AlgoExercisers/algofuncs.h
+	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o algofuncs.o ../AlgoExercisers/algofuncs.cpp
+
+main.o: ../AlgoExercisers/main.cpp ../AlgoExercisers/algofuncs.h
 	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o main.o ../AlgoExercisers/main.cpp
 
 ####### Install
