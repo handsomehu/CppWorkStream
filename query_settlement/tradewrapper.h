@@ -67,6 +67,8 @@ public:
     void put_setmt(const std::vector<std::shared_ptr<char>>& val);
     void put_setmt(std::vector<std::shared_ptr<char>>&& val);
     void get_setmt(std::vector<std::shared_ptr<char>>& val);
+    void apijoin();
+
 
 private:
 

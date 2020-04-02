@@ -37,7 +37,10 @@ int Utf8ToGbk(char *src_str, size_t src_len, char *dst_str, size_t dst_len)
 
     return 0;
 }
-
+void TradeWrapper::apijoin()
+{
+    ;//m_ptraderapi->join();
+}
 TradeWrapper::TradeWrapper(const std::string &path):
   m_ptraderapi(nullptr),
   cfgpath(path), brokerid(""),mdaddress(""),tdaddress(""),
@@ -458,6 +461,9 @@ wchar_t* TradeWrapper::MBCS2Unicode(wchar_t* buff, const char* str)
 }
 void TradeWrapper::OnRspQrySettlementInfo(CThostFtdcSettlementInfoField *pSettlementInfo, CThostFtdcRspInfoField *pRspInfo, int nRequestID, bool bIsLast)
 {
+    if (pRspInfo)
+    {   if (pRspInfo->ErrorID == 0)
+        {
             if (pSettlementInfo->Content !=nullptr)
             {
                 std::shared_ptr<char> upcontent(new char[501], std::default_delete<char[]>());
@@ -470,7 +476,13 @@ void TradeWrapper::OnRspQrySettlementInfo(CThostFtdcSettlementInfoField *pSettle
                     pconeday.clear();
                 }
             }
+        }
+        else
+            std::cout << pRspInfo->ErrorID << std::endl;
 
+    }
+    else
+        std::cout << "response nullptr!" << std::endl;
 }
 //报单通知
 void TradeWrapper::OnRtnOrder(CThostFtdcOrderField *pOrder)
