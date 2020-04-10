@@ -7,73 +7,73 @@
 #include "tradewrapper.h"
 
 
-
+//sudo bash -c 'echo /tmp/core.%e.%p > /proc/sys/kernel/core_pattern'
 //extern int GbkToUtf8(char *str_str, size_t src_len, char *dst_str, size_t dst_len);
 //extern int Utf8ToGbk(char *src_str, size_t src_len, char *dst_str, size_t dst_len);
-std::vector<std::string>&& getdate()
+std::vector<std::string> getdate()
 {
     std::vector<std::string> dates{};
-    struct tm date;
+    struct tm sdate;
+    struct tm cdate;
 
-    date.tm_mon = 0;
-    date.tm_mday = 2;
-    date.tm_year = 2020-1900;
-    std::ostringstream os;
-    os << std::put_time(&date, "%Y%m%d");
+    sdate.tm_mon = 0;
+    sdate.tm_mday = 1;
+    sdate.tm_year = 2019-1900;
+    sdate.tm_hour = 0;
+    sdate.tm_min = 0;
+    sdate.tm_sec = 0;
+    sdate.tm_isdst = 0;
+    //std::ostringstream os;
+    //os << std::put_time(&date, "%Y%m%d");
     //std::cout << os.str() << std::endl;
-
-    time_t end = time(nullptr);
+    cdate.tm_mon = 3;
+    cdate.tm_mday = 3;
+    cdate.tm_year = 2020-1900;
+    cdate.tm_hour = 0;
+    cdate.tm_min = 0;
+    cdate.tm_sec = 0;
+    cdate.tm_isdst = 0;
+    //time_t end = time(nullptr);
     std::string tmp{""};
-
-    for (; mktime(&date) < end; ++date.tm_mday) {
+    //std::cout << sdate << "  " << cdate << std::endl;
+    //time_t s,e;
+    //s =mktime(&sdate);
+    //e = mktime(&cdate);
+    for (; mktime(&sdate) < mktime(&cdate); ++sdate.tm_mday) {
 
         char buffer[16];
 
-        strftime(buffer, sizeof(buffer), "%Y%m%d", &date);
+        strftime(buffer, sizeof(buffer), "%Y%m%d", &sdate);
         tmp = buffer;
-        //std::cout << tmp << "\n";
+        std::cout << tmp << "\n";
 
         dates.push_back(tmp);
         //break;
     }
-    return std::move(dates);
+    return dates;
 
 }
 
-void getdate(std::vector<std::string>& dates)
-{
-
-    struct tm date;
-
-    date.tm_mon = 0;
-    date.tm_mday = 1;
-    date.tm_year = 2018 - 1900;
-    time_t end = time(nullptr);
-
-    for (; mktime(&date) < end; ++date.tm_mday) {
-        char buffer[16];
-        strftime(buffer, sizeof(buffer), "%Y%m%d", &date);
-        std::cout << buffer << "\n";
-        dates.push_back(std::string(buffer));
-        //break;
-    }
-    //return std::move(dates);
-
-}
 
 int main()
 {
+
+
     TradeWrapper api("./cfg/j123.json");
     api.connect();
     std::this_thread::sleep_for(std::chrono::seconds(5));
       // array to hold the result.
     //char oneline[501];
+    while(!api.is_connected())
+        std::this_thread::sleep_for(std::chrono::seconds(1));
+    std::cout << "already connected, start get date" << std::endl;
     std::vector<std::string> datelist=getdate();
     for(auto a:datelist)
     {
         std::string t = a;
         std::cout << "aaa\t" << a << std::endl;
     }
+
     char resultsets[2000001]{0};
     char dst_utf8_set[2000001] = {0};
     int ixx = 0;
@@ -84,6 +84,9 @@ int main()
         api.qrySettlement(dt);
         std::this_thread::sleep_for(std::chrono::seconds(2));
         auto rst = api.getsettlements();
+
+        if (rst.empty())
+            continue;
 
 
 

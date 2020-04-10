@@ -392,6 +392,7 @@ void TradeWrapper::put_setmt(std::vector<std::shared_ptr<char>>&& val)
 }
 void TradeWrapper::get_setmt(std::vector<std::shared_ptr<char>>& val)
 {
+
     std::unique_lock<std::mutex> lck(mtx);
     cond.wait(lck,[this]{ return !pcalldays.empty(); });
     val=pcalldays.front();
@@ -401,6 +402,10 @@ void TradeWrapper::get_setmt(std::vector<std::shared_ptr<char>>& val)
 std::vector<std::shared_ptr<char>> TradeWrapper::getsettlements()
 {
     std::vector<std::shared_ptr<char>> val;
+
+    if (pcalldays.empty())
+        return val;
+
     get_setmt(val);
     return val;
 }
@@ -461,8 +466,8 @@ wchar_t* TradeWrapper::MBCS2Unicode(wchar_t* buff, const char* str)
 }
 void TradeWrapper::OnRspQrySettlementInfo(CThostFtdcSettlementInfoField *pSettlementInfo, CThostFtdcRspInfoField *pRspInfo, int nRequestID, bool bIsLast)
 {
-    if (pRspInfo)
-    {   if (pRspInfo->ErrorID == 0)
+    if (1)
+    {   if (pSettlementInfo != nullptr )
         {
             if (pSettlementInfo->Content !=nullptr)
             {
@@ -478,11 +483,10 @@ void TradeWrapper::OnRspQrySettlementInfo(CThostFtdcSettlementInfoField *pSettle
             }
         }
         else
-            std::cout << pRspInfo->ErrorID << std::endl;
+            std::cout << "pSettlementInfo is null" << std::endl;
 
     }
-    else
-        std::cout << "response nullptr!" << std::endl;
+
 }
 //报单通知
 void TradeWrapper::OnRtnOrder(CThostFtdcOrderField *pOrder)
