@@ -18,7 +18,10 @@ DEFINES += QT_DEPRECATED_WARNINGS
 SOURCES += \
     createdlg.cpp \
     main.cpp \
+    mdwrapper.cpp \
     orderform.cpp \
+    qmd.cpp \
+    qtd.cpp \
     removedlg.cpp \
     sqlhelper.cpp \
     tradewrapper.cpp
@@ -30,7 +33,10 @@ HEADERS += \
     libhead/ThostFtdcUserApiDataType.h \
     libhead/ThostFtdcUserApiStruct.h \
     libhead/json.hpp \
+    mdwrapper.h \
     orderform.h \
+    qmd.h \
+    qtd.h \
     removedlg.h \
     sqlhelper.h \
     tradewrapper.h

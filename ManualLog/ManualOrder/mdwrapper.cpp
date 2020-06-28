@@ -1,6 +1,6 @@
 #include "mdwrapper.h"
 
-MdWrapper::MdWrapper()
+MdWrapper::MdWrapper(const std::string &path)
 {
-
+    std::cout << path << std::endl;
 }
