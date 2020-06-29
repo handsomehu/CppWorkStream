@@ -1,11 +1,12 @@
 #ifndef QTD_H
 #define QTD_H
+#include <QObject>
+#include "tradewrapper.h"
 
-
-class QTd
+class QTd: public QObject , public TradeWrapper
 {
 public:
-    QTd();
+    QTd(const std::string &path);
 };
 
 #endif // QTD_H

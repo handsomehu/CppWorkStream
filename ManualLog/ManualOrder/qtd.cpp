@@ -1,6 +1,6 @@
 #include "qtd.h"
 
-QTd::QTd()
+QTd::QTd(const std::string &path) : TradeWrapper(path)
 {
 
 }

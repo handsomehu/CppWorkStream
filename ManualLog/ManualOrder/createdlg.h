@@ -28,13 +28,8 @@ public slots:
     void onTrade(QString insertsql);
 private slots:
     void on_pb_order_clicked();
-
     void on_pb_reset_clicked();
-
-
-
     void on_pb_ctp_clicked();
-
 private:
     void ClearInput();
     void ConnActs();
