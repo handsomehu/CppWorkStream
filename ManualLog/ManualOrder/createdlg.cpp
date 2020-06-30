@@ -6,6 +6,7 @@ CreateDlg::CreateDlg(QWidget *parent) :
     ui(new Ui::CreateDlg)
     , dbhelper("/home/leon/sqllitedb/tradelog_vnpy.db")
     , trade("./cfg/j123.json")
+    , mktdata("./cfg/j123.json")
     , cnstatus(false)
 {
     ui->setupUi(this);
@@ -16,8 +17,28 @@ CreateDlg::CreateDlg(QWidget *parent) :
     ui->cb_strg->addItems({"DT_IntraDayCommonStrategy","TurtleUseCloseStrategy","JDualThrust_IntraDayStrategy"});
     ui->cb_exch->addItems({"SHFE","DCE","CZCE","CFFEX","INE"});
     connect(this, SIGNAL(LogOrder(QString)), this, SLOT(onTrade(QString) ));
+    ui->HqTable->setColumnCount(11);
+    QStringList headerHQ;
+    headerHQ.append(QString::fromLocal8Bit("合约代码"));
+    headerHQ.append(QString::fromLocal8Bit("更新时间"));
+    headerHQ.append(QString::fromLocal8Bit("最新价"));
+    headerHQ.append(QString::fromLocal8Bit("买一价"));
+    headerHQ.append(QString::fromLocal8Bit("买一量"));
+    headerHQ.append(QString::fromLocal8Bit("卖一价"));
+    headerHQ.append(QString::fromLocal8Bit("卖一量"));
+    headerHQ.append(QString::fromLocal8Bit("涨幅"));
+    headerHQ.append(QString::fromLocal8Bit("成交量"));
+    headerHQ.append(QString::fromLocal8Bit("涨停价"));
+    headerHQ.append(QString::fromLocal8Bit("跌停价"));
+    //填充表格信息
+    ui->HqTable->setHorizontalHeaderLabels(headerHQ);
+    //自动排列列的内容
+    ui->HqTable->horizontalHeader()->setSectionResizeMode(QHeaderView::Stretch);
+    //整行选中
+    ui->HqTable->setSelectionBehavior(QAbstractItemView::SelectRows);
+    //禁止编辑
+    ui->HqTable->setEditTriggers(QAbstractItemView::NoEditTriggers);
 }
-
 CreateDlg::~CreateDlg()
 {
     delete ui;
@@ -114,7 +135,7 @@ void CreateDlg::on_pb_order_clicked()
     {
         // connect , login and so on
         ui->te_log->setText("not connected, reconnect!");
-        trade.connect();
+        trade.connectCtp();
 
     }
 
@@ -126,12 +147,12 @@ void CreateDlg::on_pb_reset_clicked()
 }
 void CreateDlg::ConnActs()
 {
-    trade.connect();
+    trade.connectCtp();
     std::this_thread::sleep_for(std::chrono::seconds(3));
     cnstatus = trade.is_connected();
     if (!cnstatus)
     {
-        trade.connect();
+        trade.connectCtp();
         std::this_thread::sleep_for(std::chrono::seconds(3));
     }
     if(cnstatus)

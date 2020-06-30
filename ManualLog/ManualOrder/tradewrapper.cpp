@@ -38,7 +38,7 @@ void TradeWrapper::ReadUserData()
 {
 
 }
-void TradeWrapper::connect()
+void TradeWrapper::connectCtp()
 {
     //创建API实例
     std::cout << "start connect!";

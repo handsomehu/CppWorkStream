@@ -21,7 +21,7 @@ public:
     virtual ~TradeWrapper(){ release();}
     void ReadUserData();
     //activat method
-    void connect();
+    void connectCtp();
     int ReqAuthenticate();
     void OnRspAuthenticate(CThostFtdcRspAuthenticateField *pRspAuthenticateField, CThostFtdcRspInfoField *pRspInfo, int nRequestID, bool bIsLast);
     int ReqUserLogin();

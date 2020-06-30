@@ -8,7 +8,8 @@
 #include <QDebug>
 #include <chrono>
 #include "sqlhelper.h"
-#include "tradewrapper.h"
+#include "qmd.h"
+#include "qtd.h"
 
 namespace Ui {
 class CreateDlg;
@@ -35,7 +36,8 @@ private:
     void ConnActs();
     Ui::CreateDlg *ui;
     SqlHelper dbhelper;
-    TradeWrapper trade;
+    QTd trade;
+    QMd mktdata;
     bool cnstatus;
 };
 
