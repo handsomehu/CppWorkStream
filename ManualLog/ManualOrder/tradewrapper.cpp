@@ -9,7 +9,8 @@ TradeWrapper::TradeWrapper(const std::string &path):
   m_ptraderapi(nullptr),
   cfgpath(path), brokerid(""),mdaddress(""),tdaddress(""),
   userid(""), password(""), appid(""),authcode(""),
-  jfile(path),isconnected(false),goodorder(false)
+  jfile(path),isconnected(false),goodorder(false),orderresp{}
+
 {
     nlohmann::json j;
     std::cout << "before json";
@@ -361,10 +362,23 @@ void TradeWrapper::OnRtnOrder(CThostFtdcOrderField *pOrder)
 
     printf("OnRtnOrder\n");
     std::cout << pOrder->InstrumentID << "\t" << pOrder->OrderStatus << std::endl;
+    orderresp.push(pOrder);
 
 }
 
 
+CThostFtdcOrderField* TradeWrapper::GetOrderRet()
+{
+
+    if (!orderresp.empty())
+    {
+        CThostFtdcOrderField* rsp = orderresp.front();
+        orderresp.pop();
+        return rsp;
+    }
+    else
+        return nullptr;
+}
 
 //成交通知
 

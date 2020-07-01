@@ -17,6 +17,8 @@ CreateDlg::CreateDlg(QWidget *parent) :
     ui->cb_strg->addItems({"DT_IntraDayCommonStrategy","TurtleUseCloseStrategy","JDualThrust_IntraDayStrategy"});
     ui->cb_exch->addItems({"SHFE","DCE","CZCE","CFFEX","INE"});
     connect(this, SIGNAL(LogOrder(QString)), this, SLOT(onTrade(QString) ));
+    connect(&trade,SIGNAL(sendWT(QString)),this,SLOT(ReceiveWT(QString)));
+
     ui->HqTable->setColumnCount(11);
     QStringList headerHQ;
     headerHQ.append(QString::fromLocal8Bit("合约代码"));
@@ -38,6 +40,33 @@ CreateDlg::CreateDlg(QWidget *parent) :
     ui->HqTable->setSelectionBehavior(QAbstractItemView::SelectRows);
     //禁止编辑
     ui->HqTable->setEditTriggers(QAbstractItemView::NoEditTriggers);
+
+    //***************************委托表设置****************************************//
+    //设置委托表格行列数量,行11行,10列
+    ui->WtTable->setColumnCount(9);
+    //ui->WtTable->setRowCount(10);
+
+    QStringList headerWT;
+    headerWT.append(QString::fromLocal8Bit("委托时间"));
+    headerWT.append(QString::fromLocal8Bit("合约代码"));
+    headerWT.append(QString::fromLocal8Bit("买卖"));
+    headerWT.append(QString::fromLocal8Bit("开平"));
+    headerWT.append(QString::fromLocal8Bit("数量"));
+    headerWT.append(QString::fromLocal8Bit("价格"));
+    headerWT.append(QString::fromLocal8Bit("状态"));
+    headerWT.append(QString::fromLocal8Bit("委托号"));
+    headerWT.append(QString::fromLocal8Bit("交易所"));
+
+
+    //填充表格信息
+    ui->WtTable->setHorizontalHeaderLabels(headerWT);
+    //自动排列列的内容
+    ui->WtTable->horizontalHeader()->setSectionResizeMode(QHeaderView::Stretch);
+    //整行选中
+    ui->WtTable->setSelectionBehavior(QAbstractItemView::SelectRows);
+    //禁止编辑
+    ui->WtTable->setEditTriggers(QAbstractItemView::NoEditTriggers);
+
 }
 CreateDlg::~CreateDlg()
 {
@@ -145,6 +174,73 @@ void CreateDlg::on_pb_reset_clicked()
 {
     ClearInput();
 }
+
+void CreateDlg::ReceiveWT(QString WTData )
+{
+     QStringList strlist = WTData.split(",");
+     if (strlist.at(8)=="")return;
+
+     QString buysell="";
+     QString openclose="";
+     if (strlist.at(2)=="0")
+     {
+         buysell=QString::fromLocal8Bit("买入");
+     }else
+     {
+         buysell=QString::fromLocal8Bit("卖出");
+     }
+     if (strlist.at(3)=="0")
+     {
+         openclose = QString::fromLocal8Bit("开仓");
+     }
+     else if(strlist.at(3)=="4")
+     {
+         openclose=QString::fromLocal8Bit("平昨");
+     }
+     else
+     {
+         openclose=QString::fromLocal8Bit("平今");
+     }
+     //0是开仓,3是平今，4是平昨
+
+
+     //循环传入的数据
+     for (int i=0;i<ui->WtTable->rowCount();i++)   //以 WTTable数量为边界
+     {
+         if (ui->WtTable->item(i,0)->text()==strlist.at(0))
+         {
+
+             ui->WtTable->setItem(i,0,new QTableWidgetItem(strlist.at(0)));	  //更新数据
+             ui->WtTable->setItem(i,1,new QTableWidgetItem(strlist.at(1)));	  //更新数据
+             ui->WtTable->setItem(i,2,new QTableWidgetItem(buysell));	  //更新数据
+             ui->WtTable->setItem(i,3,new QTableWidgetItem(openclose));	  //更新数据
+             ui->WtTable->setItem(i,4,new QTableWidgetItem(strlist.at(4)));	  //更新数据
+             ui->WtTable->setItem(i,5,new QTableWidgetItem(strlist.at(6)));	  //更新数据
+             ui->WtTable->setItem(i,6,new QTableWidgetItem(strlist.at(7)));	  //更新数据
+             ui->WtTable->setItem(i,7,new QTableWidgetItem(strlist.at(8)));	  //更新数据
+             ui->WtTable->setItem(i,8,new QTableWidgetItem(strlist.at(9)));	  //更新数据
+
+             return;
+         }
+
+     }
+
+
+     int row=ui->WtTable->rowCount();
+     ui->WtTable->insertRow(row);
+     ui->WtTable->setItem(row,0,new QTableWidgetItem(strlist.at(0)));
+     ui->WtTable->setItem(row,1,new QTableWidgetItem(strlist.at(1)));
+     ui->WtTable->setItem(row,2,new QTableWidgetItem(buysell));
+     ui->WtTable->setItem(row,3,new QTableWidgetItem(openclose));
+     ui->WtTable->setItem(row,4,new QTableWidgetItem(strlist.at(4)));
+     ui->WtTable->setItem(row,5,new QTableWidgetItem(strlist.at(6)));
+     ui->WtTable->setItem(row,6,new QTableWidgetItem(strlist.at(7)));
+     ui->WtTable->setItem(row,7,new QTableWidgetItem(strlist.at(8)));
+     ui->WtTable->setItem(row,8,new QTableWidgetItem(strlist.at(9)));
+
+}
+
+
 void CreateDlg::ConnActs()
 {
     trade.connectCtp();

@@ -6,6 +6,7 @@
 #include <cstring>
 #include <stdio.h>
 #include <memory>
+#include <queue>
 #include <chrono>
 #include <thread>
 #include <iostream>
@@ -33,6 +34,7 @@ public:
     bool is_connected();
     bool is_goodorder();
     void reset_goodorder();
+    CThostFtdcOrderField* GetOrderRet();
     //responsive method
     void OnFrontConnected();
     void OnFrontDisconnected(int nReason);
@@ -57,8 +59,7 @@ private:
     std::ifstream jfile;
     bool isconnected;
     bool goodorder;
-
-
+    std::queue<CThostFtdcOrderField*> orderresp;
 
 };
 
