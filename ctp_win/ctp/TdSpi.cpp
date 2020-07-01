@@ -22,7 +22,7 @@ TThostFtdcPriceType	LIMIT_PRICE;	// 价格
 TThostFtdcDirectionType	DIRECTION;	// 买卖方向
 
 // 请求编号
-extern int iRequestID;
+int iRequestTdID;
 
 // 会话参数
 TThostFtdcFrontIDType	FRONT_ID;	//前置编号
@@ -47,7 +47,7 @@ void TdSpi::ReqUserLogin()
 	strcpy(req.BrokerID, jy.BROKER_ID);
 	strcpy(req.UserID, jy.INVESTOR_ID);
 	strcpy(req.Password, jy.PASSWORD);
-	int iResult = pUserApi->ReqUserLogin(&req, ++iRequestID);
+	int iResult = pUserApi->ReqUserLogin(&req, ++iRequestTdID);
 	cerr << "--->>> 发送用户登录请求: " << ((iResult == 0) ? "成功" : "失败") << endl;
 }
 
@@ -67,6 +67,7 @@ void TdSpi::OnRspUserLogin(CThostFtdcRspUserLoginField *pRspUserLogin,
 
 		cerr << "--->>> 获取当前交易日 = " << pUserApi->GetTradingDay() << endl;
 		///投资者结算结果确认
+        this_thread::sleep_for(std::chrono::seconds(1));
 		ReqSettlementInfoConfirm();
 	}
 }
@@ -77,7 +78,7 @@ void TdSpi::ReqSettlementInfoConfirm()
 	memset(&req, 0, sizeof(req));
 	strcpy(req.BrokerID, jy.BROKER_ID);
 	strcpy(req.InvestorID, jy.INVESTOR_ID);
-	int iResult = pUserApi->ReqSettlementInfoConfirm(&req, ++iRequestID);
+	int iResult = pUserApi->ReqSettlementInfoConfirm(&req, ++iRequestTdID);
 	cerr << "--->>> 投资者结算结果确认: " << ((iResult == 0) ? "成功" : "失败") << endl;
 }
 
@@ -96,7 +97,7 @@ void TdSpi::ReqQryInstrument()
 	CThostFtdcQryInstrumentField req;
 	memset(&req, 0, sizeof(req));
 	strcpy(req.InstrumentID, INSTRUMENT_ID);
-	int iResult = pUserApi->ReqQryInstrument(&req, ++iRequestID);
+	int iResult = pUserApi->ReqQryInstrument(&req, ++iRequestTdID);
 	cerr << "--->>> 请求查询合约: " << ((iResult == 0) ? "成功" : "失败") << endl;
 }
 
@@ -116,7 +117,7 @@ void TdSpi::OnRspQryInstrument(CThostFtdcInstrumentField *pInstrument, CThostFtd
 	if (bIsLast && !IsErrorRspInfo(pRspInfo))
 	{
 		//请求查询合约
-        this_thread::sleep_for(std::chrono::seconds(2));//Sleep(2000);
+        this_thread::sleep_for(std::chrono::seconds(2));
 		ReqQryTradingAccount();
 	}
 
@@ -132,7 +133,7 @@ void TdSpi::ReqQryTradingAccount()
 	memset(&req, 0, sizeof(req));
 	strcpy(req.BrokerID, jy.BROKER_ID);
 	strcpy(req.InvestorID, jy.INVESTOR_ID);
-	int iResult = pUserApi->ReqQryTradingAccount(&req, ++iRequestID);
+	int iResult = pUserApi->ReqQryTradingAccount(&req, ++iRequestTdID);
 	cerr << "--->>> 请求查询资金账户: " << ((iResult == 0) ? "成功" : "失败") << endl;
 }
 
@@ -142,16 +143,27 @@ void TdSpi::OnRspQryTradingAccount(CThostFtdcTradingAccountField *pTradingAccoun
 	double zqy=pTradingAccount->Balance;	//总权益
 	double bzj=pTradingAccount->CurrMargin; //占用保证金
 	double kyzj=pTradingAccount->Available;	//可用资金
+	double sxf=pTradingAccount->Commission;
+	double psyk=pTradingAccount->CloseProfit;
+
+	double starqy = pTradingAccount->PreBalance;
+	double yk=zqy-starqy-sxf; 
+	double ykbfb=(zqy-starqy)*100/starqy;
+
+
 	double fxd=bzj*100/zqy;
 
-	QString ZJData = account+","+QString("%1").arg(zqy,0,'f',2)+","+QString::number(bzj)+","+QString::number(kyzj)+","+QString::number(fxd);
+	//QString ZJData = account+","+QString("%1").arg(zqy,0,'f',2)+","+QString::number(bzj)+","+QString::number(kyzj)+","+QString::number(fxd);
+	
+
+	QString ZJData = account+","+QString("%1").arg(starqy,0,'f',2)+","+QString::number(bzj)+","+QString::number(kyzj)+","+QString::number(yk)+","+QString("%1").arg(ykbfb,0,'f',2);
 	emit sendZJ(ZJData);
 
 	if (bIsLast && !IsErrorRspInfo(pRspInfo))
 	{
 		///请求查询投资者持仓
 		//因为持仓查询具有延迟,无法正常显示,需要使用Sleep()
-        this_thread::sleep_for(std::chrono::seconds(2)); //Sleep(2000); //windows.h
+		//Sleep(2000); //windows.h
 		ReqQryInvestorPosition();
 	}
 }
@@ -163,16 +175,16 @@ void TdSpi::ReqQryInvestorPosition()
 	strcpy(req.BrokerID, jy.BROKER_ID);
 	strcpy(req.InvestorID, jy.INVESTOR_ID);
 	strcpy(req.InstrumentID, INSTRUMENT_ID);
-	int iResult = pUserApi->ReqQryInvestorPosition(&req, ++iRequestID);
+	int iResult = pUserApi->ReqQryInvestorPosition(&req, ++iRequestTdID);
 	cerr << "--->>> 请求查询投资者持仓: " << ((iResult == 0) ? "成功" : "失败") << endl;
 }
 
 void TdSpi::OnRspQryInvestorPosition(CThostFtdcInvestorPositionField *pInvestorPosition, CThostFtdcRspInfoField *pRspInfo, int nRequestID, bool bIsLast)
 {
-  
+   if(pInvestorPosition==NULL)return;
    if (pInvestorPosition->Position==0)return;
    QString dm=pInvestorPosition->InstrumentID; //持仓代码
-   QString lx= QChar::fromLatin1(pInvestorPosition->PosiDirection); //持仓多空方向
+   QString lx=QChar::fromLatin1(pInvestorPosition->PosiDirection); //持仓多空方向
    int lots=pInvestorPosition->Position; //持仓,一般用今仓
    double cb=pInvestorPosition->PositionCost/lots/hy(dm).hycs;	   //持仓成本 ,ag1612以吨计价
 
@@ -192,7 +204,7 @@ void TdSpi::ReqOrderInsert(QString dm,QString lx,int lots,double price)
 	///合约代码
 	strcpy(req.InstrumentID, dm.toStdString().data());
 	///报单引用
-    sprintf(ORDER_REF,"%d",iRequestID);	  //-------------
+    sprintf(ORDER_REF,"%d",iRequestTdID);	  //-------------
 	strcpy(req.OrderRef, ORDER_REF);  
 	///用户代码
 	//	TThostFtdcUserIDType	UserID;
@@ -249,7 +261,7 @@ void TdSpi::ReqOrderInsert(QString dm,QString lx,int lots,double price)
 	///用户强评标志: 否
 	req.UserForceClose = 0;
 
-	int iResult = pUserApi->ReqOrderInsert(&req, ++iRequestID);
+	int iResult = pUserApi->ReqOrderInsert(&req, ++iRequestTdID);
 	cerr << "--->>> 报单录入请求: " << ((iResult == 0) ? "成功" : "失败") << endl;
 }
 
@@ -258,47 +270,26 @@ void TdSpi::OnRspOrderInsert(CThostFtdcInputOrderField *pInputOrder, CThostFtdcR
 	cerr << "--->>> " << "OnRspOrderInsert" << endl;
 	IsErrorRspInfo(pRspInfo);
 }
-
-void TdSpi::ReqOrderAction(CThostFtdcOrderField *pOrder)
+//报单录入请求,撤单
+void TdSpi::ReqOrderAction(QString brokerid,QString wth,QString jys)
 {
-	static bool ORDER_ACTION_SENT = false;		//是否发送了报单
-	if (ORDER_ACTION_SENT)
-		return;
+	QByteArray ba=brokerid.toLatin1();
+	char *pbid=ba.data();
+	QByteArray bw=wth.toLatin1();
+	char* pwth=bw.data();
+	QByteArray bj=jys.toLatin1();
+	char *pjys=	bj.data();
 
 	CThostFtdcInputOrderActionField req;
 	memset(&req, 0, sizeof(req));
 	///经纪公司代码
-	strcpy(req.BrokerID, pOrder->BrokerID);
-	///投资者代码
-	strcpy(req.InvestorID, pOrder->InvestorID);
-	///报单操作引用
-	//	TThostFtdcOrderActionRefType	OrderActionRef;
-	///报单引用
-	strcpy(req.OrderRef, pOrder->OrderRef);
-	///请求编号
-	//	TThostFtdcRequestIDType	RequestID;
-	///前置编号
-	req.FrontID = FRONT_ID;
-	///会话编号
-	req.SessionID = SESSION_ID;
-	///交易所代码
-	//	TThostFtdcExchangeIDType	ExchangeID;
-	///报单编号
-	//	TThostFtdcOrderSysIDType	OrderSysID;
+	strcpy(req.BrokerID, pbid);
+	strcpy(req.OrderSysID,pwth); //委托号
+	strcpy(req.ExchangeID,pjys); //交易所
+
 	///操作标志
 	req.ActionFlag = THOST_FTDC_AF_Delete;
-	///价格
-	//	TThostFtdcPriceType	LimitPrice;
-	///数量变化
-	//	TThostFtdcVolumeType	VolumeChange;
-	///用户代码
-	//	TThostFtdcUserIDType	UserID;
-	///合约代码
-	strcpy(req.InstrumentID, pOrder->InstrumentID);
-
-	int iResult = pUserApi->ReqOrderAction(&req, ++iRequestID);
-	cerr << "--->>> 报单操作请求: " << ((iResult == 0) ? "成功" : "失败") << endl;
-	ORDER_ACTION_SENT = true;
+	int iResult = pUserApi->ReqOrderAction(&req, ++iRequestTdID);
 }
 
 void TdSpi::OnRspOrderAction(CThostFtdcInputOrderActionField *pInputOrderAction, CThostFtdcRspInfoField *pRspInfo, int nRequestID, bool bIsLast)
@@ -307,46 +298,35 @@ void TdSpi::OnRspOrderAction(CThostFtdcInputOrderActionField *pInputOrderAction,
 	IsErrorRspInfo(pRspInfo);
 }
 
+//问题模块
 ///报单通知	   ----委托回报
 void TdSpi::OnRtnOrder(CThostFtdcOrderField *pOrder)
 {
-		//报单状态处理
-		QString zt;
-		if (pOrder->OrderStatus=THOST_FTDC_OST_AllTraded)
-		{
-			zt=QString::fromLocal8Bit("全部成交");
-		}else if(THOST_FTDC_OST_PartTradedQueueing)
-		{
-			zt=QString::fromLocal8Bit("部分成交");
-		}
-		else if (pOrder->OrderStatus=THOST_FTDC_OST_PartTradedNotQueueing)
-		{
-			zt=QString::fromLocal8Bit("部分成交");
-		}
-		else if (pOrder->OrderStatus=THOST_FTDC_OST_NoTradeQueueing)
-		{
-			zt=QString::fromLocal8Bit("未成交");
-		}
-		else if (pOrder->OrderStatus=THOST_FTDC_OST_Canceled)
-		{
-			zt=QString::fromLocal8Bit("已撤单");
-		}
+	
+	//报单状态处理
+		
+	QString zt;
+	if(pOrder->OrderStatus==THOST_FTDC_OST_AllTraded){zt=QString::fromLocal8Bit("全部成交");}
+	else if(pOrder->OrderStatus==THOST_FTDC_OST_PartTradedQueueing){zt=QString::fromLocal8Bit("部份成交");}
+	else if(pOrder->OrderStatus==THOST_FTDC_OST_PartTradedNotQueueing){zt=QString::fromLocal8Bit("部份成交");}
+	else if(pOrder->OrderStatus==THOST_FTDC_OST_NoTradeQueueing){zt=QString::fromLocal8Bit("未成交");}
+	else if(pOrder->OrderStatus==THOST_FTDC_OST_Canceled){zt=QString::fromLocal8Bit("已撤单");}
+	else {return;}
 
 	
-		  QString wttime = pOrder->InsertTime; //委托时间
-		  QString dm = pOrder->InstrumentID; //委托代码
-          QString bs=QChar::fromLatin1(pOrder->Direction); //买卖方向
-		  QString kp=pOrder->CombOffsetFlag; //开平标志
-		  QString lots = QString::number(pOrder->VolumeTotalOriginal); //数量
-		  QString price = QString::number(pOrder->LimitPrice); //价格
-		  //QString zt=pOrder->OrderStatus; //报单状态
-		  QString wth = pOrder->OrderSysID; //委托号
-		  QString jsy=pOrder->ExchangeID; //交易所
+		QString wttime = pOrder->InsertTime; //委托时间
+		QString dm = pOrder->InstrumentID; //委托代码
+        QString bs = QChar::fromLatin1(pOrder->Direction); //买卖方向
+		QString kp=pOrder->CombOffsetFlag; //开平标志
+		QString lots = QString::number(pOrder->VolumeTotalOriginal); //数量
+		QString price = QString::number(pOrder->LimitPrice); //价格
+		QString wth = pOrder->OrderSysID; //委托号
+		QString jsy=pOrder->ExchangeID; //交易所
 
-		  QString WTData=wttime+","+dm+","+bs+","+kp+","+lots+","+lots+","+price+","+zt+","+wth+","+jsy;
+		QString WTData=wttime+","+dm+","+bs+","+kp+","+lots+","+lots+","+price+","+zt+","+wth+","+jsy;
 
-		  emit sendWT(WTData);
-
+		emit sendWT(WTData);
+	
 }
 
 ///成交通知

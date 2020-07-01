@@ -2,8 +2,8 @@
 #define MDSPI_H
 
 #include <QObject>
-#include <chrono>
 #include <thread>
+#include <chrono>
 #include "ThostFtdcMdApi.h"
 
 class MdSpi : public QObject,public CThostFtdcMdSpi
@@ -24,6 +24,7 @@ public:
 		TThostFtdcBrokerIDType PASSWORD;
 	};
 	MDStruct hq; //สตภýปฏ
+	QString dm;
 
 	void Init();
 signals:
@@ -67,6 +68,7 @@ public:
 private:
 	void ReqUserLogin();
 	void SubscribeMarketData();
+	void SubscribeMarketData(QString dm);
 	// 
 	bool IsErrorRspInfo(CThostFtdcRspInfoField *pRspInfo);
 

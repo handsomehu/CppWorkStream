@@ -6,8 +6,8 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>1270</width>
-    <height>608</height>
+    <width>1218</width>
+    <height>683</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -19,8 +19,8 @@
      <rect>
       <x>840</x>
       <y>0</y>
-      <width>301</width>
-      <height>241</height>
+      <width>351</width>
+      <height>281</height>
      </rect>
     </property>
     <property name="title">
@@ -133,7 +133,7 @@
         </spacer>
        </item>
        <item>
-        <widget class="QPushButton" name="pushButton_2">
+        <widget class="QPushButton" name="Btnxml">
          <property name="text">
           <string>退   出</string>
          </property>
@@ -160,9 +160,9 @@
     <property name="geometry">
      <rect>
       <x>840</x>
-      <y>250</y>
-      <width>341</width>
-      <height>271</height>
+      <y>290</y>
+      <width>351</width>
+      <height>311</height>
      </rect>
     </property>
     <property name="title">
@@ -174,7 +174,7 @@
        <x>200</x>
        <y>20</y>
        <width>171</width>
-       <height>191</height>
+       <height>211</height>
       </rect>
      </property>
      <layout class="QVBoxLayout" name="verticalLayout_2">
@@ -273,8 +273,8 @@
     <widget class="QPushButton" name="BtnXd">
      <property name="geometry">
       <rect>
-       <x>200</x>
-       <y>220</y>
+       <x>210</x>
+       <y>240</y>
        <width>91</width>
        <height>23</height>
       </rect>
@@ -289,7 +289,7 @@
        <x>0</x>
        <y>20</y>
        <width>191</width>
-       <height>241</height>
+       <height>251</height>
       </rect>
      </property>
      <layout class="QVBoxLayout" name="verticalLayout_3">
@@ -440,16 +440,16 @@
     <property name="geometry">
      <rect>
       <x>10</x>
-      <y>30</y>
-      <width>831</width>
-      <height>491</height>
+      <y>0</y>
+      <width>821</width>
+      <height>501</height>
      </rect>
     </property>
     <property name="tabPosition">
      <enum>QTabWidget::West</enum>
     </property>
     <property name="currentIndex">
-     <number>3</number>
+     <number>0</number>
     </property>
     <widget class="QWidget" name="tab">
      <attribute name="title">
@@ -461,7 +461,7 @@
         <x>0</x>
         <y>0</y>
         <width>811</width>
-        <height>511</height>
+        <height>471</height>
        </rect>
       </property>
      </widget>
@@ -476,7 +476,7 @@
         <x>0</x>
         <y>0</y>
         <width>811</width>
-        <height>491</height>
+        <height>471</height>
        </rect>
       </property>
      </widget>
@@ -491,7 +491,7 @@
         <x>5</x>
         <y>1</y>
         <width>801</width>
-        <height>491</height>
+        <height>471</height>
        </rect>
       </property>
      </widget>
@@ -504,7 +504,7 @@
       <property name="geometry">
        <rect>
         <x>0</x>
-        <y>280</y>
+        <y>250</y>
         <width>811</width>
         <height>211</height>
        </rect>
@@ -531,11 +531,237 @@
         <x>-5</x>
         <y>1</y>
         <width>811</width>
-        <height>491</height>
+        <height>471</height>
        </rect>
       </property>
      </widget>
     </widget>
+    <widget class="QWidget" name="tab_6">
+     <attribute name="title">
+      <string>数据</string>
+     </attribute>
+     <widget class="QTextEdit" name="textEdit">
+      <property name="geometry">
+       <rect>
+        <x>3</x>
+        <y>0</y>
+        <width>801</width>
+        <height>501</height>
+       </rect>
+      </property>
+     </widget>
+    </widget>
+    <widget class="QWidget" name="tab_7">
+     <attribute name="title">
+      <string>日内交易</string>
+     </attribute>
+     <widget class="QTableWidget" name="DayTable">
+      <property name="geometry">
+       <rect>
+        <x>0</x>
+        <y>0</y>
+        <width>801</width>
+        <height>501</height>
+       </rect>
+      </property>
+     </widget>
+    </widget>
+   </widget>
+   <widget class="QRadioButton" name="radiorun">
+    <property name="geometry">
+     <rect>
+      <x>30</x>
+      <y>520</y>
+      <width>111</width>
+      <height>16</height>
+     </rect>
+    </property>
+    <property name="text">
+     <string>全自动交易运行</string>
+    </property>
+   </widget>
+   <widget class="QRadioButton" name="radiostop">
+    <property name="geometry">
+     <rect>
+      <x>30</x>
+      <y>560</y>
+      <width>121</width>
+      <height>16</height>
+     </rect>
+    </property>
+    <property name="text">
+     <string>全自动交易停止</string>
+    </property>
+   </widget>
+   <widget class="QLabel" name="label_13">
+    <property name="geometry">
+     <rect>
+      <x>521</x>
+      <y>598</y>
+      <width>81</width>
+      <height>20</height>
+     </rect>
+    </property>
+    <property name="text">
+     <string>亏损 比例(%):</string>
+    </property>
+   </widget>
+   <widget class="QLineEdit" name="lineEditpctime">
+    <property name="geometry">
+     <rect>
+      <x>608</x>
+      <y>535</y>
+      <width>131</width>
+      <height>21</height>
+     </rect>
+    </property>
+   </widget>
+   <widget class="QLabel" name="label_10">
+    <property name="geometry">
+     <rect>
+      <x>521</x>
+      <y>568</y>
+      <width>81</width>
+      <height>20</height>
+     </rect>
+    </property>
+    <property name="text">
+     <string>保证金比例(%):</string>
+    </property>
+   </widget>
+   <widget class="QLineEdit" name="lineEditbzj">
+    <property name="geometry">
+     <rect>
+      <x>608</x>
+      <y>565</y>
+      <width>131</width>
+      <height>21</height>
+     </rect>
+    </property>
+   </widget>
+   <widget class="QLabel" name="label_9">
+    <property name="geometry">
+     <rect>
+      <x>521</x>
+      <y>537</y>
+      <width>81</width>
+      <height>20</height>
+     </rect>
+    </property>
+    <property name="text">
+     <string>平 仓 时 间:</string>
+    </property>
+   </widget>
+   <widget class="QLineEdit" name="lineEditloss">
+    <property name="geometry">
+     <rect>
+      <x>608</x>
+      <y>595</y>
+      <width>131</width>
+      <height>21</height>
+     </rect>
+    </property>
+   </widget>
+   <widget class="QLineEdit" name="lineEditdm">
+    <property name="geometry">
+     <rect>
+      <x>610</x>
+      <y>506</y>
+      <width>131</width>
+      <height>21</height>
+     </rect>
+    </property>
+   </widget>
+   <widget class="QLabel" name="label_15">
+    <property name="geometry">
+     <rect>
+      <x>523</x>
+      <y>507</y>
+      <width>81</width>
+      <height>20</height>
+     </rect>
+    </property>
+    <property name="text">
+     <string>监 控 代 码:</string>
+    </property>
+   </widget>
+   <widget class="QPushButton" name="pushButton">
+    <property name="geometry">
+     <rect>
+      <x>750</x>
+      <y>510</y>
+      <width>75</width>
+      <height>23</height>
+     </rect>
+    </property>
+    <property name="text">
+     <string>增 加</string>
+    </property>
+   </widget>
+   <widget class="QLabel" name="label_16">
+    <property name="geometry">
+     <rect>
+      <x>40</x>
+      <y>590</y>
+      <width>54</width>
+      <height>12</height>
+     </rect>
+    </property>
+    <property name="text">
+     <string>00:00:00</string>
+    </property>
+   </widget>
+   <widget class="QLabel" name="labelzt">
+    <property name="geometry">
+     <rect>
+      <x>310</x>
+      <y>570</y>
+      <width>54</width>
+      <height>12</height>
+     </rect>
+    </property>
+    <property name="text">
+     <string>未开仓</string>
+    </property>
+   </widget>
+   <widget class="QLabel" name="labelyk">
+    <property name="geometry">
+     <rect>
+      <x>180</x>
+      <y>520</y>
+      <width>81</width>
+      <height>16</height>
+     </rect>
+    </property>
+    <property name="text">
+     <string>0.00</string>
+    </property>
+   </widget>
+   <widget class="QLabel" name="labelykbfb">
+    <property name="geometry">
+     <rect>
+      <x>180</x>
+      <y>550</y>
+      <width>51</width>
+      <height>21</height>
+     </rect>
+    </property>
+    <property name="text">
+     <string>0.00</string>
+    </property>
+   </widget>
+   <widget class="QLabel" name="label_18">
+    <property name="geometry">
+     <rect>
+      <x>240</x>
+      <y>550</y>
+      <width>54</width>
+      <height>12</height>
+     </rect>
+    </property>
+    <property name="text">
+     <string>%</string>
+    </property>
    </widget>
   </widget>
   <widget class="QMenuBar" name="menuBar">
@@ -543,7 +769,7 @@
     <rect>
      <x>0</x>
      <y>0</y>
-     <width>1270</width>
+     <width>1218</width>
      <height>23</height>
     </rect>
    </property>
@@ -557,6 +783,16 @@
    </attribute>
   </widget>
   <widget class="QStatusBar" name="statusBar"/>
+  <action name="actioncd">
+   <property name="text">
+    <string>撤单</string>
+   </property>
+  </action>
+  <action name="actionAdd">
+   <property name="text">
+    <string>添加</string>
+   </property>
+  </action>
  </widget>
  <layoutdefault spacing="6" margin="11"/>
  <resources>
@@ -570,8 +806,8 @@
    <slot>MDLogin()</slot>
    <hints>
     <hint type="sourcelabel">
-     <x>932</x>
-     <y>254</y>
+     <x>983</x>
+     <y>298</y>
     </hint>
     <hint type="destinationlabel">
      <x>852</x>
@@ -579,8 +815,42 @@
     </hint>
    </hints>
   </connection>
+  <connection>
+   <sender>pushButton</sender>
+   <signal>clicked()</signal>
+   <receiver>ctpClass</receiver>
+   <slot>OnAddHeyue()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>776</x>
+     <y>555</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>780</x>
+     <y>618</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>Btnxml</sender>
+   <signal>clicked()</signal>
+   <receiver>ctpClass</receiver>
+   <slot>OnExit()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>1104</x>
+     <y>283</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>1195</x>
+     <y>646</y>
+    </hint>
+   </hints>
+  </connection>
  </connections>
  <slots>
   <slot>MDLogin()</slot>
+  <slot>OnAddHeyue()</slot>
+  <slot>OnExit()</slot>
  </slots>
 </ui>

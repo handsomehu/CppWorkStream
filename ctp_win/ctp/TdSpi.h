@@ -2,8 +2,8 @@
 #define TDSPI_H
 
 #include <QObject>
-#include <chrono>
 #include <thread>
+#include <chrono>
 #include "ThostFtdcTraderApi.h"
 
 
@@ -50,10 +50,14 @@ public:
 private:
 
 public:
+	///请求查询资金账户
+	void ReqQryTradingAccount();
 	///报单录入请求
 	void ReqOrderInsert(QString dm,QString lx,int lots,double price);
 	///报单操作请求
-	void ReqOrderAction(CThostFtdcOrderField *pOrder);
+	void ReqOrderAction(QString brokerid,QString wth,QString jys);
+	///报单操作请求
+	//void ReqOrderAction(CThostFtdcOrderField *pOrder);
 
 	///当客户端与交易后台建立起通信连接时（还未登录前），该方法被调用。
 	virtual void OnFrontConnected();
@@ -102,7 +106,7 @@ private:
 	///请求查询合约
 	void ReqQryInstrument();
 	///请求查询资金账户
-	void ReqQryTradingAccount();
+	//void ReqQryTradingAccount();
 	///请求查询投资者持仓
 	void ReqQryInvestorPosition();
 

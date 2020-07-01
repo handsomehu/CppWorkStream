@@ -42,6 +42,7 @@ CThostFtdcOrderField* QTd::FwdOrdResp()
       QString jsy=pOrder->ExchangeID; //交易所
 
       QString WTData=wttime+","+dm+","+bs+","+kp+","+lots+","+lots+","+price+","+zt+","+wth+","+jsy;
+      qDebug() << WTData;
 
       emit sendWT(WTData);
 }

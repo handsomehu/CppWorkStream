@@ -24,6 +24,7 @@ SOURCES += \
     qtd.cpp \
     removedlg.cpp \
     sqlhelper.cpp \
+    tdthread.cpp \
     tradewrapper.cpp
 
 HEADERS += \
@@ -39,6 +40,7 @@ HEADERS += \
     qtd.h \
     removedlg.h \
     sqlhelper.h \
+    tdthread.h \
     tradewrapper.h
 
 FORMS += \

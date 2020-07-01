@@ -1,6 +1,7 @@
 #ifndef QTD_H
 #define QTD_H
 #include <QObject>
+#include <QDebug>
 #include <QString>
 #include "tradewrapper.h"
 

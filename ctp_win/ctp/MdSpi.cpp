@@ -1,5 +1,6 @@
 #include "MdSpi.h"
 #include <iostream>
+#include <QStringList>
 using namespace std;
 
 #pragma warning(disable: 4996)
@@ -67,15 +68,35 @@ void MdSpi::OnRspUserLogin(CThostFtdcRspUserLoginField *pRspUserLogin,
 		///获取当前交易日
 		cerr << "--->>> 获取当前交易日 = " << pUserApi->GetTradingDay() << endl;
 		// 请求订阅行情
-		SubscribeMarketData();	
+		SubscribeMarketData();
+		SubscribeMarketData(dm);  //
 	}
 }
-
+//
 void MdSpi::SubscribeMarketData()
 {
 	int iResult = pUserApi->SubscribeMarketData(ppInstrumentID, iInstrumentID);
 	cerr << "--->>> 发送行情订阅请求: " << ((iResult == 0) ? "成功" : "失败") << endl;
 }
+//自动交易模块化行情代码部分
+void MdSpi::SubscribeMarketData(QString dm)
+{
+	QStringList strlist=dm.split(",");
+	int iInstrumentID=strlist.length();
+	for (int i=0;i<iInstrumentID;i++)
+	{
+		QString str=strlist.at(i);
+		char *ch;
+		QByteArray ba=str.toLatin1();
+		ch=ba.data();
+		char *myppInstrumentID[]={ch};
+		int iRequestID=pUserApi->SubscribeMarketData(myppInstrumentID,1); //每次只发送一个
+		
+	}
+	cerr<<"--->>>发送行情订阅请求:"<<((iRequestID==0)?"成功":"失败")<<endl;
+}
+
+
 
 void MdSpi::OnRspSubMarketData(CThostFtdcSpecificInstrumentField *pSpecificInstrument, CThostFtdcRspInfoField *pRspInfo, int nRequestID, bool bIsLast)
 {
@@ -102,8 +123,9 @@ void MdSpi::OnRtnDepthMarketData(CThostFtdcDepthMarketDataField *pDepthMarketDat
 	QString vol = QString::number(pDepthMarketData->Volume); //成交量
 	QString zt = QString::number(pDepthMarketData->UpperLimitPrice); //涨停价
 	QString dt = QString::number(pDepthMarketData->LowerLimitPrice); //跌停价
+	QString openprice=QString::number(pDepthMarketData->OpenPrice);	 //开盘价
 
-	QString HQTick = dm+","+updatetime+","+lastprice+","+buyprice+","+buyvol+","+sellprice+","+sellvol+","+zf+","+vol+","+zt+","+dt;	 //使用信号传递数据
+	QString HQTick = dm+","+updatetime+","+lastprice+","+buyprice+","+buyvol+","+sellprice+","+sellvol+","+zf+","+vol+","+zt+","+dt+","+openprice;	 //使用信号传递数据
 	emit sendData(HQTick); //只是发送了数据，需要接收端接收数据 ，a,在ctp.h头文件定义接收方法 b, 通过SLOT连接
 }
 
