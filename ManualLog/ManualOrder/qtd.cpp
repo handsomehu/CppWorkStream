@@ -1,6 +1,6 @@
 #include "qtd.h"
 
-QTd::QTd(const std::string &path) : TradeWrapper(path)
+QTd::QTd(QObject *parent,const std::string &path) : QObject(parent), TradeWrapper(path)
 {
 
 }

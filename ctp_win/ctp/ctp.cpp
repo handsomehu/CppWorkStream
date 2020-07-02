@@ -4,8 +4,6 @@
 #include "MdSpi.h"
 #include "TdSpi.h"
 #include <QMessageBox>
-#include "tinystr.h"
-#include "tinyxml.h"
 #include <iostream>
 #include <string>
 #include <QFile>
@@ -43,150 +41,150 @@ ctp::ctp(QWidget *parent)
 
 	connect(ui.Btnxml,SIGNAL(clicked()),this,SLOT(Onxml()));
 
-	//***************************ĞĞÇé±íÉèÖÃ****************************************//
-	//ÉèÖÃĞĞÇé±í¸ñĞĞÁĞÊıÁ¿,ĞĞ11ĞĞ,10ÁĞ
+	//***************************è¡Œæƒ…è¡¨è®¾ç½®****************************************//
+	//è®¾ç½®è¡Œæƒ…è¡¨æ ¼è¡Œåˆ—æ•°é‡,è¡Œ11è¡Œ,10åˆ—
 	ui.HQTable->setColumnCount(11);
 
 	QStringList headerHQ;
-	headerHQ.append(QString::fromLocal8Bit("ºÏÔ¼´úÂë"));
-	headerHQ.append(QString::fromLocal8Bit("¸üĞÂÊ±¼ä"));
-	headerHQ.append(QString::fromLocal8Bit("×îĞÂ¼Û"));
-	headerHQ.append(QString::fromLocal8Bit("ÂòÒ»¼Û"));
-	headerHQ.append(QString::fromLocal8Bit("ÂòÒ»Á¿"));
-	headerHQ.append(QString::fromLocal8Bit("ÂôÒ»¼Û"));
-	headerHQ.append(QString::fromLocal8Bit("ÂôÒ»Á¿"));
-	headerHQ.append(QString::fromLocal8Bit("ÕÇ·ù"));
-	headerHQ.append(QString::fromLocal8Bit("³É½»Á¿"));
-	headerHQ.append(QString::fromLocal8Bit("ÕÇÍ£¼Û"));
-	headerHQ.append(QString::fromLocal8Bit("µøÍ£¼Û"));
+    headerHQ.append(QString::fromLocal8Bit("åˆçº¦ä»£ç "));
+	headerHQ.append(QString::fromLocal8Bit("æ›´æ–°æ—¶é—´"));
+	headerHQ.append(QString::fromLocal8Bit("æœ€æ–°ä»·"));
+	headerHQ.append(QString::fromLocal8Bit("ä¹°ä¸€ä»·"));
+	headerHQ.append(QString::fromLocal8Bit("ä¹°ä¸€é‡"));
+	headerHQ.append(QString::fromLocal8Bit("å–ä¸€ä»·"));
+	headerHQ.append(QString::fromLocal8Bit("å–ä¸€é‡"));
+	headerHQ.append(QString::fromLocal8Bit("æ¶¨å¹…"));
+	headerHQ.append(QString::fromLocal8Bit("æˆäº¤é‡"));
+	headerHQ.append(QString::fromLocal8Bit("æ¶¨åœä»·"));
+	headerHQ.append(QString::fromLocal8Bit("è·Œåœä»·"));
 
-	//Ìî³ä±í¸ñĞÅÏ¢
+	//å¡«å……è¡¨æ ¼ä¿¡æ¯
 	ui.HQTable->setHorizontalHeaderLabels(headerHQ);
-	//×Ô¶¯ÅÅÁĞÁĞµÄÄÚÈİ
+	//è‡ªåŠ¨æ’åˆ—åˆ—çš„å†…å®¹
 	ui.HQTable->horizontalHeader()->setSectionResizeMode(QHeaderView::Stretch);
-	//ÕûĞĞÑ¡ÖĞ
+	//æ•´è¡Œé€‰ä¸­
 	ui.HQTable->setSelectionBehavior(QAbstractItemView::SelectRows);
-	//½ûÖ¹±à¼­
+	//ç¦æ­¢ç¼–è¾‘
 	ui.HQTable->setEditTriggers(QAbstractItemView::NoEditTriggers);
 
 
-	//***************************Î¯ÍĞ±íÉèÖÃ****************************************//
-	//ÉèÖÃÎ¯ÍĞ±í¸ñĞĞÁĞÊıÁ¿,ĞĞ11ĞĞ,10ÁĞ
+	//***************************å§”æ‰˜è¡¨è®¾ç½®****************************************//
+	//è®¾ç½®å§”æ‰˜è¡¨æ ¼è¡Œåˆ—æ•°é‡,è¡Œ11è¡Œ,10åˆ—
 	ui.WTTable->setColumnCount(9);
 	//ui.WTTable->setRowCount(10);
 
 	QStringList headerWT;
-	headerWT.append(QString::fromLocal8Bit("Î¯ÍĞÊ±¼ä"));
-	headerWT.append(QString::fromLocal8Bit("ºÏÔ¼´úÂë"));
-	headerWT.append(QString::fromLocal8Bit("ÂòÂô"));
-	headerWT.append(QString::fromLocal8Bit("¿ªÆ½"));
-	headerWT.append(QString::fromLocal8Bit("ÊıÁ¿"));
-	headerWT.append(QString::fromLocal8Bit("¼Û¸ñ"));
-	headerWT.append(QString::fromLocal8Bit("×´Ì¬"));
-	headerWT.append(QString::fromLocal8Bit("Î¯ÍĞºÅ"));
-	headerWT.append(QString::fromLocal8Bit("½»Ò×Ëù"));
+	headerWT.append(QString::fromLocal8Bit("å§”æ‰˜æ—¶é—´"));
+	headerWT.append(QString::fromLocal8Bit("åˆçº¦ä»£ç "));
+	headerWT.append(QString::fromLocal8Bit("ä¹°å–"));
+	headerWT.append(QString::fromLocal8Bit("å¼€å¹³"));
+	headerWT.append(QString::fromLocal8Bit("æ•°é‡"));
+	headerWT.append(QString::fromLocal8Bit("ä»·æ ¼"));
+	headerWT.append(QString::fromLocal8Bit("çŠ¶æ€"));
+	headerWT.append(QString::fromLocal8Bit("å§”æ‰˜å·"));
+	headerWT.append(QString::fromLocal8Bit("äº¤æ˜“æ‰€"));
 	
 
-	//Ìî³ä±í¸ñĞÅÏ¢
+	//å¡«å……è¡¨æ ¼ä¿¡æ¯
 	ui.WTTable->setHorizontalHeaderLabels(headerWT);
-	//×Ô¶¯ÅÅÁĞÁĞµÄÄÚÈİ
+	//è‡ªåŠ¨æ’åˆ—åˆ—çš„å†…å®¹
 	ui.WTTable->horizontalHeader()->setSectionResizeMode(QHeaderView::Stretch);
-	//ÕûĞĞÑ¡ÖĞ
+	//æ•´è¡Œé€‰ä¸­
 	ui.WTTable->setSelectionBehavior(QAbstractItemView::SelectRows);
-	//½ûÖ¹±à¼­
+	//ç¦æ­¢ç¼–è¾‘
 	ui.WTTable->setEditTriggers(QAbstractItemView::NoEditTriggers);
 
-	//***************************³É½»±íÉèÖÃ****************************************//
-	//ÉèÖÃ³É½»±í¸ñĞĞÁĞÊıÁ¿,ĞĞ11ĞĞ,10ÁĞ
+	//***************************æˆäº¤è¡¨è®¾ç½®****************************************//
+	//è®¾ç½®æˆäº¤è¡¨æ ¼è¡Œåˆ—æ•°é‡,è¡Œ11è¡Œ,10åˆ—
 	ui.CJTable->setColumnCount(8);
 	//ui.CJTable->setRowCount(10);
 
 	QStringList headerCJ;
-	headerCJ.append(QString::fromLocal8Bit("³É½»Ê±¼ä"));
-	headerCJ.append(QString::fromLocal8Bit("ºÏÔ¼´úÂë"));
-	headerCJ.append(QString::fromLocal8Bit("ÂòÂô"));
-	headerCJ.append(QString::fromLocal8Bit("¿ªÆ½"));
-	headerCJ.append(QString::fromLocal8Bit("ÊıÁ¿"));
-	headerCJ.append(QString::fromLocal8Bit("¼Û¸ñ"));
-	headerCJ.append(QString::fromLocal8Bit("Î¯ÍĞºÅ"));
-	headerCJ.append(QString::fromLocal8Bit("½»Ò×Ëù"));
+	headerCJ.append(QString::fromLocal8Bit("æˆäº¤æ—¶é—´"));
+	headerCJ.append(QString::fromLocal8Bit("åˆçº¦ä»£ç "));
+	headerCJ.append(QString::fromLocal8Bit("ä¹°å–"));
+	headerCJ.append(QString::fromLocal8Bit("å¼€å¹³"));
+	headerCJ.append(QString::fromLocal8Bit("æ•°é‡"));
+	headerCJ.append(QString::fromLocal8Bit("ä»·æ ¼"));
+	headerCJ.append(QString::fromLocal8Bit("å§”æ‰˜å·"));
+	headerCJ.append(QString::fromLocal8Bit("äº¤æ˜“æ‰€"));
 
 
-	//Ìî³ä±í¸ñĞÅÏ¢
+	//å¡«å……è¡¨æ ¼ä¿¡æ¯
 	ui.CJTable->setHorizontalHeaderLabels(headerCJ);
-	//×Ô¶¯ÅÅÁĞÁĞµÄÄÚÈİ
+	//è‡ªåŠ¨æ’åˆ—åˆ—çš„å†…å®¹
 	ui.CJTable->horizontalHeader()->setSectionResizeMode(QHeaderView::Stretch);
-	//ÕûĞĞÑ¡ÖĞ
+	//æ•´è¡Œé€‰ä¸­
 	ui.CJTable->setSelectionBehavior(QAbstractItemView::SelectRows);
-	//½ûÖ¹±à¼­
+	//ç¦æ­¢ç¼–è¾‘
 	ui.CJTable->setEditTriggers(QAbstractItemView::NoEditTriggers);
 
-	//***************************³Ö²Ö±íÉèÖÃ****************************************//
-	//ÉèÖÃ³Ö²Ö±í¸ñĞĞÁĞÊıÁ¿,ĞĞ11ĞĞ,10ÁĞ
+	//***************************æŒä»“è¡¨è®¾ç½®****************************************//
+	//è®¾ç½®æŒä»“è¡¨æ ¼è¡Œåˆ—æ•°é‡,è¡Œ11è¡Œ,10åˆ—
 	ui.CCTable->setColumnCount(4);
 	//ui.CCTable->setRowCount(6);
 
 	QStringList headerCC;
-	headerCC.append(QString::fromLocal8Bit("ºÏÔ¼´úÂë"));
-	headerCC.append(QString::fromLocal8Bit("³Ö²ÖÀàĞÍ"));
-	headerCC.append(QString::fromLocal8Bit("³Ö²ÖÊıÁ¿"));
-	headerCC.append(QString::fromLocal8Bit("³Ö²Ö³É±¾"));
+	headerCC.append(QString::fromLocal8Bit("åˆçº¦ä»£ç "));
+	headerCC.append(QString::fromLocal8Bit("æŒä»“ç±»å‹"));
+	headerCC.append(QString::fromLocal8Bit("æŒä»“æ•°é‡"));
+	headerCC.append(QString::fromLocal8Bit("æŒä»“æˆæœ¬"));
 
-	//Ìî³ä±í¸ñĞÅÏ¢
+	//å¡«å……è¡¨æ ¼ä¿¡æ¯
 	ui.CCTable->setHorizontalHeaderLabels(headerCC);
-	//×Ô¶¯ÅÅÁĞÁĞµÄÄÚÈİ
+	//è‡ªåŠ¨æ’åˆ—åˆ—çš„å†…å®¹
 	ui.CCTable->horizontalHeader()->setSectionResizeMode(QHeaderView::Stretch);
-	//ÕûĞĞÑ¡ÖĞ
+	//æ•´è¡Œé€‰ä¸­
 	ui.CCTable->setSelectionBehavior(QAbstractItemView::SelectRows);
-	//½ûÖ¹±à¼­
+	//ç¦æ­¢ç¼–è¾‘
 	ui.CCTable->setEditTriggers(QAbstractItemView::NoEditTriggers);
 
 
 
-	//***************************×Ê½ğ±íÉèÖÃ****************************************//
-	//ÉèÖÃ×Ê½ğ±í¸ñĞĞÁĞÊıÁ¿,ĞĞ11ĞĞ,10ÁĞ
+	//***************************èµ„é‡‘è¡¨è®¾ç½®****************************************//
+	//è®¾ç½®èµ„é‡‘è¡¨æ ¼è¡Œåˆ—æ•°é‡,è¡Œ11è¡Œ,10åˆ—
 	ui.ZJTable->setColumnCount(5);
 
 	QStringList headerZJ;
-	headerZJ.append(QString::fromLocal8Bit("ÕÊ»§"));
-	headerZJ.append(QString::fromLocal8Bit("¶¯Ì¬È¨Òæ"));
-	headerZJ.append(QString::fromLocal8Bit("Õ¼ÓÃ±£Ö¤½ğ"));
-	headerZJ.append(QString::fromLocal8Bit("¿ÉÓÃ×Ê½ğ"));
-	headerZJ.append(QString::fromLocal8Bit("·çÏÕ¶È"));
+	headerZJ.append(QString::fromLocal8Bit("å¸æˆ·"));
+	headerZJ.append(QString::fromLocal8Bit("åŠ¨æ€æƒç›Š"));
+	headerZJ.append(QString::fromLocal8Bit("å ç”¨ä¿è¯é‡‘"));
+	headerZJ.append(QString::fromLocal8Bit("å¯ç”¨èµ„é‡‘"));
+	headerZJ.append(QString::fromLocal8Bit("é£é™©åº¦"));
 
 
-	//Ìî³ä±í¸ñĞÅÏ¢
+	//å¡«å……è¡¨æ ¼ä¿¡æ¯
 	ui.ZJTable->setHorizontalHeaderLabels(headerZJ);
-	//×Ô¶¯ÅÅÁĞÁĞµÄÄÚÈİ
+	//è‡ªåŠ¨æ’åˆ—åˆ—çš„å†…å®¹
 	ui.ZJTable->horizontalHeader()->setSectionResizeMode(QHeaderView::Stretch);
-	//ÕûĞĞÑ¡ÖĞ
+	//æ•´è¡Œé€‰ä¸­
 	ui.ZJTable->setSelectionBehavior(QAbstractItemView::SelectRows);
-	//½ûÖ¹±à¼­
+	//ç¦æ­¢ç¼–è¾‘
 	ui.ZJTable->setEditTriggers(QAbstractItemView::NoEditTriggers);
 
-	//***************************ºÏÔ¼±íÉèÖÃ****************************************//
-	//ÉèÖÃºÏÔ¼±í¸ñĞĞÁĞÊıÁ¿,
+	//***************************åˆçº¦è¡¨è®¾ç½®****************************************//
+	//è®¾ç½®åˆçº¦è¡¨æ ¼è¡Œåˆ—æ•°é‡,
 	ui.HYTable->setColumnCount(4);
 	//ui.HYTable->setRowCount(200);
 
 	QStringList headerHY;
-	headerHY.append(QString::fromLocal8Bit("´úÂë"));
-	headerHY.append(QString::fromLocal8Bit("ºÏÔ¼Ãû³Æ"));
-	headerHY.append(QString::fromLocal8Bit("ºÏÔ¼³ËÊı"));
-	headerHY.append(QString::fromLocal8Bit("ºÏÔ¼µãÊı"));
+	headerHY.append(QString::fromLocal8Bit("ä»£ç "));
+	headerHY.append(QString::fromLocal8Bit("åˆçº¦åç§°"));
+	headerHY.append(QString::fromLocal8Bit("åˆçº¦ä¹˜æ•°"));
+	headerHY.append(QString::fromLocal8Bit("åˆçº¦ç‚¹æ•°"));
 
-	//Ìî³ä±í¸ñĞÅÏ¢
+	//å¡«å……è¡¨æ ¼ä¿¡æ¯
 	ui.HYTable->setHorizontalHeaderLabels(headerHY);
-	//×Ô¶¯ÅÅÁĞÁĞµÄÄÚÈİ
+	//è‡ªåŠ¨æ’åˆ—åˆ—çš„å†…å®¹
 	ui.HYTable->horizontalHeader()->setSectionResizeMode(QHeaderView::Stretch);
-	//ÕûĞĞÑ¡ÖĞ
+	//æ•´è¡Œé€‰ä¸­
 	ui.HYTable->setSelectionBehavior(QAbstractItemView::SelectRows);
-	//½ûÖ¹±à¼­
+	//ç¦æ­¢ç¼–è¾‘
 	ui.HYTable->setEditTriggers(QAbstractItemView::NoEditTriggers);
 
 
 	/////////////////////********************************///////////////////////////
-	//ÉèÖÃĞĞÇéµØÖ·
+	//è®¾ç½®è¡Œæƒ…åœ°å€
 // 	ui.MDEdit->setText("tcp://180.168.146.187:10010");
 // 	ui.TDEdit->setText("tcp://180.168.146.187:10000");
 // 	ui.BIDEdit->setText("9999");
@@ -198,48 +196,48 @@ ctp::ctp(QWidget *parent)
 	ui.Editdm->setText("ni1609");
 	ui.EditLots->setText("2");
 
-	//ÉèÖÃÆ½½ñ²Ö/ÊĞ¼ÛµÄradioÎªÑ¡ÖĞ
+	//è®¾ç½®å¹³ä»Šä»“/å¸‚ä»·çš„radioä¸ºé€‰ä¸­
 	ui.radioSJ->setChecked(true);
 	ui.radioPJ->setChecked(true);
 
-	//////////////ÓÒ¼ü²Ëµ¥
+	//////////////å³é”®èœå•
 	ui.WTTable->setContextMenuPolicy(Qt::CustomContextMenu);
 	connect(ui.WTTable,SIGNAL(customContextMenuRequested(const QPoint&)),this,SLOT(OnWTMenu(const QPoint&)));
 	connect(ui.actioncd,SIGNAL(triggered()),this,SLOT(cd()));
 
 
-	/////////////////////////////È«×Ô¶¯½»Ò×Ä£¿é¿ªÊ¼/////////////////////////////////////////////
-	//ÉèÖÃĞĞÇé±í¸ñĞĞÁĞÊıÁ¿,ĞĞ11ĞĞ,10ÁĞ
+	/////////////////////////////å…¨è‡ªåŠ¨äº¤æ˜“æ¨¡å—å¼€å§‹/////////////////////////////////////////////
+	//è®¾ç½®è¡Œæƒ…è¡¨æ ¼è¡Œåˆ—æ•°é‡,è¡Œ11è¡Œ,10åˆ—
 	ui.DayTable->setColumnCount(13);
 
 	QStringList DayHeaderHQ;
-	DayHeaderHQ.append(QString::fromLocal8Bit("ºÏÔ¼´úÂë"));
-	DayHeaderHQ.append(QString::fromLocal8Bit("¸üĞÂÊ±¼ä"));
-	DayHeaderHQ.append(QString::fromLocal8Bit("¿ª²Ö¼Û¸ñ"));
-	DayHeaderHQ.append(QString::fromLocal8Bit("³Ö²ÖÀàĞÍ"));
-	DayHeaderHQ.append(QString::fromLocal8Bit("³Ö²ÖÊıÁ¿"));
-	DayHeaderHQ.append(QString::fromLocal8Bit("µ±Ç°Ó¯¿÷"));
-	DayHeaderHQ.append(QString::fromLocal8Bit("Æ½²ÖÊ±¼ä"));
-	DayHeaderHQ.append(QString::fromLocal8Bit("±£Ö¤½ğ±ÈÀı(%)"));
-	DayHeaderHQ.append(QString::fromLocal8Bit("¿÷Ëğ±ÈÀı(%)"));
-	DayHeaderHQ.append(QString::fromLocal8Bit("¿ªÅÌ¼Û"));
-	DayHeaderHQ.append(QString::fromLocal8Bit("ÂòÒ»¼Û"));
-	DayHeaderHQ.append(QString::fromLocal8Bit("ÂôÒ»¼Û"));
-	DayHeaderHQ.append(QString::fromLocal8Bit("×îĞÂ¼Û"));
+	DayHeaderHQ.append(QString::fromLocal8Bit("åˆçº¦ä»£ç "));
+	DayHeaderHQ.append(QString::fromLocal8Bit("æ›´æ–°æ—¶é—´"));
+	DayHeaderHQ.append(QString::fromLocal8Bit("å¼€ä»“ä»·æ ¼"));
+	DayHeaderHQ.append(QString::fromLocal8Bit("æŒä»“ç±»å‹"));
+	DayHeaderHQ.append(QString::fromLocal8Bit("æŒä»“æ•°é‡"));
+	DayHeaderHQ.append(QString::fromLocal8Bit("å½“å‰ç›ˆäº"));
+	DayHeaderHQ.append(QString::fromLocal8Bit("å¹³ä»“æ—¶é—´"));
+	DayHeaderHQ.append(QString::fromLocal8Bit("ä¿è¯é‡‘æ¯”ä¾‹(%)"));
+	DayHeaderHQ.append(QString::fromLocal8Bit("äºæŸæ¯”ä¾‹(%)"));
+	DayHeaderHQ.append(QString::fromLocal8Bit("å¼€ç›˜ä»·"));
+	DayHeaderHQ.append(QString::fromLocal8Bit("ä¹°ä¸€ä»·"));
+	DayHeaderHQ.append(QString::fromLocal8Bit("å–ä¸€ä»·"));
+	DayHeaderHQ.append(QString::fromLocal8Bit("æœ€æ–°ä»·"));
 
-	//Ìî³ä±í¸ñĞÅÏ¢
+	//å¡«å……è¡¨æ ¼ä¿¡æ¯
 	ui.DayTable->setHorizontalHeaderLabels(DayHeaderHQ);
-	//×Ô¶¯ÅÅÁĞÁĞµÄÄÚÈİ
+	//è‡ªåŠ¨æ’åˆ—åˆ—çš„å†…å®¹
 	ui.DayTable->horizontalHeader()->setSectionResizeMode(QHeaderView::Stretch);
-	//ÕûĞĞÑ¡ÖĞ
+	//æ•´è¡Œé€‰ä¸­
 	ui.DayTable->setSelectionBehavior(QAbstractItemView::SelectRows);
-	//½ûÖ¹±à¼­
+	//ç¦æ­¢ç¼–è¾‘
 	//ui.DayTable->setEditTriggers(QAbstractItemView::NoEditTriggers);
 
 	ReadTxt("pz.txt",0);
 	ui.radiostop->setChecked(true);
 
-	/////////////////////////////È«×Ô¶¯½»Ò×Ä£¿é½áÊø/////////////////////////////////////////////
+	/////////////////////////////å…¨è‡ªåŠ¨äº¤æ˜“æ¨¡å—ç»“æŸ/////////////////////////////////////////////
 
 }
 
@@ -250,9 +248,9 @@ ctp::~ctp()
 
 void ctp::MDLogin()
 {
-	/////////////ĞĞÇé
+	/////////////è¡Œæƒ…
 
-	//´ÓEditLine´«¹ıÀ´µÄ²ÎÊıÎªQStringÊı¾İÀàĞÍ£¬ÔÚCTP APIÖĞÎªcharÊı¾İÀàĞÍ£¬Ğè×öÈçÏÂ×ª»¯
+	//ä»EditLineä¼ è¿‡æ¥çš„å‚æ•°ä¸ºQStringæ•°æ®ç±»å‹ï¼Œåœ¨CTP APIä¸­ä¸ºcharæ•°æ®ç±»å‹ï¼Œéœ€åšå¦‚ä¸‹è½¬åŒ–
 	char* ch1;
 	char* ch2;
 	char* ch3;
@@ -275,7 +273,7 @@ void ctp::MDLogin()
 	strcpy(md->hq.BROKER_ID,ch2);
 	md->start();
 
-	///////½»Ò×µÇÂ½
+	///////äº¤æ˜“ç™»é™†
 	strcpy(td->jy.FRONT_ADDR,ch3);
 	strcpy(td->jy.BROKER_ID,ch2);
 	strcpy(td->jy.INVESTOR_ID,ch4);
@@ -298,7 +296,7 @@ int hy( QString dm)
 }
 void ctp::ReceiveHQ(QString TICK)
 {
-	QStringList  strlist =TICK.split(",");	   //½ÓÊÕStringListÊı¾İ
+	QStringList  strlist =TICK.split(",");	   //æ¥æ”¶StringListæ•°æ®
 	WriteTxt(strlist.at(0)+".txt",TICK);
 
   if (strlist.at(0)==ui.Editdm->text())
@@ -310,22 +308,22 @@ void ctp::ReceiveHQ(QString TICK)
 	   ui.labelDown->setText(strlist.at(10));
   }
 
-  //Ñ­»·´«ÈëµÄÊı¾İ
-  for (int i=0;i<ui.HQTable->rowCount();i++)   //ÒÔ HQTableÊıÁ¿Îª±ß½ç
+  //å¾ªç¯ä¼ å…¥çš„æ•°æ®
+  for (int i=0;i<ui.HQTable->rowCount();i++)   //ä»¥ HQTableæ•°é‡ä¸ºè¾¹ç•Œ
   {
 	  if (ui.HQTable->item(i,0)->text()==strlist.at(0))
 	  {
-		  ui.HQTable->setItem(i,0,new QTableWidgetItem(strlist.at(0)));	  //¸üĞÂÊı¾İ
-		  ui.HQTable->setItem(i,1,new QTableWidgetItem(strlist.at(1)));	  //¸üĞÂÊı¾İ
-		  ui.HQTable->setItem(i,2,new QTableWidgetItem(strlist.at(2)));	  //¸üĞÂÊı¾İ
-		  ui.HQTable->setItem(i,3,new QTableWidgetItem(strlist.at(3)));	  //¸üĞÂÊı¾İ
-		  ui.HQTable->setItem(i,4,new QTableWidgetItem(strlist.at(4)));	  //¸üĞÂÊı¾İ
-		  ui.HQTable->setItem(i,0,new QTableWidgetItem(strlist.at(0)));	  //¸üĞÂÊı¾İ
-		  ui.HQTable->setItem(i,6,new QTableWidgetItem(strlist.at(6)));	  //¸üĞÂÊı¾İ
-		  ui.HQTable->setItem(i,7,new QTableWidgetItem(strlist.at(7)));	  //¸üĞÂÊı¾İ
-		  ui.HQTable->setItem(i,8,new QTableWidgetItem(strlist.at(8)));	  //¸üĞÂÊı¾İ
-		  ui.HQTable->setItem(i,9,new QTableWidgetItem(strlist.at(9)));	  //¸üĞÂÊı¾İ
-		  ui.HQTable->setItem(i,10,new QTableWidgetItem(strlist.at(10)));	  //¸üĞÂÊı¾İ
+		  ui.HQTable->setItem(i,0,new QTableWidgetItem(strlist.at(0)));	  //æ›´æ–°æ•°æ®
+		  ui.HQTable->setItem(i,1,new QTableWidgetItem(strlist.at(1)));	  //æ›´æ–°æ•°æ®
+		  ui.HQTable->setItem(i,2,new QTableWidgetItem(strlist.at(2)));	  //æ›´æ–°æ•°æ®
+		  ui.HQTable->setItem(i,3,new QTableWidgetItem(strlist.at(3)));	  //æ›´æ–°æ•°æ®
+		  ui.HQTable->setItem(i,4,new QTableWidgetItem(strlist.at(4)));	  //æ›´æ–°æ•°æ®
+		  ui.HQTable->setItem(i,0,new QTableWidgetItem(strlist.at(0)));	  //æ›´æ–°æ•°æ®
+		  ui.HQTable->setItem(i,6,new QTableWidgetItem(strlist.at(6)));	  //æ›´æ–°æ•°æ®
+		  ui.HQTable->setItem(i,7,new QTableWidgetItem(strlist.at(7)));	  //æ›´æ–°æ•°æ®
+		  ui.HQTable->setItem(i,8,new QTableWidgetItem(strlist.at(8)));	  //æ›´æ–°æ•°æ®
+		  ui.HQTable->setItem(i,9,new QTableWidgetItem(strlist.at(9)));	  //æ›´æ–°æ•°æ®
+		  ui.HQTable->setItem(i,10,new QTableWidgetItem(strlist.at(10)));	  //æ›´æ–°æ•°æ®
 		  
 		  return;
 	  }
@@ -349,23 +347,23 @@ void ctp::ReceiveHQ(QString TICK)
 
 void ctp::ReceiveAutoHQ(QString TICK)
 {
-	QStringList  strlist =TICK.split(",");	   //½ÓÊÕStringListÊı¾İ
+	QStringList  strlist =TICK.split(",");	   //æ¥æ”¶StringListæ•°æ®
 
-	//Ñ­»·´«ÈëµÄÊı¾İ
-	for (int i=0;i<ui.DayTable->rowCount();i++)   //ÒÔ HQTableÊıÁ¿Îª±ß½ç
+	//å¾ªç¯ä¼ å…¥çš„æ•°æ®
+	for (int i=0;i<ui.DayTable->rowCount();i++)   //ä»¥ HQTableæ•°é‡ä¸ºè¾¹ç•Œ
 	{
-		//×Ô¶¯ÏÂµ¥
+		//è‡ªåŠ¨ä¸‹å•
 		kc(i);
 		pc(i);
 		
 		if (ui.DayTable->item(i,0)->text()==strlist.at(0))
 		{
 
-			ui.DayTable->setItem(i,1,new QTableWidgetItem(strlist.at(1)));	  //¸üĞÂÊ±¼ä
+			ui.DayTable->setItem(i,1,new QTableWidgetItem(strlist.at(1)));	  //æ›´æ–°æ—¶é—´
 			ui.DayTable->setItem(i,9,new QTableWidgetItem(strlist.at(11)));
-			ui.DayTable->setItem(i,10,new QTableWidgetItem(strlist.at(3)));	  //ÂòÒ»¼Û
-			ui.DayTable->setItem(i,11,new QTableWidgetItem(strlist.at(5)));	  //ÂôÒ»¼Û
-			ui.DayTable->setItem(i,12,new QTableWidgetItem(strlist.at(2)));	   //×îĞÂ¼ÛÏÔÊ¾
+			ui.DayTable->setItem(i,10,new QTableWidgetItem(strlist.at(3)));	  //ä¹°ä¸€ä»·
+			ui.DayTable->setItem(i,11,new QTableWidgetItem(strlist.at(5)));	  //å–ä¸€ä»·
+			ui.DayTable->setItem(i,12,new QTableWidgetItem(strlist.at(2)));	   //æœ€æ–°ä»·æ˜¾ç¤º
 
 			if(ui.DayTable->item(i,2)==NULL)return;
 			if(ui.DayTable->item(i,2)->text()==""){ui.DayTable->setItem(i,5,new QTableWidgetItem(""));return;}
@@ -387,24 +385,24 @@ void ctp::ReceiveCJ(QString CJData)
 	QString openclose="";
 	if (strlist.at(2)=="0")
 	{
-		buysell=QString::fromLocal8Bit("ÂòÈë");
+		buysell=QString::fromLocal8Bit("ä¹°å…¥");
 	}else
 	{
-		buysell=QString::fromLocal8Bit("Âô³ö");
+		buysell=QString::fromLocal8Bit("å–å‡º");
 	}
 	if (strlist.at(3)=="0")
 	{
-		openclose = QString::fromLocal8Bit("¿ª²Ö");
+		openclose = QString::fromLocal8Bit("å¼€ä»“");
 	}
 	else if(strlist.at(3)=="4")
 	{
-		openclose=QString::fromLocal8Bit("Æ½×ò");
+		openclose=QString::fromLocal8Bit("å¹³æ˜¨");
 	}
 	else
 	{
-		openclose=QString::fromLocal8Bit("Æ½½ñ");
+		openclose=QString::fromLocal8Bit("å¹³ä»Š");
 	}
-	//0ÊÇ¿ª²Ö,3ÊÇÆ½½ñ£¬4ÊÇÆ½×ò
+	//0æ˜¯å¼€ä»“,3æ˜¯å¹³ä»Šï¼Œ4æ˜¯å¹³æ˜¨
 	int row=ui.CJTable->rowCount();
 	ui.CJTable->insertRow(row);
 	ui.CJTable->setItem(row,0,new QTableWidgetItem(strlist.at(0)));
@@ -428,41 +426,41 @@ void ctp::ReceiveWT(QString WTData )
 	 QString openclose="";
 	 if (strlist.at(2)=="0")
 	 {
-		 buysell=QString::fromLocal8Bit("ÂòÈë");
+		 buysell=QString::fromLocal8Bit("ä¹°å…¥");
 	 }else
 	 {
-		 buysell=QString::fromLocal8Bit("Âô³ö");
+		 buysell=QString::fromLocal8Bit("å–å‡º");
 	 }
 	 if (strlist.at(3)=="0")
 	 {
-		 openclose = QString::fromLocal8Bit("¿ª²Ö");
+		 openclose = QString::fromLocal8Bit("å¼€ä»“");
 	 }
 	 else if(strlist.at(3)=="4")
 	 {
-		 openclose=QString::fromLocal8Bit("Æ½×ò");
+		 openclose=QString::fromLocal8Bit("å¹³æ˜¨");
 	 }
 	 else
 	 {
-		 openclose=QString::fromLocal8Bit("Æ½½ñ");
+		 openclose=QString::fromLocal8Bit("å¹³ä»Š");
 	 }
-	 //0ÊÇ¿ª²Ö,3ÊÇÆ½½ñ£¬4ÊÇÆ½×ò
+	 //0æ˜¯å¼€ä»“,3æ˜¯å¹³ä»Šï¼Œ4æ˜¯å¹³æ˜¨
 
 
-	 //Ñ­»·´«ÈëµÄÊı¾İ
-	 for (int i=0;i<ui.WTTable->rowCount();i++)   //ÒÔ WTTableÊıÁ¿Îª±ß½ç
+	 //å¾ªç¯ä¼ å…¥çš„æ•°æ®
+	 for (int i=0;i<ui.WTTable->rowCount();i++)   //ä»¥ WTTableæ•°é‡ä¸ºè¾¹ç•Œ
 	 {
 		 if (ui.WTTable->item(i,0)->text()==strlist.at(0))
 		 {
 
-			 ui.WTTable->setItem(i,0,new QTableWidgetItem(strlist.at(0)));	  //¸üĞÂÊı¾İ
-			 ui.WTTable->setItem(i,1,new QTableWidgetItem(strlist.at(1)));	  //¸üĞÂÊı¾İ
-			 ui.WTTable->setItem(i,2,new QTableWidgetItem(buysell));	  //¸üĞÂÊı¾İ
-			 ui.WTTable->setItem(i,3,new QTableWidgetItem(openclose));	  //¸üĞÂÊı¾İ
-			 ui.WTTable->setItem(i,4,new QTableWidgetItem(strlist.at(4)));	  //¸üĞÂÊı¾İ
-			 ui.WTTable->setItem(i,5,new QTableWidgetItem(strlist.at(6)));	  //¸üĞÂÊı¾İ
-			 ui.WTTable->setItem(i,6,new QTableWidgetItem(strlist.at(7)));	  //¸üĞÂÊı¾İ
-			 ui.WTTable->setItem(i,7,new QTableWidgetItem(strlist.at(8)));	  //¸üĞÂÊı¾İ
-			 ui.WTTable->setItem(i,8,new QTableWidgetItem(strlist.at(9)));	  //¸üĞÂÊı¾İ
+			 ui.WTTable->setItem(i,0,new QTableWidgetItem(strlist.at(0)));	  //æ›´æ–°æ•°æ®
+			 ui.WTTable->setItem(i,1,new QTableWidgetItem(strlist.at(1)));	  //æ›´æ–°æ•°æ®
+			 ui.WTTable->setItem(i,2,new QTableWidgetItem(buysell));	  //æ›´æ–°æ•°æ®
+			 ui.WTTable->setItem(i,3,new QTableWidgetItem(openclose));	  //æ›´æ–°æ•°æ®
+			 ui.WTTable->setItem(i,4,new QTableWidgetItem(strlist.at(4)));	  //æ›´æ–°æ•°æ®
+			 ui.WTTable->setItem(i,5,new QTableWidgetItem(strlist.at(6)));	  //æ›´æ–°æ•°æ®
+			 ui.WTTable->setItem(i,6,new QTableWidgetItem(strlist.at(7)));	  //æ›´æ–°æ•°æ®
+			 ui.WTTable->setItem(i,7,new QTableWidgetItem(strlist.at(8)));	  //æ›´æ–°æ•°æ®
+			 ui.WTTable->setItem(i,8,new QTableWidgetItem(strlist.at(9)));	  //æ›´æ–°æ•°æ®
 
 			 return;
 		 }
@@ -487,8 +485,8 @@ void ctp::ReceiveCC(QString CCData)
 {
    QString lx;
    QStringList strlist = CCData.split(",");
-   if (strlist.at(1)=="2"){lx=QString::fromLocal8Bit("Âò");}
-   if (strlist.at(1)=="3"){lx=QString::fromLocal8Bit("Âô");}
+   if (strlist.at(1)=="2"){lx=QString::fromLocal8Bit("ä¹°");}
+   if (strlist.at(1)=="3"){lx=QString::fromLocal8Bit("å–");}
 
    int row=ui.CCTable->rowCount();
    ui.CCTable->insertRow(row);
@@ -503,27 +501,27 @@ void ctp::ReceiveAutoCC(QString CCData)
 	  
 	QString lx;
 	QStringList strlist = CCData.split(",");
-	if (strlist.at(1)=="2"){lx=QString::fromLocal8Bit("Âò");}
-	if (strlist.at(1)=="3"){lx=QString::fromLocal8Bit("Âô");}
+	if (strlist.at(1)=="2"){lx=QString::fromLocal8Bit("ä¹°");}
+	if (strlist.at(1)=="3"){lx=QString::fromLocal8Bit("å–");}
 
 	for (int i=0;i<ui.DayTable->rowCount();i++)
 	{
 		if (ui.DayTable->item(i,0)->text()==strlist.at(0))
 		{
 			
-			ui.DayTable->setItem(i,2,new QTableWidgetItem(strlist.at(3)));	 //3ÊÇ¼Û¸ñ
+			ui.DayTable->setItem(i,2,new QTableWidgetItem(strlist.at(3)));	 //3æ˜¯ä»·æ ¼
 			ui.DayTable->setItem(i,3,new QTableWidgetItem(lx));
-			ui.DayTable->setItem(i,4,new QTableWidgetItem(strlist.at(2))); //2ÊÇÊıÁ¿ 
+			ui.DayTable->setItem(i,4,new QTableWidgetItem(strlist.at(2))); //2æ˜¯æ•°é‡ 
 			return;
 		}
 	}
 }
  
-//×Ê½ğÊı¾İ½ÓÊÕ·½·¨,¸üĞÂÖÁ×Ê½ğ±í
+//èµ„é‡‘æ•°æ®æ¥æ”¶æ–¹æ³•,æ›´æ–°è‡³èµ„é‡‘è¡¨
 void ctp::ReceiveZJ(QString ZJData)
 {
-	QStringList  strlist =ZJData.split(",");	   //½ÓÊÕStringListÊı¾İ
-	//Ñ­»·´«ÈëµÄÊı¾İ
+	QStringList  strlist =ZJData.split(",");	   //æ¥æ”¶StringListæ•°æ®
+	//å¾ªç¯ä¼ å…¥çš„æ•°æ®
 	int row = ui.ZJTable->rowCount();
 	ui.ZJTable->insertRow(row);
 	ui.ZJTable->setItem(row,0,new QTableWidgetItem(strlist.at(0)));
@@ -542,8 +540,8 @@ void ctp::ReceiveZJ(QString ZJData)
 
 void ctp::ReceiveHY(QString HYData)
 {
- 	QStringList  strlist =HYData.split(",");	   //½ÓÊÕStringListÊı¾İ
- 	//Ñ­»·´«ÈëµÄÊı¾İ
+ 	QStringList  strlist =HYData.split(",");	   //æ¥æ”¶StringListæ•°æ®
+ 	//å¾ªç¯ä¼ å…¥çš„æ•°æ®
  	int row = ui.HYTable->rowCount();
  	ui.HYTable->insertRow(row);
  	ui.HYTable->setItem(row,0,new QTableWidgetItem(strlist.at(0)));
@@ -624,7 +622,7 @@ void ctp::xd()
 	   
 
 }
-//²Ëµ¥
+//èœå•
 void ctp::OnWTMenu(const QPoint& pt)
 {
 	QMenu menu;
@@ -636,67 +634,18 @@ void ctp::OnWTMenu(const QPoint& pt)
 void ctp::cd()
 {
 	int i = ui.WTTable->currentIndex().row();
-	QString wth=ui.WTTable->item(i,7)->text(); //Î¯ÍĞºÅ
-	QString jsy=ui.WTTable->item(i,8)->text(); //½»Ò×Ëù
+	QString wth=ui.WTTable->item(i,7)->text(); //å§”æ‰˜å·
+	QString jsy=ui.WTTable->item(i,8)->text(); //äº¤æ˜“æ‰€
 	QString brokerid=ui.BIDEdit->text();
 
 
    td->td->ReqOrderAction(brokerid,wth,jsy);
-	QMessageBox::information(this,"",QString::fromLocal8Bit("ÒÑ³·µ¥"));
+	QMessageBox::information(this,"",QString::fromLocal8Bit("å·²æ’¤å•"));
 }
 
 bool ctp::writexml(string& szFileName)
 {
-	try
-	{
-		TiXmlDocument *myDocument = new TiXmlDocument();  //´´½¨Ò»¸öXMLµÄÎÄµµ¶ÔÏó;
-		TiXmlElement *RootElement=new TiXmlElement("Persons");	  //´´½¨¸ùÔªËØ
-		myDocument->LinkEndChild(RootElement); //Á¬½Ó
-		TiXmlElement *PersonElement=new TiXmlElement("Persons");
-		RootElement->LinkEndChild(PersonElement);
 
-		PersonElement->SetAttribute("ID","1");	  //´´½¨ÔªËØ
-		
-		TiXmlElement *MDElement = new TiXmlElement("ĞĞÇéµØÖ·");
-		TiXmlElement *TDElement = new TiXmlElement("½»Ò×µØÖ·");
-		TiXmlElement *BIDElement = new TiXmlElement("BrokerID");
-		TiXmlElement *ACCOUNTElement=new TiXmlElement("ÕÊºÅ");
-
-		PersonElement->LinkEndChild(MDElement);
-		PersonElement->LinkEndChild(TDElement);
-		PersonElement->LinkEndChild(BIDElement);
-		PersonElement->LinkEndChild(ACCOUNTElement);  //´´½¨×ÓÔªËØ²¢Á¬½Ó
-
-		QByteArray xmlmd=ui.MDEdit->text().toLatin1();
-		const char *md=xmlmd.data();	  //°ÑQString ×ª»¯³ÉcharÀàĞÍ
-		QByteArray xmltd=ui.TDEdit->text().toLatin1();
-		const char *td=xmltd.data();
-		QByteArray xmlbid=ui.BIDEdit->text().toLatin1();
-		const char *bid=xmlbid.data();
-		QByteArray xmlaccount=ui.USEREdit->text().toLatin1();
-		const char *account=xmlaccount.data();
-
-		TiXmlText *MDContent=new TiXmlText(md);
-		TiXmlText *TDContext =new TiXmlText(td);
-		TiXmlText *BIDContext = new TiXmlText(bid);
-		TiXmlText *ACCOUNTContext = new TiXmlText(account);
-
-		MDElement->LinkEndChild(MDContent);
-		TDElement->LinkEndChild(TDContext);
-		BIDElement->LinkEndChild(BIDContext);
-		ACCOUNTElement->LinkEndChild(ACCOUNTContext);
-
-
-        string appPath=GetAppPath();
-		string seperator = "\\";
-		string fullPath=szFileName;
-		myDocument->SaveFile(fullPath.c_str());	 //±£´æµ½ÎÄ¼ş
-	}
-	catch (string& e)
-	{
-		return false;
-	}
-	return true;
 }
 
 void ctp::Onxml()
@@ -717,38 +666,6 @@ string ctp::GetAppPath()
 
 bool ctp::readxml(string & szFileName)
 {
-	try{  
-      string 	appPath=GetAppPath();
-	  string seperator="\\";
-	  string fullPath=szFileName;
-
-	  TiXmlDocument *myDocument=new TiXmlDocument(fullPath.c_str()); //°ÑstringÀàĞÍ×ª»¯³ÉcharÀàĞÍ
-	  myDocument->LoadFile(); //´´½¨Ò»¸öÎÄµµ¶ÔÏó
-
-	  TiXmlElement *RootElement=myDocument->RootElement(); //»ñÈ¡¸ùÔªËØ
-	  TiXmlElement *FirstPerson= RootElement->FirstChildElement(); //»ñÈ¡µÚÒ»¸ö½Úµã
-	  TiXmlElement *MDElement=FirstPerson->FirstChildElement(); 
-	  TiXmlElement *TDElement=MDElement->NextSiblingElement();
-	  TiXmlElement *BIDElement=TDElement->NextSiblingElement();	 //Ë³Ğò»ñÈ¡ÏÂÒ»¸öÔªËØ
-	  TiXmlElement *ACCOUNTElement=BIDElement->NextSiblingElement();
-
-	  TiXmlAttribute *IDAttribute=FirstPerson->FirstAttribute();
-	  QString md,td,bid,account;
-	  md=MDElement->FirstChild()->Value();
-	  td=TDElement->FirstChild()->Value();
-	  bid=BIDElement->FirstChild()->Value();
-	  account=ACCOUNTElement->FirstChild()->Value();
-
-	  ui.MDEdit->setText(md);
-	  ui.TDEdit->setText(td);
-	  ui.BIDEdit->setText(bid);
-	  ui.USEREdit->setText(account);
-	}
-	catch(string& e)
-	{
-		return false;
-	}
-	return true;
 }
 
 void ctp::WriteTxt(QString path,QString data)
@@ -764,12 +681,12 @@ void ctp::WriteTxt(QString path,QString data)
 void ctp::WriteTxt(QString path,int flag)
 {
 	QFile mydata(path);
-	if (mydata.open(QFile::WriteOnly|QIODevice::Truncate)) //¸²¸ÇÔ­ÓĞÊı¾İ
+	if (mydata.open(QFile::WriteOnly|QIODevice::Truncate)) //è¦†ç›–åŸæœ‰æ•°æ®
 	{
 		QTextStream out(&mydata);
 		for (int i=0;i<ui.DayTable->rowCount();i++)
 		{
-			QString dm=ui.DayTable->item(i,0)->text();  //È¡´úÂëµÄÊı¾İ
+			QString dm=ui.DayTable->item(i,0)->text();  //å–ä»£ç çš„æ•°æ®
 			QString pctime=ui.DayTable->item(i,6)->text();
 			QString bzj=ui.DayTable->item(i,7)->text();
 			QString loss=ui.DayTable->item(i,8)->text();
@@ -788,7 +705,7 @@ void ctp::ReadTxt(QString path)
 	 QFile file(path);
 	if (file.open(QIODevice::ReadOnly | QIODevice::Text))
 	{
-		while (!file.atEnd()) //Ã»µ½×îºóÒ»Ö±¶ÁÏÂÈ¥
+		while (!file.atEnd()) //æ²¡åˆ°æœ€åä¸€ç›´è¯»ä¸‹å»
 		{
 			  QByteArray line=file.readLine();
 			  QString str(line);
@@ -800,7 +717,7 @@ void ctp::ReadTxt(QString path)
 void ctp::ReadTxt(QString path,int flag)
 {
 	 QFile file(path);
-	 QStringList strdm;	 //´úÂëlist½á¹¹
+	 QStringList strdm;	 //ä»£ç listç»“æ„
 	 if (file.open(QIODevice::ReadOnly|QIODevice::Text))
 	 {
 		 while (!file.atEnd())
@@ -808,7 +725,7 @@ void ctp::ReadTxt(QString path,int flag)
 			QByteArray line=file.readLine();
 			QString str(line);
 			
-			//¹ıÂËtxtÄ©Î²Îª¿Õ
+			//è¿‡æ»¤txtæœ«å°¾ä¸ºç©º
 			if (str.trimmed()=="") continue;
 
 
@@ -886,7 +803,7 @@ void ctp::kc(int i)
 	int vol=0;
 	if(ui.DayTable->item(i,4)!=NULL)vol=ui.DayTable->item(i,4)->text().toInt();
 	if(vol>0)return;
-	if(ui.labelzt->text()==QString::fromLocal8Bit("ÒÑ¿ª²Ö"))return;
+	if(ui.labelzt->text()==QString::fromLocal8Bit("å·²å¼€ä»“"))return;
 	double openprice=ui.DayTable->item(i,9)->text().toDouble();
 	double lastprice=ui.DayTable->item(i,12)->text().toDouble();
 	double buyprice=ui.DayTable->item(i,10)->text().toDouble();
@@ -895,13 +812,13 @@ void ctp::kc(int i)
 	if (lastprice>openprice)
 	{
 		td->td->ReqOrderInsert(dm,"kd",1,selltprice);
-		ui.labelzt->setText(QString::fromLocal8Bit("ÒÑ¿ª²Ö"));
+		ui.labelzt->setText(QString::fromLocal8Bit("å·²å¼€ä»“"));
 
 	}
 	if (lastprice<openprice)
 	{
 		td->td->ReqOrderInsert(dm,"kk",1,buyprice);
-		ui.labelzt->setText(QString::fromLocal8Bit("ÒÑ¿ª²Ö"));
+		ui.labelzt->setText(QString::fromLocal8Bit("å·²å¼€ä»“"));
 	}
 
 
@@ -923,26 +840,26 @@ void ctp::pc(int i)
 	double buyprice=ui.DayTable->item(i,10)->text().toDouble();
 	double selltprice=ui.DayTable->item(i,11)->text().toDouble();
 
-	//¼Û¸ñÆ½²Ö
-	if (vol>0 && cclx=="Âò" && lastprice<openprice)
+	//ä»·æ ¼å¹³ä»“
+	if (vol>0 && cclx=="ä¹°" && lastprice<openprice)
 	{
 		td->td->ReqOrderInsert(dm,"pd",vol,buyprice);
 	}
-	if (vol>0 && cclx=="Âô" && lastprice>openprice)
+	if (vol>0 && cclx=="å–" && lastprice>openprice)
 	{
 		td->td->ReqOrderInsert(dm,"pk",vol,selltprice);
 	}
 
-	//Ê±¼äÆ½²Ö
+	//æ—¶é—´å¹³ä»“
 	if (pctime(fwqtime,sztime)==true)
 	{
 
-		if (vol>0 && cclx==QString::fromLocal8Bit("Âò"))
+		if (vol>0 && cclx==QString::fromLocal8Bit("ä¹°"))
 		{
 			td->td->ReqOrderInsert(dm,"pd",vol,buyprice);
 			vol=0;
 		}
-		if (vol>0 && cclx==QString::fromLocal8Bit("Âô"))
+		if (vol>0 && cclx==QString::fromLocal8Bit("å–"))
 		{
 			td->td->ReqOrderInsert(dm,"pk",vol,selltprice);
 			vol=0;

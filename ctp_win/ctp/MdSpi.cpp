@@ -7,7 +7,7 @@ using namespace std;
 
 char* ppInstrumentID []={"IF1609","ni1609","ru1609","SR609","cu1609","TA609"};	
 int iInstrumentID=6;
-// ÇëÇó±àºÅ
+// è¯·æ±‚ç¼–å·
 int iRequestID;
 
 MdSpi::MdSpi(QObject *parent)
@@ -43,7 +43,7 @@ void MdSpi::OnHeartBeatWarning(int nTimeLapse)
 void MdSpi::OnFrontConnected()
 {
 	cerr << "--->>> " << __FUNCTION__ << endl;
-	///ÓÃ»§µÇÂ¼ÇëÇó
+	///ç”¨æˆ·ç™»å½•è¯·æ±‚
 	ReqUserLogin();
 }
 
@@ -56,7 +56,7 @@ void MdSpi::ReqUserLogin()
 	strcpy(req.UserID, "");
 	strcpy(req.Password, "");
 	int iResult = pUserApi->ReqUserLogin(&req, ++iRequestID);
-	cerr << "--->>> ·¢ËÍÓÃ»§µÇÂ¼ÇëÇó: " << ((iResult == 0) ? "³É¹¦" : "Ê§°Ü") << endl;
+	cerr << "--->>> å‘é€ç”¨æˆ·ç™»å½•è¯·æ±‚: " << ((iResult == 0) ? "æˆåŠŸ" : "å¤±è´¥") << endl;
 }
 
 void MdSpi::OnRspUserLogin(CThostFtdcRspUserLoginField *pRspUserLogin,
@@ -65,9 +65,9 @@ void MdSpi::OnRspUserLogin(CThostFtdcRspUserLoginField *pRspUserLogin,
 	cerr << "--->>> " << __FUNCTION__ << endl;
 	if (bIsLast && !IsErrorRspInfo(pRspInfo))
 	{
-		///»ñÈ¡µ±Ç°½»Ò×ÈÕ
-		cerr << "--->>> »ñÈ¡µ±Ç°½»Ò×ÈÕ = " << pUserApi->GetTradingDay() << endl;
-		// ÇëÇó¶©ÔÄĞĞÇé
+		///è·å–å½“å‰äº¤æ˜“æ—¥
+		cerr << "--->>> è·å–å½“å‰äº¤æ˜“æ—¥ = " << pUserApi->GetTradingDay() << endl;
+		// è¯·æ±‚è®¢é˜…è¡Œæƒ…
 		SubscribeMarketData();
 		SubscribeMarketData(dm);  //
 	}
@@ -76,9 +76,9 @@ void MdSpi::OnRspUserLogin(CThostFtdcRspUserLoginField *pRspUserLogin,
 void MdSpi::SubscribeMarketData()
 {
 	int iResult = pUserApi->SubscribeMarketData(ppInstrumentID, iInstrumentID);
-	cerr << "--->>> ·¢ËÍĞĞÇé¶©ÔÄÇëÇó: " << ((iResult == 0) ? "³É¹¦" : "Ê§°Ü") << endl;
+	cerr << "--->>> å‘é€è¡Œæƒ…è®¢é˜…è¯·æ±‚: " << ((iResult == 0) ? "æˆåŠŸ" : "å¤±è´¥") << endl;
 }
-//×Ô¶¯½»Ò×Ä£¿é»¯ĞĞÇé´úÂë²¿·Ö
+//è‡ªåŠ¨äº¤æ˜“æ¨¡å—åŒ–è¡Œæƒ…ä»£ç éƒ¨åˆ†
 void MdSpi::SubscribeMarketData(QString dm)
 {
 	QStringList strlist=dm.split(",");
@@ -90,10 +90,10 @@ void MdSpi::SubscribeMarketData(QString dm)
 		QByteArray ba=str.toLatin1();
 		ch=ba.data();
 		char *myppInstrumentID[]={ch};
-		int iRequestID=pUserApi->SubscribeMarketData(myppInstrumentID,1); //Ã¿´ÎÖ»·¢ËÍÒ»¸ö
+		int iRequestID=pUserApi->SubscribeMarketData(myppInstrumentID,1); //æ¯æ¬¡åªå‘é€ä¸€ä¸ª
 		
 	}
-	cerr<<"--->>>·¢ËÍĞĞÇé¶©ÔÄÇëÇó:"<<((iRequestID==0)?"³É¹¦":"Ê§°Ü")<<endl;
+	cerr<<"--->>>å‘é€è¡Œæƒ…è®¢é˜…è¯·æ±‚:"<<((iRequestID==0)?"æˆåŠŸ":"å¤±è´¥")<<endl;
 }
 
 
@@ -107,31 +107,31 @@ void MdSpi::OnRspUnSubMarketData(CThostFtdcSpecificInstrumentField *pSpecificIns
 {
 	cerr << __FUNCTION__ << endl;
 }
-//·µ»ØºÏÔ¼´úÂë¾ßÌåĞÅÏ¢
+//è¿”å›åˆçº¦ä»£ç å…·ä½“ä¿¡æ¯
 void MdSpi::OnRtnDepthMarketData(CThostFtdcDepthMarketDataField *pDepthMarketData)
 {
 	//cerr << __FUNCTION__ << endl;
 	QString dm = pDepthMarketData->InstrumentID;   //
-	QString updatetime = pDepthMarketData->UpdateTime;	  // ¸üĞÂÊ±¼ä
-	QString lastprice = QString::number(pDepthMarketData->LastPrice);	  //×îĞÂ¼Û
-	QString buyprice = QString::number(pDepthMarketData->BidPrice1); //ÂòÒ»¼Û
-	QString buyvol=QString::number(pDepthMarketData->BidVolume1);//ÂòÒ»Á¿
-	QString sellprice =QString::number(pDepthMarketData->AskPrice1); //ÂôÒ»¼Û
-	QString sellvol = QString::number(pDepthMarketData->AskVolume1); //ÂôÒ»Á¿
-	QString preLastPrice = QString::number(pDepthMarketData->PreClosePrice); //×òÊÕÅÌ¼Û
-	QString zf = QString::number(((pDepthMarketData->LastPrice-pDepthMarketData->PreClosePrice)*100/pDepthMarketData->PreClosePrice),'f',2);  //ÕÇ·ùµÄ¼ÆËã
-	QString vol = QString::number(pDepthMarketData->Volume); //³É½»Á¿
-	QString zt = QString::number(pDepthMarketData->UpperLimitPrice); //ÕÇÍ£¼Û
-	QString dt = QString::number(pDepthMarketData->LowerLimitPrice); //µøÍ£¼Û
-	QString openprice=QString::number(pDepthMarketData->OpenPrice);	 //¿ªÅÌ¼Û
+	QString updatetime = pDepthMarketData->UpdateTime;	  // æ›´æ–°æ—¶é—´
+	QString lastprice = QString::number(pDepthMarketData->LastPrice);	  //æœ€æ–°ä»·
+	QString buyprice = QString::number(pDepthMarketData->BidPrice1); //ä¹°ä¸€ä»·
+	QString buyvol=QString::number(pDepthMarketData->BidVolume1);//ä¹°ä¸€é‡
+	QString sellprice =QString::number(pDepthMarketData->AskPrice1); //å–ä¸€ä»·
+	QString sellvol = QString::number(pDepthMarketData->AskVolume1); //å–ä¸€é‡
+	QString preLastPrice = QString::number(pDepthMarketData->PreClosePrice); //æ˜¨æ”¶ç›˜ä»·
+	QString zf = QString::number(((pDepthMarketData->LastPrice-pDepthMarketData->PreClosePrice)*100/pDepthMarketData->PreClosePrice),'f',2);  //æ¶¨å¹…çš„è®¡ç®—
+	QString vol = QString::number(pDepthMarketData->Volume); //æˆäº¤é‡
+	QString zt = QString::number(pDepthMarketData->UpperLimitPrice); //æ¶¨åœä»·
+	QString dt = QString::number(pDepthMarketData->LowerLimitPrice); //è·Œåœä»·
+	QString openprice=QString::number(pDepthMarketData->OpenPrice);	 //å¼€ç›˜ä»·
 
-	QString HQTick = dm+","+updatetime+","+lastprice+","+buyprice+","+buyvol+","+sellprice+","+sellvol+","+zf+","+vol+","+zt+","+dt+","+openprice;	 //Ê¹ÓÃĞÅºÅ´«µİÊı¾İ
-	emit sendData(HQTick); //Ö»ÊÇ·¢ËÍÁËÊı¾İ£¬ĞèÒª½ÓÊÕ¶Ë½ÓÊÕÊı¾İ £¬a,ÔÚctp.hÍ·ÎÄ¼ş¶¨Òå½ÓÊÕ·½·¨ b, Í¨¹ıSLOTÁ¬½Ó
+	QString HQTick = dm+","+updatetime+","+lastprice+","+buyprice+","+buyvol+","+sellprice+","+sellvol+","+zf+","+vol+","+zt+","+dt+","+openprice;	 //ä½¿ç”¨ä¿¡å·ä¼ é€’æ•°æ®
+	emit sendData(HQTick); //åªæ˜¯å‘é€äº†æ•°æ®ï¼Œéœ€è¦æ¥æ”¶ç«¯æ¥æ”¶æ•°æ® ï¼Œa,åœ¨ctp.hå¤´æ–‡ä»¶å®šä¹‰æ¥æ”¶æ–¹æ³• b, é€šè¿‡SLOTè¿æ¥
 }
 
 bool MdSpi::IsErrorRspInfo(CThostFtdcRspInfoField *pRspInfo)
 {
-	// Èç¹ûErrorID != 0, ËµÃ÷ÊÕµ½ÁË´íÎóµÄÏìÓ¦
+	// å¦‚æœErrorID != 0, è¯´æ˜æ”¶åˆ°äº†é”™è¯¯çš„å“åº”
 	bool bResult = ((pRspInfo) && (pRspInfo->ErrorID != 0));
 	if (bResult)
 		cerr << "--->>> ErrorID=" << pRspInfo->ErrorID << ", ErrorMsg=" << pRspInfo->ErrorMsg << endl;

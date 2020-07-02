@@ -9,7 +9,7 @@ class QTd: public QObject , public TradeWrapper
 {
     Q_OBJECT
 public:
-    QTd(const std::string &path);
+    QTd(QObject *parent, const std::string &path);
     CThostFtdcOrderField* FwdOrdResp();
 
 signals:

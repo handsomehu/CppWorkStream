@@ -1,5 +1,10 @@
 {
-
+    "brokerID": "4300", 
+    "mdAddress": "tcp://222.66.192.247:47213", 
+    "tdAddress": "tcp://222.66.192.247:43205", 
+    "userID": "60039860",
+    "password": "Leonp4ss",
+    "appID": "client_VNPY_1.9.2",
+    "authCode": "LX7TOBSQB7NK76HT"
 }
-
 

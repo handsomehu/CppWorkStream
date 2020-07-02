@@ -21,7 +21,7 @@ public:
 		 TThostFtdcPasswordKeyType PASSWORD;
 	};
 	TDStruct jy;
-	//ºÏÔ¼½á¹¹
+	//åˆçº¦ç»“æ„
 	typedef struct HYStruct
 	{
 		  int hycs;
@@ -31,7 +31,7 @@ public:
 	HYStruct hy(QString);
 
 	void Init();
-	// USER_API²ÎÊı
+	// USER_APIå‚æ•°
 	CThostFtdcTraderApi* pUserApi;
 	
 signals:
@@ -50,72 +50,72 @@ public:
 private:
 
 public:
-	///ÇëÇó²éÑ¯×Ê½ğÕË»§
+	///è¯·æ±‚æŸ¥è¯¢èµ„é‡‘è´¦æˆ·
 	void ReqQryTradingAccount();
-	///±¨µ¥Â¼ÈëÇëÇó
+	///æŠ¥å•å½•å…¥è¯·æ±‚
 	void ReqOrderInsert(QString dm,QString lx,int lots,double price);
-	///±¨µ¥²Ù×÷ÇëÇó
+	///æŠ¥å•æ“ä½œè¯·æ±‚
 	void ReqOrderAction(QString brokerid,QString wth,QString jys);
-	///±¨µ¥²Ù×÷ÇëÇó
+	///æŠ¥å•æ“ä½œè¯·æ±‚
 	//void ReqOrderAction(CThostFtdcOrderField *pOrder);
 
-	///µ±¿Í»§¶ËÓë½»Ò×ºóÌ¨½¨Á¢ÆğÍ¨ĞÅÁ¬½ÓÊ±£¨»¹Î´µÇÂ¼Ç°£©£¬¸Ã·½·¨±»µ÷ÓÃ¡£
+	///å½“å®¢æˆ·ç«¯ä¸äº¤æ˜“åå°å»ºç«‹èµ·é€šä¿¡è¿æ¥æ—¶ï¼ˆè¿˜æœªç™»å½•å‰ï¼‰ï¼Œè¯¥æ–¹æ³•è¢«è°ƒç”¨ã€‚
 	virtual void OnFrontConnected();
 
-	///µÇÂ¼ÇëÇóÏìÓ¦
+	///ç™»å½•è¯·æ±‚å“åº”
 	virtual void OnRspUserLogin(CThostFtdcRspUserLoginField *pRspUserLogin,	CThostFtdcRspInfoField *pRspInfo, int nRequestID, bool bIsLast);
 
-	///Í¶×ÊÕß½áËã½á¹ûÈ·ÈÏÏìÓ¦
+	///æŠ•èµ„è€…ç»“ç®—ç»“æœç¡®è®¤å“åº”
 	virtual void OnRspSettlementInfoConfirm(CThostFtdcSettlementInfoConfirmField *pSettlementInfoConfirm, CThostFtdcRspInfoField *pRspInfo, int nRequestID, bool bIsLast);
 
-	///ÇëÇó²éÑ¯ºÏÔ¼ÏìÓ¦---ºÏÔ¼²éÑ¯
+	///è¯·æ±‚æŸ¥è¯¢åˆçº¦å“åº”---åˆçº¦æŸ¥è¯¢
 	virtual void OnRspQryInstrument(CThostFtdcInstrumentField *pInstrument, CThostFtdcRspInfoField *pRspInfo, int nRequestID, bool bIsLast);
 
-	///ÇëÇó²éÑ¯×Ê½ğÕË»§ÏìÓ¦  --×Ê½ğ²éÑ¯
+	///è¯·æ±‚æŸ¥è¯¢èµ„é‡‘è´¦æˆ·å“åº”  --èµ„é‡‘æŸ¥è¯¢
 	virtual void OnRspQryTradingAccount(CThostFtdcTradingAccountField *pTradingAccount, CThostFtdcRspInfoField *pRspInfo, int nRequestID, bool bIsLast);
 
-	///ÇëÇó²éÑ¯Í¶×ÊÕß³Ö²ÖÏìÓ¦--  ³Ö²Ö²éÑ¯
+	///è¯·æ±‚æŸ¥è¯¢æŠ•èµ„è€…æŒä»“å“åº”--  æŒä»“æŸ¥è¯¢
 	virtual void OnRspQryInvestorPosition(CThostFtdcInvestorPositionField *pInvestorPosition, CThostFtdcRspInfoField *pRspInfo, int nRequestID, bool bIsLast);
 
-	///±¨µ¥Â¼ÈëÇëÇóÏìÓ¦
+	///æŠ¥å•å½•å…¥è¯·æ±‚å“åº”
 	virtual void OnRspOrderInsert(CThostFtdcInputOrderField *pInputOrder, CThostFtdcRspInfoField *pRspInfo, int nRequestID, bool bIsLast);
 
-	///±¨µ¥²Ù×÷ÇëÇóÏìÓ¦
+	///æŠ¥å•æ“ä½œè¯·æ±‚å“åº”
 	virtual void OnRspOrderAction(CThostFtdcInputOrderActionField *pInputOrderAction, CThostFtdcRspInfoField *pRspInfo, int nRequestID, bool bIsLast);
 
-	///´íÎóÓ¦´ğ
+	///é”™è¯¯åº”ç­”
 	virtual void OnRspError(CThostFtdcRspInfoField *pRspInfo, int nRequestID, bool bIsLast);
 
-	///µ±¿Í»§¶ËÓë½»Ò×ºóÌ¨Í¨ĞÅÁ¬½Ó¶Ï¿ªÊ±£¬¸Ã·½·¨±»µ÷ÓÃ¡£µ±·¢ÉúÕâ¸öÇé¿öºó£¬API»á×Ô¶¯ÖØĞÂÁ¬½Ó£¬¿Í»§¶Ë¿É²»×ö´¦Àí¡£
+	///å½“å®¢æˆ·ç«¯ä¸äº¤æ˜“åå°é€šä¿¡è¿æ¥æ–­å¼€æ—¶ï¼Œè¯¥æ–¹æ³•è¢«è°ƒç”¨ã€‚å½“å‘ç”Ÿè¿™ä¸ªæƒ…å†µåï¼ŒAPIä¼šè‡ªåŠ¨é‡æ–°è¿æ¥ï¼Œå®¢æˆ·ç«¯å¯ä¸åšå¤„ç†ã€‚
 	virtual void OnFrontDisconnected(int nReason);
 
-	///ĞÄÌø³¬Ê±¾¯¸æ¡£µ±³¤Ê±¼äÎ´ÊÕµ½±¨ÎÄÊ±£¬¸Ã·½·¨±»µ÷ÓÃ¡£
+	///å¿ƒè·³è¶…æ—¶è­¦å‘Šã€‚å½“é•¿æ—¶é—´æœªæ”¶åˆ°æŠ¥æ–‡æ—¶ï¼Œè¯¥æ–¹æ³•è¢«è°ƒç”¨ã€‚
 	virtual void OnHeartBeatWarning(int nTimeLapse);
 
-	///±¨µ¥Í¨Öª--------------/Î¯ÍĞ»Ø±¨
+	///æŠ¥å•é€šçŸ¥--------------/å§”æ‰˜å›æŠ¥
 	virtual void OnRtnOrder(CThostFtdcOrderField *pOrder);
 
-	///³É½»Í¨Öª--------------/³É½»»Ø±¨
+	///æˆäº¤é€šçŸ¥--------------/æˆäº¤å›æŠ¥
 	virtual void OnRtnTrade(CThostFtdcTradeField *pTrade);
 
 private:
-	///ÓÃ»§µÇÂ¼ÇëÇó
+	///ç”¨æˆ·ç™»å½•è¯·æ±‚
 	void ReqUserLogin();
-	///Í¶×ÊÕß½áËã½á¹ûÈ·ÈÏ
+	///æŠ•èµ„è€…ç»“ç®—ç»“æœç¡®è®¤
 	void ReqSettlementInfoConfirm();
-	///ÇëÇó²éÑ¯ºÏÔ¼
+	///è¯·æ±‚æŸ¥è¯¢åˆçº¦
 	void ReqQryInstrument();
-	///ÇëÇó²éÑ¯×Ê½ğÕË»§
+	///è¯·æ±‚æŸ¥è¯¢èµ„é‡‘è´¦æˆ·
 	//void ReqQryTradingAccount();
-	///ÇëÇó²éÑ¯Í¶×ÊÕß³Ö²Ö
+	///è¯·æ±‚æŸ¥è¯¢æŠ•èµ„è€…æŒä»“
 	void ReqQryInvestorPosition();
 
 
-	// ÊÇ·ñÊÕµ½³É¹¦µÄÏìÓ¦
+	// æ˜¯å¦æ”¶åˆ°æˆåŠŸçš„å“åº”
 	bool IsErrorRspInfo(CThostFtdcRspInfoField *pRspInfo);
-	// ÊÇ·ñÎÒµÄ±¨µ¥»Ø±¨
+	// æ˜¯å¦æˆ‘çš„æŠ¥å•å›æŠ¥
 	bool IsMyOrder(CThostFtdcOrderField *pOrder);
-	// ÊÇ·ñÕıÔÚ½»Ò×µÄ±¨µ¥
+	// æ˜¯å¦æ­£åœ¨äº¤æ˜“çš„æŠ¥å•
 	bool IsTradingOrder(CThostFtdcOrderField *pOrder);
 
 	

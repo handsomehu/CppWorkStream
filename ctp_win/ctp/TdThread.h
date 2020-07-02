@@ -23,7 +23,7 @@ public:
 		TThostFtdcPasswordKeyType PASSWORD;
 	};
 	TDStruct jy;
-	//合约结构
+	//鍚堢害缁撴瀯
 
 private:
 	

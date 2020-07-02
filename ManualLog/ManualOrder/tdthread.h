@@ -2,11 +2,17 @@
 #define TDTHREAD_H
 #include <QThread>
 #include "qtd.h"
-class TdThread: public QObject,public QThread
+class TdThread: public QThread
 {
     Q_OBJECT
 public:
-    TdThread(TdThread(QObject *parent));
+    TdThread(QObject *parent);
+    void run();
+    void readcfg();
+
+private:
+    QTd trade;
+    QString cfgdata;
 };
 
 #endif // TDTHREAD_H

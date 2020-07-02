@@ -4,9 +4,6 @@
 #include "ui_ctp.h"
 #include "ThostFtdcMdApi.h"
 #include "ThostFtdcTraderApi.h"
-
-#include "tinystr.h"
-#include "tinyxml.h"
 #include <string>
 #include <cstring>
 #include <iostream>
@@ -40,10 +37,10 @@ private slots:
 	void OnExit();
 
     string GetAppPath();
-	bool writexml(string& szFileName); //xml写入
-	bool readxml(string & szFileName);//xml读取
+	bool writexml(string& szFileName); //xml鍐欏叆
+	bool readxml(string & szFileName);//xml璇诲彇
 
-	void OnAddHeyue();  //自动交易合约添加
+	void OnAddHeyue();  //鑷姩浜ゆ槗鍚堢害娣诲姞
 private:
 	Ui::ctpClass ui;
 	void WriteTxt(QString path,QString data);

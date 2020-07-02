@@ -17,26 +17,26 @@ TdSpi::~TdSpi()
 
 #pragma warning(disable : 4996)
 
-char INSTRUMENT_ID[100];	// ºÏÔ¼´úÂë
-TThostFtdcPriceType	LIMIT_PRICE;	// ¼Û¸ñ
-TThostFtdcDirectionType	DIRECTION;	// ÂòÂô·½Ïò
+char INSTRUMENT_ID[100];	// åˆçº¦ä»£ç 
+TThostFtdcPriceType	LIMIT_PRICE;	// ä»·æ ¼
+TThostFtdcDirectionType	DIRECTION;	// ä¹°å–æ–¹å‘
 
-// ÇëÇó±àºÅ
+// è¯·æ±‚ç¼–å·
 int iRequestTdID;
 
-// »á»°²ÎÊı
-TThostFtdcFrontIDType	FRONT_ID;	//Ç°ÖÃ±àºÅ
-TThostFtdcSessionIDType	SESSION_ID;	//»á»°±àºÅ
-TThostFtdcOrderRefType	ORDER_REF;	//±¨µ¥ÒıÓÃ
+// ä¼šè¯å‚æ•°
+TThostFtdcFrontIDType	FRONT_ID;	//å‰ç½®ç¼–å·
+TThostFtdcSessionIDType	SESSION_ID;	//ä¼šè¯ç¼–å·
+TThostFtdcOrderRefType	ORDER_REF;	//æŠ¥å•å¼•ç”¨
 
-QString hyarray[500][4];   //¶¨ÒåÒ»¸öºÏÔ¼µÄ¶şÎ³Êı×é
+QString hyarray[500][4];   //å®šä¹‰ä¸€ä¸ªåˆçº¦çš„äºŒçº¬æ•°ç»„
 int k=0;
 
 
 void TdSpi::OnFrontConnected()
 {
 	cerr << "--->>> " << "OnFrontConnected" << endl;
-	///ÓÃ»§µÇÂ¼ÇëÇó
+	///ç”¨æˆ·ç™»å½•è¯·æ±‚
 	ReqUserLogin();
 }
 
@@ -48,7 +48,7 @@ void TdSpi::ReqUserLogin()
 	strcpy(req.UserID, jy.INVESTOR_ID);
 	strcpy(req.Password, jy.PASSWORD);
 	int iResult = pUserApi->ReqUserLogin(&req, ++iRequestTdID);
-	cerr << "--->>> ·¢ËÍÓÃ»§µÇÂ¼ÇëÇó: " << ((iResult == 0) ? "³É¹¦" : "Ê§°Ü") << endl;
+	cerr << "--->>> å‘é€ç”¨æˆ·ç™»å½•è¯·æ±‚: " << ((iResult == 0) ? "æˆåŠŸ" : "å¤±è´¥") << endl;
 }
 
 void TdSpi::OnRspUserLogin(CThostFtdcRspUserLoginField *pRspUserLogin,
@@ -57,16 +57,16 @@ void TdSpi::OnRspUserLogin(CThostFtdcRspUserLoginField *pRspUserLogin,
 	cerr << "--->>> " << "OnRspUserLogin" << endl;
 	if (bIsLast && !IsErrorRspInfo(pRspInfo))
 	{
-		// ±£´æ»á»°²ÎÊı
+		// ä¿å­˜ä¼šè¯å‚æ•°
 		FRONT_ID = pRspUserLogin->FrontID;
 		SESSION_ID = pRspUserLogin->SessionID;
 		int iNextOrderRef = atoi(pRspUserLogin->MaxOrderRef);
 		iNextOrderRef++;
 		sprintf(ORDER_REF, "%d", iNextOrderRef);
-		///»ñÈ¡µ±Ç°½»Ò×ÈÕ
+		///è·å–å½“å‰äº¤æ˜“æ—¥
 
-		cerr << "--->>> »ñÈ¡µ±Ç°½»Ò×ÈÕ = " << pUserApi->GetTradingDay() << endl;
-		///Í¶×ÊÕß½áËã½á¹ûÈ·ÈÏ
+		cerr << "--->>> è·å–å½“å‰äº¤æ˜“æ—¥ = " << pUserApi->GetTradingDay() << endl;
+		///æŠ•èµ„è€…ç»“ç®—ç»“æœç¡®è®¤
         this_thread::sleep_for(std::chrono::seconds(1));
 		ReqSettlementInfoConfirm();
 	}
@@ -79,7 +79,7 @@ void TdSpi::ReqSettlementInfoConfirm()
 	strcpy(req.BrokerID, jy.BROKER_ID);
 	strcpy(req.InvestorID, jy.INVESTOR_ID);
 	int iResult = pUserApi->ReqSettlementInfoConfirm(&req, ++iRequestTdID);
-	cerr << "--->>> Í¶×ÊÕß½áËã½á¹ûÈ·ÈÏ: " << ((iResult == 0) ? "³É¹¦" : "Ê§°Ü") << endl;
+	cerr << "--->>> æŠ•èµ„è€…ç»“ç®—ç»“æœç¡®è®¤: " << ((iResult == 0) ? "æˆåŠŸ" : "å¤±è´¥") << endl;
 }
 
 void TdSpi::OnRspSettlementInfoConfirm(CThostFtdcSettlementInfoConfirmField *pSettlementInfoConfirm, CThostFtdcRspInfoField *pRspInfo, int nRequestID, bool bIsLast)
@@ -87,7 +87,7 @@ void TdSpi::OnRspSettlementInfoConfirm(CThostFtdcSettlementInfoConfirmField *pSe
 	cerr << "--->>> " << "OnRspSettlementInfoConfirm" << endl;
 	if (bIsLast && !IsErrorRspInfo(pRspInfo))
 	{
-		///ÇëÇó²éÑ¯ºÏÔ¼
+		///è¯·æ±‚æŸ¥è¯¢åˆçº¦
 		ReqQryInstrument();
 	}
 }
@@ -98,16 +98,16 @@ void TdSpi::ReqQryInstrument()
 	memset(&req, 0, sizeof(req));
 	strcpy(req.InstrumentID, INSTRUMENT_ID);
 	int iResult = pUserApi->ReqQryInstrument(&req, ++iRequestTdID);
-	cerr << "--->>> ÇëÇó²éÑ¯ºÏÔ¼: " << ((iResult == 0) ? "³É¹¦" : "Ê§°Ü") << endl;
+	cerr << "--->>> è¯·æ±‚æŸ¥è¯¢åˆçº¦: " << ((iResult == 0) ? "æˆåŠŸ" : "å¤±è´¥") << endl;
 }
 
 void TdSpi::OnRspQryInstrument(CThostFtdcInstrumentField *pInstrument, CThostFtdcRspInfoField *pRspInfo, int nRequestID, bool bIsLast)
 {
 	
-	QString dm=pInstrument->InstrumentID; //ºÏÔ¼´úÂë
-	QString mc=QString::fromLocal8Bit(pInstrument->InstrumentName); //Ãû³Æ
-	QString cs=QString::number(pInstrument->VolumeMultiple);//ºÏÔ¼³ËÊı
-	QString ds=QString::number(pInstrument->PriceTick); //ºÏÔ¼µãÊı
+	QString dm=pInstrument->InstrumentID; //åˆçº¦ä»£ç 
+	QString mc=QString::fromLocal8Bit(pInstrument->InstrumentName); //åç§°
+	QString cs=QString::number(pInstrument->VolumeMultiple);//åˆçº¦ä¹˜æ•°
+	QString ds=QString::number(pInstrument->PriceTick); //åˆçº¦ç‚¹æ•°
 
 	hyarray[k][0]=dm;
 	hyarray[k][1]=mc;
@@ -116,7 +116,7 @@ void TdSpi::OnRspQryInstrument(CThostFtdcInstrumentField *pInstrument, CThostFtd
 	k++;
 	if (bIsLast && !IsErrorRspInfo(pRspInfo))
 	{
-		//ÇëÇó²éÑ¯ºÏÔ¼
+		//è¯·æ±‚æŸ¥è¯¢åˆçº¦
         this_thread::sleep_for(std::chrono::seconds(2));
 		ReqQryTradingAccount();
 	}
@@ -134,15 +134,15 @@ void TdSpi::ReqQryTradingAccount()
 	strcpy(req.BrokerID, jy.BROKER_ID);
 	strcpy(req.InvestorID, jy.INVESTOR_ID);
 	int iResult = pUserApi->ReqQryTradingAccount(&req, ++iRequestTdID);
-	cerr << "--->>> ÇëÇó²éÑ¯×Ê½ğÕË»§: " << ((iResult == 0) ? "³É¹¦" : "Ê§°Ü") << endl;
+	cerr << "--->>> è¯·æ±‚æŸ¥è¯¢èµ„é‡‘è´¦æˆ·: " << ((iResult == 0) ? "æˆåŠŸ" : "å¤±è´¥") << endl;
 }
 
 void TdSpi::OnRspQryTradingAccount(CThostFtdcTradingAccountField *pTradingAccount, CThostFtdcRspInfoField *pRspInfo, int nRequestID, bool bIsLast)
 {
-	QString account=pTradingAccount->AccountID;					//ÕÊ»§
-	double zqy=pTradingAccount->Balance;	//×ÜÈ¨Òæ
-	double bzj=pTradingAccount->CurrMargin; //Õ¼ÓÃ±£Ö¤½ğ
-	double kyzj=pTradingAccount->Available;	//¿ÉÓÃ×Ê½ğ
+	QString account=pTradingAccount->AccountID;					//å¸æˆ·
+	double zqy=pTradingAccount->Balance;	//æ€»æƒç›Š
+	double bzj=pTradingAccount->CurrMargin; //å ç”¨ä¿è¯é‡‘
+	double kyzj=pTradingAccount->Available;	//å¯ç”¨èµ„é‡‘
 	double sxf=pTradingAccount->Commission;
 	double psyk=pTradingAccount->CloseProfit;
 
@@ -161,8 +161,8 @@ void TdSpi::OnRspQryTradingAccount(CThostFtdcTradingAccountField *pTradingAccoun
 
 	if (bIsLast && !IsErrorRspInfo(pRspInfo))
 	{
-		///ÇëÇó²éÑ¯Í¶×ÊÕß³Ö²Ö
-		//ÒòÎª³Ö²Ö²éÑ¯¾ßÓĞÑÓ³Ù,ÎŞ·¨Õı³£ÏÔÊ¾,ĞèÒªÊ¹ÓÃSleep()
+		///è¯·æ±‚æŸ¥è¯¢æŠ•èµ„è€…æŒä»“
+		//å› ä¸ºæŒä»“æŸ¥è¯¢å…·æœ‰å»¶è¿Ÿ,æ— æ³•æ­£å¸¸æ˜¾ç¤º,éœ€è¦ä½¿ç”¨Sleep()
 		//Sleep(2000); //windows.h
 		ReqQryInvestorPosition();
 	}
@@ -176,17 +176,17 @@ void TdSpi::ReqQryInvestorPosition()
 	strcpy(req.InvestorID, jy.INVESTOR_ID);
 	strcpy(req.InstrumentID, INSTRUMENT_ID);
 	int iResult = pUserApi->ReqQryInvestorPosition(&req, ++iRequestTdID);
-	cerr << "--->>> ÇëÇó²éÑ¯Í¶×ÊÕß³Ö²Ö: " << ((iResult == 0) ? "³É¹¦" : "Ê§°Ü") << endl;
+	cerr << "--->>> è¯·æ±‚æŸ¥è¯¢æŠ•èµ„è€…æŒä»“: " << ((iResult == 0) ? "æˆåŠŸ" : "å¤±è´¥") << endl;
 }
 
 void TdSpi::OnRspQryInvestorPosition(CThostFtdcInvestorPositionField *pInvestorPosition, CThostFtdcRspInfoField *pRspInfo, int nRequestID, bool bIsLast)
 {
    if(pInvestorPosition==NULL)return;
    if (pInvestorPosition->Position==0)return;
-   QString dm=pInvestorPosition->InstrumentID; //³Ö²Ö´úÂë
-   QString lx=QChar::fromLatin1(pInvestorPosition->PosiDirection); //³Ö²Ö¶à¿Õ·½Ïò
-   int lots=pInvestorPosition->Position; //³Ö²Ö,Ò»°ãÓÃ½ñ²Ö
-   double cb=pInvestorPosition->PositionCost/lots/hy(dm).hycs;	   //³Ö²Ö³É±¾ ,ag1612ÒÔ¶Ö¼Æ¼Û
+   QString dm=pInvestorPosition->InstrumentID; //æŒä»“ä»£ç 
+   QString lx=QChar::fromLatin1(pInvestorPosition->PosiDirection); //æŒä»“å¤šç©ºæ–¹å‘
+   int lots=pInvestorPosition->Position; //æŒä»“,ä¸€èˆ¬ç”¨ä»Šä»“
+   double cb=pInvestorPosition->PositionCost/lots/hy(dm).hycs;	   //æŒä»“æˆæœ¬ ,ag1612ä»¥å¨è®¡ä»·
 
    QString CCData=dm+","+lx+","+QString::number(lots)+","+QString::number(cb);
    emit sendCC(CCData);
@@ -197,18 +197,18 @@ void TdSpi::ReqOrderInsert(QString dm,QString lx,int lots,double price)
 {
 	CThostFtdcInputOrderField req;
 	memset(&req, 0, sizeof(req));
-	///¾­¼Í¹«Ë¾´úÂë
+	///ç»çºªå…¬å¸ä»£ç 
 	strcpy(req.BrokerID, jy.BROKER_ID);
-	///Í¶×ÊÕß´úÂë
+	///æŠ•èµ„è€…ä»£ç 
 	strcpy(req.InvestorID, jy.INVESTOR_ID);
-	///ºÏÔ¼´úÂë
+	///åˆçº¦ä»£ç 
 	strcpy(req.InstrumentID, dm.toStdString().data());
-	///±¨µ¥ÒıÓÃ
+	///æŠ¥å•å¼•ç”¨
     sprintf(ORDER_REF,"%d",iRequestTdID);	  //-------------
 	strcpy(req.OrderRef, ORDER_REF);  
-	///ÓÃ»§´úÂë
+	///ç”¨æˆ·ä»£ç 
 	//	TThostFtdcUserIDType	UserID;
-	///±¨µ¥¼Û¸ñÌõ¼ş: ÏŞ¼Û
+	///æŠ¥å•ä»·æ ¼æ¡ä»¶: é™ä»·
 	req.OrderPriceType = THOST_FTDC_OPT_LimitPrice;
 
 	if (lx=="kd")
@@ -232,37 +232,37 @@ void TdSpi::ReqOrderInsert(QString dm,QString lx,int lots,double price)
 		req.CombOffsetFlag[0] =THOST_FTDC_OF_CloseToday;
 	}
 
-	///×éºÏÍ¶»úÌ×±£±êÖ¾
+	///ç»„åˆæŠ•æœºå¥—ä¿æ ‡å¿—
 	req.CombHedgeFlag[0] = THOST_FTDC_HF_Speculation;
-	///¼Û¸ñ
+	///ä»·æ ¼
 	req.LimitPrice = price;
-	///ÊıÁ¿: 1
+	///æ•°é‡: 1
 	req.VolumeTotalOriginal = lots;
-	///ÓĞĞ§ÆÚÀàĞÍ: µ±ÈÕÓĞĞ§
+	///æœ‰æ•ˆæœŸç±»å‹: å½“æ—¥æœ‰æ•ˆ
 	req.TimeCondition = THOST_FTDC_TC_GFD;
-	///GTDÈÕÆÚ
+	///GTDæ—¥æœŸ
 	//	TThostFtdcDateType	GTDDate;
-	///³É½»Á¿ÀàĞÍ: ÈÎºÎÊıÁ¿
+	///æˆäº¤é‡ç±»å‹: ä»»ä½•æ•°é‡
 	req.VolumeCondition = THOST_FTDC_VC_AV;
-	///×îĞ¡³É½»Á¿: 1
+	///æœ€å°æˆäº¤é‡: 1
 	req.MinVolume = 1;
-	///´¥·¢Ìõ¼ş: Á¢¼´
+	///è§¦å‘æ¡ä»¶: ç«‹å³
 	req.ContingentCondition = THOST_FTDC_CC_Immediately;
-	///Ö¹Ëğ¼Û
+	///æ­¢æŸä»·
 	//	TThostFtdcPriceType	StopPrice;
-	///Ç¿Æ½Ô­Òò: ·ÇÇ¿Æ½
+	///å¼ºå¹³åŸå› : éå¼ºå¹³
 	req.ForceCloseReason = THOST_FTDC_FCC_NotForceClose;
-	///×Ô¶¯¹ÒÆğ±êÖ¾: ·ñ
+	///è‡ªåŠ¨æŒ‚èµ·æ ‡å¿—: å¦
 	req.IsAutoSuspend = 0;
-	///ÒµÎñµ¥Ôª
+	///ä¸šåŠ¡å•å…ƒ
 	//	TThostFtdcBusinessUnitType	BusinessUnit;
-	///ÇëÇó±àºÅ
+	///è¯·æ±‚ç¼–å·
 	//	TThostFtdcRequestIDType	RequestID;
-	///ÓÃ»§Ç¿ÆÀ±êÖ¾: ·ñ
+	///ç”¨æˆ·å¼ºè¯„æ ‡å¿—: å¦
 	req.UserForceClose = 0;
 
 	int iResult = pUserApi->ReqOrderInsert(&req, ++iRequestTdID);
-	cerr << "--->>> ±¨µ¥Â¼ÈëÇëÇó: " << ((iResult == 0) ? "³É¹¦" : "Ê§°Ü") << endl;
+	cerr << "--->>> æŠ¥å•å½•å…¥è¯·æ±‚: " << ((iResult == 0) ? "æˆåŠŸ" : "å¤±è´¥") << endl;
 }
 
 void TdSpi::OnRspOrderInsert(CThostFtdcInputOrderField *pInputOrder, CThostFtdcRspInfoField *pRspInfo, int nRequestID, bool bIsLast)
@@ -270,7 +270,7 @@ void TdSpi::OnRspOrderInsert(CThostFtdcInputOrderField *pInputOrder, CThostFtdcR
 	cerr << "--->>> " << "OnRspOrderInsert" << endl;
 	IsErrorRspInfo(pRspInfo);
 }
-//±¨µ¥Â¼ÈëÇëÇó,³·µ¥
+//æŠ¥å•å½•å…¥è¯·æ±‚,æ’¤å•
 void TdSpi::ReqOrderAction(QString brokerid,QString wth,QString jys)
 {
 	QByteArray ba=brokerid.toLatin1();
@@ -282,12 +282,12 @@ void TdSpi::ReqOrderAction(QString brokerid,QString wth,QString jys)
 
 	CThostFtdcInputOrderActionField req;
 	memset(&req, 0, sizeof(req));
-	///¾­¼Í¹«Ë¾´úÂë
+	///ç»çºªå…¬å¸ä»£ç 
 	strcpy(req.BrokerID, pbid);
-	strcpy(req.OrderSysID,pwth); //Î¯ÍĞºÅ
-	strcpy(req.ExchangeID,pjys); //½»Ò×Ëù
+	strcpy(req.OrderSysID,pwth); //å§”æ‰˜å·
+	strcpy(req.ExchangeID,pjys); //äº¤æ˜“æ‰€
 
-	///²Ù×÷±êÖ¾
+	///æ“ä½œæ ‡å¿—
 	req.ActionFlag = THOST_FTDC_AF_Delete;
 	int iResult = pUserApi->ReqOrderAction(&req, ++iRequestTdID);
 }
@@ -298,30 +298,30 @@ void TdSpi::OnRspOrderAction(CThostFtdcInputOrderActionField *pInputOrderAction,
 	IsErrorRspInfo(pRspInfo);
 }
 
-//ÎÊÌâÄ£¿é
-///±¨µ¥Í¨Öª	   ----Î¯ÍĞ»Ø±¨
+//é—®é¢˜æ¨¡å—
+///æŠ¥å•é€šçŸ¥	   ----å§”æ‰˜å›æŠ¥
 void TdSpi::OnRtnOrder(CThostFtdcOrderField *pOrder)
 {
 	
-	//±¨µ¥×´Ì¬´¦Àí
+	//æŠ¥å•çŠ¶æ€å¤„ç†
 		
 	QString zt;
-	if(pOrder->OrderStatus==THOST_FTDC_OST_AllTraded){zt=QString::fromLocal8Bit("È«²¿³É½»");}
-	else if(pOrder->OrderStatus==THOST_FTDC_OST_PartTradedQueueing){zt=QString::fromLocal8Bit("²¿·İ³É½»");}
-	else if(pOrder->OrderStatus==THOST_FTDC_OST_PartTradedNotQueueing){zt=QString::fromLocal8Bit("²¿·İ³É½»");}
-	else if(pOrder->OrderStatus==THOST_FTDC_OST_NoTradeQueueing){zt=QString::fromLocal8Bit("Î´³É½»");}
-	else if(pOrder->OrderStatus==THOST_FTDC_OST_Canceled){zt=QString::fromLocal8Bit("ÒÑ³·µ¥");}
+	if(pOrder->OrderStatus==THOST_FTDC_OST_AllTraded){zt=QString::fromLocal8Bit("å…¨éƒ¨æˆäº¤");}
+	else if(pOrder->OrderStatus==THOST_FTDC_OST_PartTradedQueueing){zt=QString::fromLocal8Bit("éƒ¨ä»½æˆäº¤");}
+	else if(pOrder->OrderStatus==THOST_FTDC_OST_PartTradedNotQueueing){zt=QString::fromLocal8Bit("éƒ¨ä»½æˆäº¤");}
+	else if(pOrder->OrderStatus==THOST_FTDC_OST_NoTradeQueueing){zt=QString::fromLocal8Bit("æœªæˆäº¤");}
+	else if(pOrder->OrderStatus==THOST_FTDC_OST_Canceled){zt=QString::fromLocal8Bit("å·²æ’¤å•");}
 	else {return;}
 
 	
-		QString wttime = pOrder->InsertTime; //Î¯ÍĞÊ±¼ä
-		QString dm = pOrder->InstrumentID; //Î¯ÍĞ´úÂë
-        QString bs = QChar::fromLatin1(pOrder->Direction); //ÂòÂô·½Ïò
-		QString kp=pOrder->CombOffsetFlag; //¿ªÆ½±êÖ¾
-		QString lots = QString::number(pOrder->VolumeTotalOriginal); //ÊıÁ¿
-		QString price = QString::number(pOrder->LimitPrice); //¼Û¸ñ
-		QString wth = pOrder->OrderSysID; //Î¯ÍĞºÅ
-		QString jsy=pOrder->ExchangeID; //½»Ò×Ëù
+		QString wttime = pOrder->InsertTime; //å§”æ‰˜æ—¶é—´
+		QString dm = pOrder->InstrumentID; //å§”æ‰˜ä»£ç 
+        QString bs = QChar::fromLatin1(pOrder->Direction); //ä¹°å–æ–¹å‘
+		QString kp=pOrder->CombOffsetFlag; //å¼€å¹³æ ‡å¿—
+		QString lots = QString::number(pOrder->VolumeTotalOriginal); //æ•°é‡
+		QString price = QString::number(pOrder->LimitPrice); //ä»·æ ¼
+		QString wth = pOrder->OrderSysID; //å§”æ‰˜å·
+		QString jsy=pOrder->ExchangeID; //äº¤æ˜“æ‰€
 
 		QString WTData=wttime+","+dm+","+bs+","+kp+","+lots+","+lots+","+price+","+zt+","+wth+","+jsy;
 
@@ -329,18 +329,18 @@ void TdSpi::OnRtnOrder(CThostFtdcOrderField *pOrder)
 	
 }
 
-///³É½»Í¨Öª
+///æˆäº¤é€šçŸ¥
 void TdSpi::OnRtnTrade(CThostFtdcTradeField *pTrade)
 {
 
-	QString cjtime=pTrade->TradeTime;  //³É½»Ê±¼ä
-	QString dm = pTrade->InstrumentID; //ºÏÔ¼´úÂë
-    QString bs = QChar::fromLatin1(pTrade->Direction); //ÂòÂô·½Ïò
-    QString kp = QChar::fromLatin1(pTrade->OffsetFlag); //¿ªÆ½±êÖ¾
-	QString lots = QString::number(pTrade->Volume); //ºÏÔ¼ÊıÁ¿
-	QString price = QString::number(pTrade->Price);	//¼Û¸ñ
-	QString wth=pTrade->OrderSysID; //Î¯ÍĞ±àºÅ
-	QString jys = pTrade->ExchangeID; //½»Ò×Ëù
+	QString cjtime=pTrade->TradeTime;  //æˆäº¤æ—¶é—´
+	QString dm = pTrade->InstrumentID; //åˆçº¦ä»£ç 
+    QString bs = QChar::fromLatin1(pTrade->Direction); //ä¹°å–æ–¹å‘
+    QString kp = QChar::fromLatin1(pTrade->OffsetFlag); //å¼€å¹³æ ‡å¿—
+	QString lots = QString::number(pTrade->Volume); //åˆçº¦æ•°é‡
+	QString price = QString::number(pTrade->Price);	//ä»·æ ¼
+	QString wth=pTrade->OrderSysID; //å§”æ‰˜ç¼–å·
+	QString jys = pTrade->ExchangeID; //äº¤æ˜“æ‰€
 
 	QString CJData=cjtime+","+dm+","+bs+","+kp+","+lots+","+price+","+wth+","+jys;
 
@@ -368,7 +368,7 @@ void TdSpi::OnRspError(CThostFtdcRspInfoField *pRspInfo, int nRequestID, bool bI
 
 bool TdSpi::IsErrorRspInfo(CThostFtdcRspInfoField *pRspInfo)
 {
-	// Èç¹ûErrorID != 0, ËµÃ÷ÊÕµ½ÁË´íÎóµÄÏìÓ¦
+	// å¦‚æœErrorID != 0, è¯´æ˜æ”¶åˆ°äº†é”™è¯¯çš„å“åº”
 	bool bResult = ((pRspInfo) && (pRspInfo->ErrorID != 0));
 	if (bResult)
 		cerr << "--->>> ErrorID=" << pRspInfo->ErrorID << ", ErrorMsg=" << pRspInfo->ErrorMsg << endl;
@@ -391,10 +391,10 @@ bool TdSpi::IsTradingOrder(CThostFtdcOrderField *pOrder)
 
 void TdSpi::Init()
 {
-	pUserApi = CThostFtdcTraderApi::CreateFtdcTraderApi();			// ´´½¨UserApi
-	pUserApi->RegisterSpi(this);			// ×¢²áÊÂ¼şÀà
-	pUserApi->SubscribePublicTopic(THOST_TERT_RESTART);					// ×¢²á¹«ÓĞÁ÷
-	pUserApi->SubscribePrivateTopic(THOST_TERT_RESTART);					// ×¢²áË½ÓĞÁ÷
+	pUserApi = CThostFtdcTraderApi::CreateFtdcTraderApi();			// åˆ›å»ºUserApi
+	pUserApi->RegisterSpi(this);			// æ³¨å†Œäº‹ä»¶ç±»
+	pUserApi->SubscribePublicTopic(THOST_TERT_RESTART);					// æ³¨å†Œå…¬æœ‰æµ
+	pUserApi->SubscribePrivateTopic(THOST_TERT_RESTART);					// æ³¨å†Œç§æœ‰æµ
 	pUserApi->RegisterFront(jy.FRONT_ADDR);							// connect
 	pUserApi->Init();
 

@@ -16,20 +16,14 @@ HEADERS += ctp.h \
            ThostFtdcMdApi.h \
            ThostFtdcTraderApi.h \
            ThostFtdcUserApiDataType.h \
-           ThostFtdcUserApiStruct.h \
-           tinystr.h \
-           tinyxml.h
+           ThostFtdcUserApiStruct.h
 FORMS += ctp.ui
 SOURCES += ctp.cpp \
            main.cpp \
            MdSpi.cpp \
            MdThread.cpp \
            TdSpi.cpp \
-           TdThread.cpp \
-           tinystr.cpp \
-           tinyxml.cpp \
-           tinyxmlerror.cpp \
-           tinyxmlparser.cpp
+           TdThread.cpp
 RESOURCES += ctp.qrc
 
 win32:CONFIG(release, debug|release): LIBS += -L$$PWD/./release/ -lthosttraderapi_se
