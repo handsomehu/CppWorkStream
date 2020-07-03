@@ -6,13 +6,14 @@ class TdThread: public QThread
 {
     Q_OBJECT
 public:
+    QTd* td;
     TdThread(QObject *parent);
     void run();
-    void readcfg();
-
+    void dowork();
+    //void readcfg();
 private:
-    QTd trade;
-    QString cfgdata;
+
+    //QString cfgdata;
 };
 
 #endif // TDTHREAD_H

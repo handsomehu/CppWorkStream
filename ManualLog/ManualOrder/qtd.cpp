@@ -7,6 +7,7 @@ QTd::QTd(QObject *parent,const std::string &path) : QObject(parent), TradeWrappe
 
 CThostFtdcOrderField* QTd::FwdOrdResp()
 {
+    qDebug() << "Before get order return!" ;
     CThostFtdcOrderField* pOrder =  GetOrderRet();
     //报单状态处理
     QString zt;
@@ -45,4 +46,15 @@ CThostFtdcOrderField* QTd::FwdOrdResp()
       qDebug() << WTData;
 
       emit sendWT(WTData);
+      qDebug() << "emit signals";
+}
+
+bool QTd::HasWork()
+{
+    bool haswork = 0;
+
+    if (HasOrderRet() == 1)
+        haswork = 1;
+    return haswork;
+
 }

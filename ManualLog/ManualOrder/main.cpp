@@ -3,6 +3,12 @@
 #include <QApplication>
 #include <QDir>
 #include <QPluginLoader>
+/*
+The implementation is terrible, I want to seperate STD and QT
+However, have to do lots of mess to get it work.
+Since need this to roll over contract, get it work first.
+Need to revise later
+*/
 int main(int argc, char *argv[])
 {
     QString path = QDir::currentPath();

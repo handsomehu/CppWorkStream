@@ -66,6 +66,14 @@ void TradeWrapper::connectCtp()
 
 }
 
+bool TradeWrapper::HasOrderRet()
+{
+    if (orderresp.empty())
+        return false;
+    else
+        return true;
+}
+
 bool TradeWrapper::is_goodorder()
 {
     return goodorder;
@@ -275,6 +283,9 @@ void TradeWrapper::orderinsert( std::string symbol,std::string dir, std::string 
     if  (exchange == "INE")
         std::strcpy(t.ExchangeID, "INE");
     //static int reqid = 200;
+    m_ptraderapi->ReqOrderInsert(&t, reqid);
+    std::this_thread::sleep_for(std::chrono::seconds(1));
+    return; //submit order and return, deal order status later
     while (m_ptraderapi->ReqOrderInsert(&t, reqid) != 0)
     {std::this_thread::sleep_for(std::chrono::seconds(1));
     std::cout << "wait to commit" << std::endl;

@@ -11,6 +11,7 @@ class QTd: public QObject , public TradeWrapper
 public:
     QTd(QObject *parent, const std::string &path);
     CThostFtdcOrderField* FwdOrdResp();
+    bool HasWork();
 
 signals:
     void sendWT(QString);

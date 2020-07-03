@@ -35,6 +35,7 @@ public:
     bool is_goodorder();
     void reset_goodorder();
     CThostFtdcOrderField* GetOrderRet();
+    bool HasOrderRet();
     //responsive method
     void OnFrontConnected();
     void OnFrontDisconnected(int nReason);

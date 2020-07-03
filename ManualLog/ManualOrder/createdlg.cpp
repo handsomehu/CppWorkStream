@@ -5,10 +5,10 @@ CreateDlg::CreateDlg(QWidget *parent) :
     QDialog(parent),
     ui(new Ui::CreateDlg)
     , dbhelper("/home/leon/sqllitedb/tradelog_vnpy.db")
-    , trade("./cfg/j123.json")
-    , mktdata("./cfg/j123.json")
-    , cnstatus(false)
+    ,mktdata("")
+    , cnstatus(true)
 {
+    tdthread = new TdThread(this);
     ui->setupUi(this);
     ui->cb_Dir->addItem("多");
     ui->cb_Dir->addItem("空");
@@ -17,8 +17,11 @@ CreateDlg::CreateDlg(QWidget *parent) :
     ui->cb_strg->addItems({"DT_IntraDayCommonStrategy","TurtleUseCloseStrategy","JDualThrust_IntraDayStrategy"});
     ui->cb_exch->addItems({"SHFE","DCE","CZCE","CFFEX","INE"});
     connect(this, SIGNAL(LogOrder(QString)), this, SLOT(onTrade(QString) ));
-    connect(&trade,SIGNAL(sendWT(QString)),this,SLOT(ReceiveWT(QString)));
 
+    //if (tdthread->td)
+    connect(tdthread->td,SIGNAL(QTd::sendWT(QString)),this,SLOT(CreateDlg::ReceiveWT(QString)),Qt::QueuedConnection);
+    timer = new QTimer(this);
+    connect(timer, SIGNAL(timeout()), this, SLOT(querywork()),Qt::QueuedConnection);
     ui->HqTable->setColumnCount(11);
     QStringList headerHQ;
     headerHQ.append(QString::fromLocal8Bit("合约代码"));
@@ -66,11 +69,28 @@ CreateDlg::CreateDlg(QWidget *parent) :
     ui->WtTable->setSelectionBehavior(QAbstractItemView::SelectRows);
     //禁止编辑
     ui->WtTable->setEditTriggers(QAbstractItemView::NoEditTriggers);
+    tdthread=new TdThread(this);
+    tdthread->start();
+    timer->start(1000);
 
 }
 CreateDlg::~CreateDlg()
 {
     delete ui;
+}
+void CreateDlg::querywork()
+{
+    //qDebug() << "timer exec query work!";
+    if (tdthread->td)
+    {
+        //qDebug() << "td is inited!";
+        if(tdthread->td->HasWork())
+        {
+            qDebug() << "before do the work" ;
+            tdthread->td->FwdOrdResp();
+            qDebug() << "After do the work111" ;
+        }
+    }
 }
 void CreateDlg::ClearInput()
 {
@@ -137,34 +157,15 @@ void CreateDlg::on_pb_order_clicked()
     {
         std::cout << "start insert!" << std::endl;
         std::cout << offset.toStdString() << std::endl;
-        trade.orderinsert(symbol.toStdString() ,dir.toStdString() ,offset.toStdString() ,exc.toStdString() ,prc.toDouble(),qty.toInt(),reqidstr.toInt());
-        std::this_thread::sleep_for(std::chrono::seconds(5));
-        //want to trigger signal within OnRtnTrade event of trade
-        // However, did not find a easy way to work it out without inheriate from QObject.
-        //temporary solution is insert log 5 seconds later.
-        int countdown = 0,maxcountdown = 300;
-        bool isbreak = false;
-        while(!trade.is_goodorder())
-        {
-
-            std::this_thread::sleep_for(std::chrono::seconds(1));
-            ++countdown;
-            if (countdown > maxcountdown)
-            {
-                isbreak = true;
-                std::cout << insertsql.toStdString() << std::endl;
-                break;
-            }
-        }
-        if (!isbreak)
-            emit LogOrder(insertsql);
+        tdthread->td->orderinsert(symbol.toStdString() ,dir.toStdString() ,offset.toStdString() ,exc.toStdString() ,prc.toDouble(),qty.toInt(),reqidstr.toInt());
+        std::this_thread::sleep_for(std::chrono::seconds(2));
 
     }
     else
     {
         // connect , login and so on
         ui->te_log->setText("not connected, reconnect!");
-        trade.connectCtp();
+        tdthread->td->connectCtp();
 
     }
 
@@ -175,8 +176,9 @@ void CreateDlg::on_pb_reset_clicked()
     ClearInput();
 }
 
-void CreateDlg::ReceiveWT(QString WTData )
+void CreateDlg::ReceiveWT(QString WTData)
 {
+     qDebug() << "Receiving!" ;
      QStringList strlist = WTData.split(",");
      if (strlist.at(8)=="")return;
 
@@ -238,25 +240,26 @@ void CreateDlg::ReceiveWT(QString WTData )
      ui->WtTable->setItem(row,7,new QTableWidgetItem(strlist.at(8)));
      ui->WtTable->setItem(row,8,new QTableWidgetItem(strlist.at(9)));
 
+     qDebug() << "After Receiving" ;
+
 }
 
 
 void CreateDlg::ConnActs()
 {
-    trade.connectCtp();
-    std::this_thread::sleep_for(std::chrono::seconds(3));
-    cnstatus = trade.is_connected();
+
+    cnstatus = tdthread->td->is_connected();
     if (!cnstatus)
     {
-        trade.connectCtp();
+        tdthread->td->connectCtp();
         std::this_thread::sleep_for(std::chrono::seconds(3));
     }
     if(cnstatus)
     {
         //init activities
-        trade.settlementinfoConfirm();
+        tdthread->td->settlementinfoConfirm();
         std::this_thread::sleep_for(std::chrono::seconds(2));
-        trade.qryInstrument();
+        tdthread->td->qryInstrument();
         std::this_thread::sleep_for(std::chrono::seconds(2));
         ui->te_log->setText("CTP Ready!");
     }
