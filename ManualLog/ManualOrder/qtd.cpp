@@ -5,10 +5,17 @@ QTd::QTd(QObject *parent,const std::string &path) : QObject(parent), TradeWrappe
 
 }
 
+void QTd::testsig()
+{
+    qDebug() << "aBefore get order return!" ;
+    emit sendWT(QString("test sig,a,b,c,d,e,f,g,h,i"));
+    qDebug() << "bBefore get order return!" ;
+}
 CThostFtdcOrderField* QTd::FwdOrdResp()
 {
     qDebug() << "Before get order return!" ;
     CThostFtdcOrderField* pOrder =  GetOrderRet();
+    return pOrder;
     //报单状态处理
     QString zt;
     if (pOrder->OrderStatus=THOST_FTDC_OST_AllTraded)
@@ -47,13 +54,14 @@ CThostFtdcOrderField* QTd::FwdOrdResp()
 
       emit sendWT(WTData);
       qDebug() << "emit signals";
+
 }
 
 bool QTd::HasWork()
 {
     bool haswork = 0;
 
-    if (HasOrderRet() == 1)
+    if (HasOrderRet())
         haswork = 1;
     return haswork;
 

@@ -28,6 +28,8 @@ public:
 
 signals:
     void LogOrder(QString insertsql);
+
+    void uisendWT(QString);
 public slots:
     void onTrade(QString insertsql);
     void querywork();
@@ -40,6 +42,7 @@ private slots:
 private:
     void ClearInput();
     void ConnActs();
+    void ParseWT(CThostFtdcOrderField* pOrder);
     Ui::CreateDlg *ui;
     SqlHelper dbhelper;
     QMd mktdata;

@@ -19,9 +19,11 @@ CreateDlg::CreateDlg(QWidget *parent) :
     connect(this, SIGNAL(LogOrder(QString)), this, SLOT(onTrade(QString) ));
 
     //if (tdthread->td)
-    connect(tdthread->td,SIGNAL(QTd::sendWT(QString)),this,SLOT(CreateDlg::ReceiveWT(QString)),Qt::QueuedConnection);
+    bool t1 = connect(this,&CreateDlg::uisendWT,this,&CreateDlg::ReceiveWT,Qt::QueuedConnection);
+    qDebug() << t1;
     timer = new QTimer(this);
     connect(timer, SIGNAL(timeout()), this, SLOT(querywork()),Qt::QueuedConnection);
+
     ui->HqTable->setColumnCount(11);
     QStringList headerHQ;
     headerHQ.append(QString::fromLocal8Bit("合约代码"));
@@ -80,15 +82,21 @@ CreateDlg::~CreateDlg()
 }
 void CreateDlg::querywork()
 {
+    static int pno =0;
+    pno++;
     //qDebug() << "timer exec query work!";
     if (tdthread->td)
     {
-        //qDebug() << "td is inited!";
+        if (pno%1000==0)
+            qDebug() << "td is inited!";
+        //qDebug() << tdthread->td->HasWork();
         if(tdthread->td->HasWork())
         {
             qDebug() << "before do the work" ;
-            tdthread->td->FwdOrdResp();
+            CThostFtdcOrderField* tord = tdthread->td->FwdOrdResp();
+            ParseWT(tord);
             qDebug() << "After do the work111" ;
+            qDebug() << QString(tord->UserID);
         }
     }
 }
@@ -176,8 +184,54 @@ void CreateDlg::on_pb_reset_clicked()
     ClearInput();
 }
 
+void CreateDlg::ParseWT(CThostFtdcOrderField* pOrder)
+{
+    qDebug() << "Before get order return!" ;
+
+    //报单状态处理
+    QString zt;
+    if (pOrder->OrderStatus=THOST_FTDC_OST_AllTraded)
+    {
+        zt=QString::fromLocal8Bit("全部成交");
+    }else if(THOST_FTDC_OST_PartTradedQueueing)
+    {
+        zt=QString::fromLocal8Bit("部分成交");
+    }
+    else if (pOrder->OrderStatus=THOST_FTDC_OST_PartTradedNotQueueing)
+    {
+        zt=QString::fromLocal8Bit("部分成交");
+    }
+    else if (pOrder->OrderStatus=THOST_FTDC_OST_NoTradeQueueing)
+    {
+        zt=QString::fromLocal8Bit("未成交");
+    }
+    else if (pOrder->OrderStatus=THOST_FTDC_OST_Canceled)
+    {
+        zt=QString::fromLocal8Bit("已撤单");
+    }
+
+
+      QString wttime = pOrder->InsertTime; //委托时间
+      QString dm = pOrder->InstrumentID; //委托代码
+      QString bs = QChar::fromLatin1(pOrder->Direction); //买卖方向
+      QString kp=pOrder->CombOffsetFlag; //开平标志
+      QString lots = QString::number(pOrder->VolumeTotalOriginal); //数量
+      QString price = QString::number(pOrder->LimitPrice); //价格
+      //QString zt=pOrder->OrderStatus; //报单状态
+      QString wth = pOrder->OrderSysID; //委托号
+      QString jsy=pOrder->ExchangeID; //交易所
+
+      QString WTData=wttime+","+dm+","+bs+","+kp+","+lots+","+lots+","+price+","+zt+","+wth+","+jsy;
+      qDebug() << WTData;
+
+      emit uisendWT(WTData);
+      qDebug() << "emit signals";
+
+}
+
 void CreateDlg::ReceiveWT(QString WTData)
 {
+
      qDebug() << "Receiving!" ;
      QStringList strlist = WTData.split(",");
      if (strlist.at(8)=="")return;

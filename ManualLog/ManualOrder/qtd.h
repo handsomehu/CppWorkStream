@@ -12,6 +12,7 @@ public:
     QTd(QObject *parent, const std::string &path);
     CThostFtdcOrderField* FwdOrdResp();
     bool HasWork();
+    void testsig();
 
 signals:
     void sendWT(QString);

@@ -17,6 +17,7 @@ void TdThread::run()
 
     //std::this_thread::sleep_for(std::chrono::seconds(2));
     td->qryInstrument();
+    //exec();
 
 //    while(true)
 //    {
@@ -31,10 +32,5 @@ void TdThread::run()
 
 void TdThread::dowork()
 {
-    while(td->HasWork())
-    {
-        qDebug() << "before do the work" ;
-        td->FwdOrdResp();
-        qDebug() << "After do the work" ;
-    }
+
 }
