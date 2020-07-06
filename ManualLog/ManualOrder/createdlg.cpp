@@ -5,10 +5,11 @@ CreateDlg::CreateDlg(QWidget *parent) :
     QDialog(parent),
     ui(new Ui::CreateDlg)
     , dbhelper("/home/leon/sqllitedb/tradelog_vnpy.db")
-    ,mktdata("")
+    //,mktdata("")
     , cnstatus(true)
 {
     tdthread = new TdThread(this);
+    mdthread = new MdThread(this);
     ui->setupUi(this);
     ui->cb_Dir->addItem("多");
     ui->cb_Dir->addItem("空");
@@ -23,7 +24,8 @@ CreateDlg::CreateDlg(QWidget *parent) :
     qDebug() << t1;
     timer = new QTimer(this);
     connect(timer, SIGNAL(timeout()), this, SLOT(querywork()),Qt::QueuedConnection);
-
+    connect(mdthread->md,&QMd::sendData,this,&CreateDlg::ReceiveHQ);
+    connect(mdthread->md,&QMd::sendData,this,&CreateDlg::ReceiveAutoHQ);
     ui->HqTable->setColumnCount(11);
     QStringList headerHQ;
     headerHQ.append(QString::fromLocal8Bit("合约代码"));
@@ -71,11 +73,58 @@ CreateDlg::CreateDlg(QWidget *parent) :
     ui->WtTable->setSelectionBehavior(QAbstractItemView::SelectRows);
     //禁止编辑
     ui->WtTable->setEditTriggers(QAbstractItemView::NoEditTriggers);
-    tdthread=new TdThread(this);
+    //tdthread=new TdThread(this);
     tdthread->start();
     timer->start(1000);
+    mdthread->start();
 
 }
+void CreateDlg::ReceiveHQ(QString TICK)
+{
+    QStringList  strlist =TICK.split(",");	   //接收StringList数据
+    qDebug() << "Receive Hq!";
+    qDebug() << TICK;
+  //循环传入的数据
+  for (int i=0;i<ui->HqTable->rowCount();i++)   //以 HQTable数量为边界
+  {
+      if (ui->HqTable->item(i,0)->text()==strlist.at(0))
+      {
+          ui->HqTable->setItem(i,0,new QTableWidgetItem(strlist.at(0)));	  //更新数据
+          ui->HqTable->setItem(i,1,new QTableWidgetItem(strlist.at(1)));	  //更新数据
+          ui->HqTable->setItem(i,2,new QTableWidgetItem(strlist.at(2)));	  //更新数据
+          ui->HqTable->setItem(i,3,new QTableWidgetItem(strlist.at(3)));	  //更新数据
+          ui->HqTable->setItem(i,4,new QTableWidgetItem(strlist.at(4)));	  //更新数据
+          ui->HqTable->setItem(i,0,new QTableWidgetItem(strlist.at(0)));	  //更新数据
+          ui->HqTable->setItem(i,6,new QTableWidgetItem(strlist.at(6)));	  //更新数据
+          ui->HqTable->setItem(i,7,new QTableWidgetItem(strlist.at(7)));	  //更新数据
+          ui->HqTable->setItem(i,8,new QTableWidgetItem(strlist.at(8)));	  //更新数据
+          ui->HqTable->setItem(i,9,new QTableWidgetItem(strlist.at(9)));	  //更新数据
+          ui->HqTable->setItem(i,10,new QTableWidgetItem(strlist.at(10)));	  //更新数据
+
+          return;
+      }
+
+  }
+  int row = ui->HqTable->rowCount();
+  ui->HqTable->insertRow(row);
+  ui->HqTable->setItem(row,0,new QTableWidgetItem(strlist.at(0)));
+  ui->HqTable->setItem(row,1,new QTableWidgetItem(strlist.at(1)));
+  ui->HqTable->setItem(row,2,new QTableWidgetItem(strlist.at(2)));
+  ui->HqTable->setItem(row,3,new QTableWidgetItem(strlist.at(3)));
+  ui->HqTable->setItem(row,6,new QTableWidgetItem(strlist.at(4)));
+  ui->HqTable->setItem(row,5,new QTableWidgetItem(strlist.at(5)));
+  ui->HqTable->setItem(row,4,new QTableWidgetItem(strlist.at(6)));
+  ui->HqTable->setItem(row,7,new QTableWidgetItem(strlist.at(7)));
+  ui->HqTable->setItem(row,8,new QTableWidgetItem(strlist.at(8)));
+  ui->HqTable->setItem(row,9,new QTableWidgetItem(strlist.at(9)));
+  ui->HqTable->setItem(row,10,new QTableWidgetItem(strlist.at(10)));
+
+}
+
+void CreateDlg::ReceiveAutoHQ(QString TICK)
+{
+}
+
 CreateDlg::~CreateDlg()
 {
     delete ui;
@@ -104,12 +153,6 @@ void CreateDlg::ClearInput()
 {
     ui->le_symbol->clear();
     ui->le_price->clear();
-    ui->te_log->clear();
-    ui->te_rmk1->clear();
-    ui->te_rmk2->clear();
-    ui->te_log->clear();
-    ui->le_qty->clear();
-    ui->le_reqid->clear();
 
 }
 void CreateDlg::onTrade(QString insertsql)
@@ -144,8 +187,6 @@ void CreateDlg::on_pb_order_clicked()
         dt = dt.addDays(1);
     dtstr = dt.toString(Qt::ISODate);
 
-    rmk1 = ui->te_rmk1->toPlainText();
-    rmk2 = ui->te_rmk2->toPlainText();
     strname = ui->cb_strg->currentText();
     qty = ui->le_qty->text();
     dir = ui->cb_Dir->currentText();
@@ -153,7 +194,6 @@ void CreateDlg::on_pb_order_clicked()
     prc = ui->le_price->text();
     symbol = ui->le_symbol->text();
     exc = ui->cb_exch->currentText();
-    reqidstr = ui->le_reqid->text();
 
     insertsql = "INSERT INTO tradeorders";
     insertsql+= "(remark2,remark1,ordertime,strategyname,";
@@ -187,6 +227,7 @@ void CreateDlg::on_pb_reset_clicked()
 void CreateDlg::ParseWT(CThostFtdcOrderField* pOrder)
 {
     qDebug() << "Before get order return!" ;
+    qDebug() << QString(pOrder->OrderStatus) ;
 
     //报单状态处理
     QString zt;
@@ -233,6 +274,7 @@ void CreateDlg::ReceiveWT(QString WTData)
 {
 
      qDebug() << "Receiving!" ;
+
      QStringList strlist = WTData.split(",");
      if (strlist.at(8)=="")return;
 

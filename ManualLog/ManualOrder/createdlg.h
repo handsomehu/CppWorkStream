@@ -12,6 +12,7 @@
 #include "qmd.h"
 #include "qtd.h"
 #include "tdthread.h"
+#include "mdthread.h"
 
 namespace Ui {
 class CreateDlg;
@@ -23,6 +24,7 @@ class CreateDlg : public QDialog
 
 public:
     TdThread *tdthread;
+    MdThread *mdthread;
     explicit CreateDlg(QWidget *parent = nullptr);
     ~CreateDlg();
 
@@ -34,6 +36,8 @@ public slots:
     void onTrade(QString insertsql);
     void querywork();
     void ReceiveWT(QString WTData);
+    void ReceiveHQ(QString);
+    void ReceiveAutoHQ(QString);
 private slots:
     void on_pb_order_clicked();
     void on_pb_reset_clicked();
@@ -45,7 +49,7 @@ private:
     void ParseWT(CThostFtdcOrderField* pOrder);
     Ui::CreateDlg *ui;
     SqlHelper dbhelper;
-    QMd mktdata;
+    //QMd mktdata;
     bool cnstatus;
     QTimer *timer;
 };

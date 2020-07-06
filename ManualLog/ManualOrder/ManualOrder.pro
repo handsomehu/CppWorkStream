@@ -18,6 +18,7 @@ DEFINES += QT_DEPRECATED_WARNINGS
 SOURCES += \
     createdlg.cpp \
     main.cpp \
+    mdthread.cpp \
     mdwrapper.cpp \
     orderform.cpp \
     qmd.cpp \
@@ -34,6 +35,7 @@ HEADERS += \
     libhead/ThostFtdcUserApiDataType.h \
     libhead/ThostFtdcUserApiStruct.h \
     libhead/json.hpp \
+    mdthread.h \
     mdwrapper.h \
     orderform.h \
     qmd.h \
@@ -63,6 +65,13 @@ DISTFILES += \
 win32:CONFIG(release, debug|release): LIBS += -L$$PWD/libfiles/release/ -lthosttraderapi_se
 else:win32:CONFIG(debug, debug|release): LIBS += -L$$PWD/libfiles/debug/ -lthosttraderapi_se
 else:unix: LIBS += -L$$PWD/libfiles/ -lthosttraderapi_se
+
+INCLUDEPATH += $$PWD/libfiles
+DEPENDPATH += $$PWD/libfiles
+
+win32:CONFIG(release, debug|release): LIBS += -L$$PWD/libfiles/release/ -lthostmduserapi_se
+else:win32:CONFIG(debug, debug|release): LIBS += -L$$PWD/libfiles/debug/ -lthostmduserapi_se
+else:unix: LIBS += -L$$PWD/libfiles/ -lthostmduserapi_se
 
 INCLUDEPATH += $$PWD/libfiles
 DEPENDPATH += $$PWD/libfiles
