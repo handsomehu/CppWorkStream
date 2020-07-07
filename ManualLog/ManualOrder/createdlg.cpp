@@ -82,8 +82,8 @@ CreateDlg::CreateDlg(QWidget *parent) :
 void CreateDlg::ReceiveHQ(QString TICK)
 {
     QStringList  strlist =TICK.split(",");	   //接收StringList数据
-    qDebug() << "Receive Hq!";
-    qDebug() << TICK;
+    //qDebug() << "Receive Hq!";
+    //qDebug() << TICK;
   //循环传入的数据
   for (int i=0;i<ui->HqTable->rowCount();i++)   //以 HQTable数量为边界
   {
@@ -145,7 +145,7 @@ void CreateDlg::querywork()
             CThostFtdcOrderField* tord = tdthread->td->FwdOrdResp();
             ParseWT(tord);
             qDebug() << "After do the work111" ;
-            qDebug() << QString(tord->UserID);
+            //qDebug() << QString(tord->UserID);
         }
     }
 }
@@ -231,22 +231,22 @@ void CreateDlg::ParseWT(CThostFtdcOrderField* pOrder)
 
     //报单状态处理
     QString zt;
-    if (pOrder->OrderStatus=THOST_FTDC_OST_AllTraded)
+    if (pOrder->OrderStatus==THOST_FTDC_OST_AllTraded)
     {
         zt=QString::fromLocal8Bit("全部成交");
-    }else if(THOST_FTDC_OST_PartTradedQueueing)
+    }else if(pOrder->OrderStatus==THOST_FTDC_OST_PartTradedQueueing)
     {
         zt=QString::fromLocal8Bit("部分成交");
     }
-    else if (pOrder->OrderStatus=THOST_FTDC_OST_PartTradedNotQueueing)
+    else if (pOrder->OrderStatus==THOST_FTDC_OST_PartTradedNotQueueing)
     {
         zt=QString::fromLocal8Bit("部分成交");
     }
-    else if (pOrder->OrderStatus=THOST_FTDC_OST_NoTradeQueueing)
+    else if (pOrder->OrderStatus==THOST_FTDC_OST_NoTradeQueueing)
     {
         zt=QString::fromLocal8Bit("未成交");
     }
-    else if (pOrder->OrderStatus=THOST_FTDC_OST_Canceled)
+    else if (pOrder->OrderStatus==THOST_FTDC_OST_Canceled)
     {
         zt=QString::fromLocal8Bit("已撤单");
     }
@@ -262,8 +262,8 @@ void CreateDlg::ParseWT(CThostFtdcOrderField* pOrder)
       QString wth = pOrder->OrderSysID; //委托号
       QString jsy=pOrder->ExchangeID; //交易所
 
-      QString WTData=wttime+","+dm+","+bs+","+kp+","+lots+","+lots+","+price+","+zt+","+wth+","+jsy;
-      qDebug() << WTData;
+      QString WTData=wttime+","+dm+","+bs+","+kp+","+lots+","+price+","+zt+","+wth+","+jsy;
+      //qDebug() << WTData;
 
       emit uisendWT(WTData);
       qDebug() << "emit signals";
@@ -274,8 +274,10 @@ void CreateDlg::ReceiveWT(QString WTData)
 {
 
      qDebug() << "Receiving!" ;
+     qDebug() << WTData;
 
      QStringList strlist = WTData.split(",");
+     qDebug() << strlist;
      if (strlist.at(8)=="")return;
 
      QString buysell="";
@@ -313,10 +315,10 @@ void CreateDlg::ReceiveWT(QString WTData)
              ui->WtTable->setItem(i,2,new QTableWidgetItem(buysell));	  //更新数据
              ui->WtTable->setItem(i,3,new QTableWidgetItem(openclose));	  //更新数据
              ui->WtTable->setItem(i,4,new QTableWidgetItem(strlist.at(4)));	  //更新数据
-             ui->WtTable->setItem(i,5,new QTableWidgetItem(strlist.at(6)));	  //更新数据
-             ui->WtTable->setItem(i,6,new QTableWidgetItem(strlist.at(7)));	  //更新数据
-             ui->WtTable->setItem(i,7,new QTableWidgetItem(strlist.at(8)));	  //更新数据
-             ui->WtTable->setItem(i,8,new QTableWidgetItem(strlist.at(9)));	  //更新数据
+             ui->WtTable->setItem(i,5,new QTableWidgetItem(strlist.at(5)));	  //更新数据
+             ui->WtTable->setItem(i,6,new QTableWidgetItem(strlist.at(6)));	  //更新数据
+             ui->WtTable->setItem(i,7,new QTableWidgetItem(strlist.at(7)));	  //更新数据
+             ui->WtTable->setItem(i,8,new QTableWidgetItem(strlist.at(8)));	  //更新数据
 
              return;
          }
@@ -331,10 +333,10 @@ void CreateDlg::ReceiveWT(QString WTData)
      ui->WtTable->setItem(row,2,new QTableWidgetItem(buysell));
      ui->WtTable->setItem(row,3,new QTableWidgetItem(openclose));
      ui->WtTable->setItem(row,4,new QTableWidgetItem(strlist.at(4)));
-     ui->WtTable->setItem(row,5,new QTableWidgetItem(strlist.at(6)));
-     ui->WtTable->setItem(row,6,new QTableWidgetItem(strlist.at(7)));
-     ui->WtTable->setItem(row,7,new QTableWidgetItem(strlist.at(8)));
-     ui->WtTable->setItem(row,8,new QTableWidgetItem(strlist.at(9)));
+     ui->WtTable->setItem(row,5,new QTableWidgetItem(strlist.at(5)));
+     ui->WtTable->setItem(row,6,new QTableWidgetItem(strlist.at(6)));
+     ui->WtTable->setItem(row,7,new QTableWidgetItem(strlist.at(7)));
+     ui->WtTable->setItem(row,8,new QTableWidgetItem(strlist.at(8)));
 
      qDebug() << "After Receiving" ;
 
@@ -365,4 +367,36 @@ void CreateDlg::ConnActs()
 void CreateDlg::on_pb_ctp_clicked()
 {
     ConnActs();
+}
+
+void CreateDlg::on_pb_db_clicked()
+{
+    QString insertsql,rmk1,rmk2,otimestr,strname,qty;
+    QString dir,offset,prc,symbol,exc,dtstr,reqidstr;
+    QDate dt = QDate::currentDate();
+    QTime tm = QTime::currentTime();
+    otimestr = dt.toString(Qt::ISODate) +" ";
+    otimestr = otimestr + tm.toString(Qt::ISODate);
+    if (tm.hour() > 15)
+        dt = dt.addDays(1);
+    dtstr = dt.toString(Qt::ISODate);
+
+    strname = ui->cb_strg->currentText();
+    qty = ui->le_qty->text();
+    dir = ui->cb_Dir->currentText();
+    offset = ui->cb_offset->currentText();
+    prc = ui->le_price->text();
+    symbol = ui->le_symbol->text();
+    exc = ui->cb_exch->currentText();
+    rmk1 = "";
+    rmk2 = "";
+    insertsql = "INSERT INTO tradeorders";
+    insertsql+= "(remark2,remark1,ordertime,strategyname,";
+    insertsql+= "orderqty,orderdirection,orderoffset,";
+    insertsql+= "entryprice,contract,exchangeid,orderdate)";
+    insertsql+= "values ('"+rmk1+"','"+rmk2+"','"+otimestr+"','"+strname+"','"+qty;
+    insertsql+= "','"+dir+"','"+offset+"','"+prc+"','"+symbol+"','"+exc+"','"+dtstr+"')";
+    emit LogOrder(insertsql);
+
+
 }

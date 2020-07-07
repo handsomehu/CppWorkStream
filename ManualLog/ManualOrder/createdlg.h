@@ -43,6 +43,8 @@ private slots:
     void on_pb_reset_clicked();
     void on_pb_ctp_clicked();
 
+    void on_pb_db_clicked();
+
 private:
     void ClearInput();
     void ConnActs();

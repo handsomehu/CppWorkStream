@@ -104,7 +104,7 @@ void QMd::OnRspUserLogin(CThostFtdcRspUserLoginField *pRspUserLogin,
         ///获取当前交易日
         cerr << "--->>> 获取当前交易日 = " << m_pmdapi->GetTradingDay() << endl;
         // 请求订阅行情
-        SubscribeMarketData();
+        //SubscribeMarketData();
         SubscribeMarketData(dm);  //
     }
 }
@@ -138,17 +138,20 @@ void QMd::SubscribeMarketData(QString dm)
 
 void QMd::OnRspSubMarketData(CThostFtdcSpecificInstrumentField *pSpecificInstrument, CThostFtdcRspInfoField *pRspInfo, int nRequestID, bool bIsLast)
 {
+    qDebug() << "on response sub mkt data!";
     cerr << __FUNCTION__ << endl;
 }
 
 void QMd::OnRspUnSubMarketData(CThostFtdcSpecificInstrumentField *pSpecificInstrument, CThostFtdcRspInfoField *pRspInfo, int nRequestID, bool bIsLast)
 {
+        qDebug() << "on response unsub mkt data!";
     cerr << __FUNCTION__ << endl;
 }
 //返回合约代码具体信息
 void QMd::OnRtnDepthMarketData(CThostFtdcDepthMarketDataField *pDepthMarketData)
 {
     //cerr << __FUNCTION__ << endl;
+    //qDebug() << "on return mkt data!";
     QString dm = pDepthMarketData->InstrumentID;   //
     QString updatetime = pDepthMarketData->UpdateTime;	  // 更新时间
     QString lastprice = QString::number(pDepthMarketData->LastPrice);	  //最新价
@@ -164,6 +167,7 @@ void QMd::OnRtnDepthMarketData(CThostFtdcDepthMarketDataField *pDepthMarketData)
     QString openprice=QString::number(pDepthMarketData->OpenPrice);	 //开盘价
 
     QString HQTick = dm+","+updatetime+","+lastprice+","+buyprice+","+buyvol+","+sellprice+","+sellvol+","+zf+","+vol+","+zt+","+dt+","+openprice;	 //使用信号传递数据
+    //qDebug() << HQTick;
     emit sendData(HQTick); //只是发送了数据，需要接收端接收数据 ，a,在ctp.h头文件定义接收方法 b, 通过SLOT连接
 }
 
@@ -178,8 +182,8 @@ bool QMd::IsErrorRspInfo(CThostFtdcRspInfoField *pRspInfo)
 
 void QMd::Init()
 {
-    char mdads[tdaddress.size()+1];
-    std::copy(tdaddress.begin(),tdaddress.end(),mdads);
+    char mdads[mdaddress.size()+1];
+    std::copy(mdaddress.begin(),mdaddress.end(),mdads);
     mdads[mdaddress.size()] = '\0';
     m_pmdapi = CThostFtdcMdApi::CreateFtdcMdApi();
     m_pmdapi->RegisterSpi(this);
