@@ -1,6 +1,9 @@
 #ifndef CREATEDLG_H
 #define CREATEDLG_H
 
+#include <QMessageBox>
+#include <QMenu>
+#include <QAction>
 #include <QDialog>
 #include <QDate>
 #include <QDateTime>
@@ -42,18 +45,20 @@ private slots:
     void on_pb_order_clicked();
     void on_pb_reset_clicked();
     void on_pb_ctp_clicked();
-
+    void cancelorder();
     void on_pb_db_clicked();
 
 private:
     void ClearInput();
     void ConnActs();
     void ParseWT(CThostFtdcOrderField* pOrder);
+
     Ui::CreateDlg *ui;
     SqlHelper dbhelper;
     //QMd mktdata;
     bool cnstatus;
     QTimer *timer;
+    QMenu *cancel_menu;
 };
 
 #endif // CREATEDLG_H

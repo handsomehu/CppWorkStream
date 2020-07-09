@@ -73,11 +73,31 @@ CreateDlg::CreateDlg(QWidget *parent) :
     ui->WtTable->setSelectionBehavior(QAbstractItemView::SelectRows);
     //禁止编辑
     ui->WtTable->setEditTriggers(QAbstractItemView::NoEditTriggers);
+
+    //set up right click
+    ui->WtTable->setContextMenuPolicy(Qt::CustomContextMenu);
+    cancel_menu = new QMenu(ui->WtTable);
+    QAction *action = new QAction("Cancel Order", this);
+    connect(action, SIGNAL(triggered()), this, SLOT(cancelorder));
+    cancel_menu->addAction(action);
+    cancel_menu->addAction(action);
+
+
+
     //tdthread=new TdThread(this);
     tdthread->start();
     timer->start(1000);
     mdthread->start();
 
+}
+void CreateDlg::cancelorder()
+{
+    QMessageBox::information(this,"",QString::fromLocal8Bit("已提交撤单"));
+    int i = ui->WtTable->currentIndex().row();
+    QString wth=ui->WtTable->item(i,7)->text(); //委托号
+    QString jsy=ui->WtTable->item(i,8)->text(); //交易所
+    tdthread->td->ReqCancelOrder(wth,jsy);
+    QMessageBox::information(this,"",QString::fromLocal8Bit("已提交撤单"));
 }
 void CreateDlg::ReceiveHQ(QString TICK)
 {
@@ -231,6 +251,10 @@ void CreateDlg::ParseWT(CThostFtdcOrderField* pOrder)
 
     //报单状态处理
     QString zt;
+    if (!pOrder)
+        return;
+    if (pOrder->OrderStatus == '\0')
+        return;
     if (pOrder->OrderStatus==THOST_FTDC_OST_AllTraded)
     {
         zt=QString::fromLocal8Bit("全部成交");
@@ -307,6 +331,7 @@ void CreateDlg::ReceiveWT(QString WTData)
      //循环传入的数据
      for (int i=0;i<ui->WtTable->rowCount();i++)   //以 WTTable数量为边界
      {
+         //the guy I refer use timestamp as key, should use order refer instead
          if (ui->WtTable->item(i,0)->text()==strlist.at(0))
          {
 

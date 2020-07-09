@@ -13,6 +13,7 @@ public:
     CThostFtdcOrderField* FwdOrdResp();
     bool HasWork();
     void testsig();
+    void ReqCancelOrder(QString wth, QString exchg);
 
 signals:
     void sendWT(QString);

@@ -66,3 +66,8 @@ bool QTd::HasWork()
     return haswork;
 
 }
+
+void QTd::ReqCancelOrder(QString wth, QString exchg)
+{
+
+}

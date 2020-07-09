@@ -62,6 +62,7 @@ private:
     bool goodorder;
     std::queue<CThostFtdcOrderField*> orderresp;
 
+
 };
 
 
