@@ -68,7 +68,7 @@ CreateDlg::CreateDlg(QWidget *parent) :
     //填充表格信息
     ui->WtTable->setHorizontalHeaderLabels(headerWT);
     //自动排列列的内容
-    ui->WtTable->horizontalHeader()->setSectionResizeMode(QHeaderView::Stretch);
+    //ui->WtTable->horizontalHeader()->setSectionResizeMode(QHeaderView::Stretch);
     //整行选中
     ui->WtTable->setSelectionBehavior(QAbstractItemView::SelectRows);
     //禁止编辑
@@ -77,11 +77,38 @@ CreateDlg::CreateDlg(QWidget *parent) :
     //set up right click
     ui->WtTable->setContextMenuPolicy(Qt::CustomContextMenu);
     cancel_menu = new QMenu(ui->WtTable);
-    QAction *action = new QAction("Cancel Order", this);
-    connect(action, SIGNAL(triggered()), this, SLOT(cancelorder));
-    cancel_menu->addAction(action);
-    cancel_menu->addAction(action);
+    //qact = new QAction("Cancel Order", this);
+    //cancel_menu->addAction(qact);
+    //connect(qact, SIGNAL(triggered(bool)), this, SLOT(cancelorder));
 
+    //cancel_menu->addAction(action);
+
+    //***************************成交表设置****************************************//
+    //设置成交表格行列数量,行11行,10列
+    ui->CjTable->setColumnCount(8);
+    //ui.CJTable->setRowCount(10);
+
+    QStringList headerCJ;
+    headerCJ.append(QString::fromLocal8Bit("成交时间"));
+    headerCJ.append(QString::fromLocal8Bit("合约代码"));
+    headerCJ.append(QString::fromLocal8Bit("买卖"));
+    headerCJ.append(QString::fromLocal8Bit("开平"));
+    headerCJ.append(QString::fromLocal8Bit("数量"));
+    headerCJ.append(QString::fromLocal8Bit("价格"));
+    headerCJ.append(QString::fromLocal8Bit("委托号"));
+    headerCJ.append(QString::fromLocal8Bit("交易所"));
+
+
+    //填充表格信息
+    ui->CjTable->setHorizontalHeaderLabels(headerCJ);
+    //自动排列列的内容
+    ui->CjTable->horizontalHeader()->setSectionResizeMode(QHeaderView::Stretch);
+    //整行选中
+    ui->CjTable->setSelectionBehavior(QAbstractItemView::SelectRows);
+    //禁止编辑
+    ui->CjTable->setEditTriggers(QAbstractItemView::NoEditTriggers);
+
+    connect(this, &CreateDlg::uisendCJ, this, &CreateDlg::ReceiveCJ);
 
 
     //tdthread=new TdThread(this);
@@ -90,6 +117,33 @@ CreateDlg::CreateDlg(QWidget *parent) :
     mdthread->start();
 
 }
+void CreateDlg::contextMenuEvent(QContextMenuEvent *event)
+{
+    qDebug() << "contextMenuEvent here";
+
+    QPoint point = event->pos(); //得到窗口坐标
+    QTableWidgetItem *item = ui->WtTable->itemAt(point);
+    if(item != NULL)
+    {
+        qDebug() << "row" << item->row(); //当前行
+
+        cancel_menu->clear(); //清除原有菜单
+        cancel_menu->addAction(qact);
+        cancel_menu->addSeparator();
+
+        //菜单出现的位置为当前鼠标的位置
+        cancel_menu->exec(QCursor::pos());
+        event->accept();
+    }
+
+}
+//void CreateDlg::on_Wt_MenuReq(QPoint pos)
+//{
+//    cancel_menu->addAction(qact);
+//    cancel_menu->exec(QCursor::pos());
+//    connect(qact, SIGNAL(triggered()), this, SLOT(cancelorder));
+//    //connect(action, SIGNAL(triggered()), this, SLOT(rightClickedOperation()));
+//}
 void CreateDlg::cancelorder()
 {
     QMessageBox::information(this,"",QString::fromLocal8Bit("已提交撤单"));
@@ -139,6 +193,53 @@ void CreateDlg::ReceiveHQ(QString TICK)
   ui->HqTable->setItem(row,9,new QTableWidgetItem(strlist.at(9)));
   ui->HqTable->setItem(row,10,new QTableWidgetItem(strlist.at(10)));
 
+
+
+
+}
+
+void CreateDlg::ReceiveCJ(QString CJData)
+{
+        qDebug() << "receive before";
+
+    QStringList strlist =CJData.split(",");
+    if (strlist.at(0) == "")
+        return;
+
+    QString buysell="";
+    QString openclose="";
+    if (strlist.at(2)=="0")
+    {
+        buysell=QString::fromLocal8Bit("买入");
+    }else
+    {
+        buysell=QString::fromLocal8Bit("卖出");
+    }
+    if (strlist.at(3)=="0")
+    {
+        openclose = QString::fromLocal8Bit("开仓");
+    }
+    else if(strlist.at(3)=="4")
+    {
+        openclose=QString::fromLocal8Bit("平昨");
+    }
+    else
+    {
+        openclose=QString::fromLocal8Bit("平今");
+    }
+    //0是开仓,3是平今，4是平昨
+    int row=ui->CjTable->rowCount();
+    ui->CjTable->insertRow(row);
+    ui->CjTable->setItem(row,0,new QTableWidgetItem(strlist.at(0)));
+    ui->CjTable->setItem(row,1,new QTableWidgetItem(strlist.at(1)));
+    ui->CjTable->setItem(row,2,new QTableWidgetItem(buysell));
+    ui->CjTable->setItem(row,3,new QTableWidgetItem(openclose));
+    ui->CjTable->setItem(row,4,new QTableWidgetItem(strlist.at(4)));
+    ui->CjTable->setItem(row,5,new QTableWidgetItem(strlist.at(5)));
+    ui->CjTable->setItem(row,6,new QTableWidgetItem(strlist.at(6)));
+    ui->CjTable->setItem(row,7,new QTableWidgetItem(strlist.at(7)));
+    qDebug() << "receive good";
+
 }
 
 void CreateDlg::ReceiveAutoHQ(QString TICK)
@@ -156,17 +257,24 @@ void CreateDlg::querywork()
     //qDebug() << "timer exec query work!";
     if (tdthread->td)
     {
-        if (pno%1000==0)
-            qDebug() << "td is inited!";
-        //qDebug() << tdthread->td->HasWork();
-        if(tdthread->td->HasWork())
+
+        if(tdthread->td->HasOrder())
         {
             qDebug() << "before do the work" ;
             CThostFtdcOrderField* tord = tdthread->td->FwdOrdResp();
             ParseWT(tord);
-            qDebug() << "After do the work111" ;
+            qDebug() << "After query order" ;
             //qDebug() << QString(tord->UserID);
         }
+        if(tdthread->td->HasTrade())
+        {
+            qDebug() << "before do the work" ;
+            CThostFtdcTradeField* ttrade = tdthread->td->FwdTraResp();
+            ParseCJ(ttrade);
+            qDebug() << "After query trade" ;
+            //qDebug() << QString(tord->UserID);
+        }
+
     }
 }
 void CreateDlg::ClearInput()
@@ -294,6 +402,21 @@ void CreateDlg::ParseWT(CThostFtdcOrderField* pOrder)
 
 }
 
+void CreateDlg::ParseCJ(CThostFtdcTradeField *pTrade)
+{
+    QString cjtime=pTrade->TradeTime;  //成交时间
+    QString dm = pTrade->InstrumentID; //合约代码
+    QString bs = QChar::fromLatin1(pTrade->Direction); //买卖方向
+    QString kp = QChar::fromLatin1(pTrade->OffsetFlag); //开平标志
+    QString lots = QString::number(pTrade->Volume); //合约数量
+    QString price = QString::number(pTrade->Price);	//价格
+    QString wth=pTrade->OrderSysID; //委托编号
+    QString jys = pTrade->ExchangeID; //交易所
+
+    QString CJData=cjtime+","+dm+","+bs+","+kp+","+lots+","+price+","+wth+","+jys;
+    emit uisendCJ(CJData);
+
+}
 void CreateDlg::ReceiveWT(QString WTData)
 {
 
@@ -422,6 +545,20 @@ void CreateDlg::on_pb_db_clicked()
     insertsql+= "values ('"+rmk1+"','"+rmk2+"','"+otimestr+"','"+strname+"','"+qty;
     insertsql+= "','"+dir+"','"+offset+"','"+prc+"','"+symbol+"','"+exc+"','"+dtstr+"')";
     emit LogOrder(insertsql);
+
+
+}
+
+void CreateDlg::on_WtTable_customContextMenuRequested(const QPoint &pos)
+{
+
+    int i = ui->WtTable->currentIndex().row();
+    if (i < 0)
+        return;
+    QString wth=ui->WtTable->item(i,7)->text(); //委托号
+    QString jsy=ui->WtTable->item(i,8)->text(); //交易所
+    tdthread->td->ReqCancelOrder(wth,jsy);
+    QMessageBox::information(this,"",QString::fromLocal8Bit("已提交撤单"));
 
 
 }

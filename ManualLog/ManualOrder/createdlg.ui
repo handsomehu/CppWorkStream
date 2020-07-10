@@ -290,11 +290,11 @@
     </rect>
    </property>
    <property name="currentIndex">
-    <number>0</number>
+    <number>1</number>
    </property>
    <widget class="QWidget" name="tab">
     <attribute name="title">
-     <string>Tab 1</string>
+     <string>Market Data</string>
     </attribute>
     <widget class="QTableWidget" name="HqTable">
      <property name="geometry">
@@ -318,7 +318,7 @@
    </widget>
    <widget class="QWidget" name="tab_2">
     <attribute name="title">
-     <string>Tab 2</string>
+     <string>OrderRetrun</string>
     </attribute>
     <widget class="QTableWidget" name="WtTable">
      <property name="geometry">
@@ -334,6 +334,21 @@
      </property>
      <property name="selectionMode">
       <enum>QAbstractItemView::SingleSelection</enum>
+     </property>
+    </widget>
+   </widget>
+   <widget class="QWidget" name="tab_3">
+    <attribute name="title">
+     <string>Transaction</string>
+    </attribute>
+    <widget class="QTableWidget" name="CjTable">
+     <property name="geometry">
+      <rect>
+       <x>0</x>
+       <y>0</y>
+       <width>861</width>
+       <height>541</height>
+      </rect>
      </property>
     </widget>
    </widget>

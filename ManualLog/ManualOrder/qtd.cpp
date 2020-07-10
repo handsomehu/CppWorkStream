@@ -57,7 +57,16 @@ CThostFtdcOrderField* QTd::FwdOrdResp()
 
 }
 
-bool QTd::HasWork()
+
+CThostFtdcTradeField* QTd::FwdTraResp()
+{
+    qDebug() << "Before get order return!" ;
+    CThostFtdcTradeField* pTrade =  GetTradeRet();
+    return pTrade;
+}
+
+
+bool QTd::HasOrder()
 {
     bool haswork = 0;
 
@@ -67,7 +76,21 @@ bool QTd::HasWork()
 
 }
 
+bool QTd::HasTrade()
+{
+    bool haswork = 0;
+
+    if (HasTradeRet())
+        haswork = 1;
+    return haswork;
+
+}
+
 void QTd::ReqCancelOrder(QString wth, QString exchg)
 {
+    std::string stdwt = wth.toStdString();
+    std::string stdexch = exchg.toStdString();
+    int iResult = CancelOrder(stdwt, stdexch);
+    qDebug() << "Cancel Order Return val:" << iResult;
 
 }

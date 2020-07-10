@@ -16,6 +16,7 @@
 #include "qtd.h"
 #include "tdthread.h"
 #include "mdthread.h"
+#include <QContextMenuEvent>
 
 namespace Ui {
 class CreateDlg;
@@ -35,30 +36,38 @@ signals:
     void LogOrder(QString insertsql);
 
     void uisendWT(QString);
+    void uisendCJ(QString);
 public slots:
     void onTrade(QString insertsql);
     void querywork();
     void ReceiveWT(QString WTData);
     void ReceiveHQ(QString);
+    void ReceiveCJ(QString);
     void ReceiveAutoHQ(QString);
+    void cancelorder();
+    void contextMenuEvent(QContextMenuEvent *event);
 private slots:
     void on_pb_order_clicked();
     void on_pb_reset_clicked();
     void on_pb_ctp_clicked();
-    void cancelorder();
+    //void on_Wt_MenuReq(QPoint pos);
     void on_pb_db_clicked();
+
+    void on_WtTable_customContextMenuRequested(const QPoint &pos);
 
 private:
     void ClearInput();
     void ConnActs();
     void ParseWT(CThostFtdcOrderField* pOrder);
-
+    void ParseCJ(CThostFtdcTradeField* pTrade);
     Ui::CreateDlg *ui;
     SqlHelper dbhelper;
     //QMd mktdata;
     bool cnstatus;
     QTimer *timer;
     QMenu *cancel_menu;
+    QAction *qact;
+    void actions();
 };
 
 #endif // CREATEDLG_H

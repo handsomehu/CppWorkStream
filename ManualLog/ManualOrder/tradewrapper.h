@@ -35,7 +35,10 @@ public:
     bool is_goodorder();
     void reset_goodorder();
     CThostFtdcOrderField* GetOrderRet();
+    CThostFtdcTradeField* GetTradeRet();
     bool HasOrderRet();
+    bool HasTradeRet();
+    int CancelOrder(std::string orderid, std::string exchangeid);
     //responsive method
     void OnFrontConnected();
     void OnFrontDisconnected(int nReason);
@@ -61,6 +64,8 @@ private:
     bool isconnected;
     bool goodorder;
     std::queue<CThostFtdcOrderField*> orderresp;
+    std::queue<CThostFtdcTradeField*> traderesp;
+    int iRequestTdID;
 
 
 };

@@ -9,7 +9,8 @@ TradeWrapper::TradeWrapper(const std::string &path):
   m_ptraderapi(nullptr),
   cfgpath(path), brokerid(""),mdaddress(""),tdaddress(""),
   userid(""), password(""), appid(""),authcode(""),
-  jfile(path),isconnected(false),goodorder(false),orderresp{}
+  jfile(path),isconnected(false),goodorder(false),orderresp{},
+  iRequestTdID{0}
 
 {
     nlohmann::json j;
@@ -37,6 +38,31 @@ TradeWrapper::TradeWrapper(const std::string &path):
 }
 void TradeWrapper::ReadUserData()
 {
+
+}
+int TradeWrapper::CancelOrder(std::string orderid, std::string exchangeid)
+{
+    CThostFtdcInputOrderActionField req;
+    memset(&req, 0, sizeof(req));
+
+    char bufstr[100];
+
+    std::copy(brokerid.begin(),brokerid.end(),bufstr);
+    bufstr[brokerid.size()] = '\0';
+    std::strcpy(req.BrokerID, bufstr);
+
+    std::copy(orderid.begin(),orderid.end(),bufstr);
+    bufstr[orderid.size()] = '\0';
+    std::strcpy(req.OrderSysID, bufstr);
+
+    std::copy(exchangeid.begin(),exchangeid.end(),bufstr);
+    bufstr[exchangeid.size()] = '\0';
+    std::strcpy(req.ExchangeID, bufstr);
+
+    ///操作标志
+    req.ActionFlag = THOST_FTDC_AF_Delete;
+    int iResult = m_ptraderapi->ReqOrderAction(&req, ++iRequestTdID);
+    return iResult;
 
 }
 void TradeWrapper::connectCtp()
@@ -69,6 +95,14 @@ void TradeWrapper::connectCtp()
 bool TradeWrapper::HasOrderRet()
 {
     if (orderresp.empty())
+        return false;
+    else
+        return true;
+}
+
+bool TradeWrapper::HasTradeRet()
+{
+    if (traderesp.empty())
         return false;
     else
         return true;
@@ -398,12 +432,23 @@ void TradeWrapper::OnRtnTrade(CThostFtdcTradeField *pTrade)
 {
 
     printf("OnRtnTrade\n");
-    std::cout << pTrade->InstrumentID << "\t" <<pTrade->Volume << pTrade->TradeType << std::endl;
-    goodorder = true;
+    std::cout << pTrade->InstrumentID << "\t"  << std::endl;
+    traderesp.push(pTrade);
 
 }
 
+CThostFtdcTradeField* TradeWrapper::GetTradeRet()
+{
 
+    if (!traderesp.empty())
+    {
+        CThostFtdcTradeField* rsp = traderesp.front();
+        traderesp.pop();
+        return rsp;
+    }
+    else
+        return nullptr;
+}
 
 //报单录入请求响应
 
