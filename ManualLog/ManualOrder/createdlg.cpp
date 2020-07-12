@@ -575,13 +575,24 @@ void CreateDlg::on_pb_db_clicked()
 void CreateDlg::on_WtTable_customContextMenuRequested(const QPoint &pos)
 {
 
-    int i = ui->WtTable->currentIndex().row();
-    if (i < 0)
-        return;
-    QString wth=ui->WtTable->item(i,7)->text(); //委托号
-    QString jsy=ui->WtTable->item(i,8)->text(); //交易所
-    tdthread->td->ReqCancelOrder(wth,jsy);
-    QMessageBox::information(this,"",QString::fromLocal8Bit("已提交撤单"));
+    QPoint globalPos = ui->WtTable->mapToGlobal(pos);
+    // for QAbstractScrollArea and derived classes you would use:
+    // QPoint globalPos = myWidget->viewport()->mapToGlobal(pos);
 
+    //QMenu myMenu;
+    cancel_menu->addAction("Cancel Order");
+    // ...
 
+    QAction* selectedItem = cancel_menu->exec(globalPos);
+    if (selectedItem)
+    {
+        int i = ui->WtTable->currentIndex().row();
+        if (i < 0)
+            return;
+        QString wth=ui->WtTable->item(i,7)->text(); //委托号
+        QString jsy=ui->WtTable->item(i,8)->text(); //交易所
+        tdthread->td->ReqCancelOrder(wth,jsy);
+        //QMessageBox::information(this,"",QString::fromLocal8Bit("已提交撤单"));
+
+    }
 }
