@@ -34,8 +34,8 @@ public:
     bool is_connected();
     bool is_goodorder();
     void reset_goodorder();
-    CThostFtdcOrderField* GetOrderRet();
-    CThostFtdcTradeField* GetTradeRet();
+    std::shared_ptr<CThostFtdcOrderField> GetOrderRet();
+    std::shared_ptr<CThostFtdcTradeField> GetTradeRet();
     bool HasOrderRet();
     bool HasTradeRet();
     int CancelOrder(std::string orderid, std::string exchangeid);
@@ -46,7 +46,7 @@ public:
     void OnRspSettlementInfoConfirm(CThostFtdcSettlementInfoConfirmField *pSettlementInfoConfirm, CThostFtdcRspInfoField *pRspInfo, int nRequestID, bool bIsLast);
     void OnRspQryInstrument(CThostFtdcInstrumentField *pInstrument, CThostFtdcRspInfoField *pRspInfo, int nRequestID, bool bIsLast);
     void OnRtnOrder(CThostFtdcOrderField *pOrder);
-    void OnRtnTrade(CThostFtdcTradeField *pTrade);
+    void OnRtnTrade(CThostFtdcTradeField* pTrade);
     void OnRspOrderInsert(CThostFtdcInputOrderField *pInputOrder, CThostFtdcRspInfoField *pRspInfo, int nRequestID, bool bIsLast);
     void OnRspError(CThostFtdcRspInfoField *pRspInfo, int nRequestID, bool bIsLast);
     void OnRtnTradingNotice(CThostFtdcTradingNoticeInfoField *pTradingNoticeInfo) ;
@@ -63,8 +63,8 @@ private:
     std::ifstream jfile;
     bool isconnected;
     bool goodorder;
-    std::queue<CThostFtdcOrderField*> orderresp;
-    std::queue<CThostFtdcTradeField*> traderesp;
+    std::queue<std::shared_ptr<CThostFtdcOrderField>> orderresp;
+    std::queue<std::shared_ptr<CThostFtdcTradeField>> traderesp;
     int iRequestTdID;
 
 

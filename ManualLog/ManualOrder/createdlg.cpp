@@ -20,10 +20,10 @@ CreateDlg::CreateDlg(QWidget *parent) :
     connect(this, SIGNAL(LogOrder(QString)), this, SLOT(onTrade(QString) ));
 
     //if (tdthread->td)
-    bool t1 = connect(this,&CreateDlg::uisendWT,this,&CreateDlg::ReceiveWT,Qt::QueuedConnection);
+    bool t1 = connect(this,&CreateDlg::uisendWT,this,&CreateDlg::ReceiveWT);
     qDebug() << t1;
     timer = new QTimer(this);
-    connect(timer, SIGNAL(timeout()), this, SLOT(querywork()),Qt::QueuedConnection);
+    connect(timer, SIGNAL(timeout()), this, SLOT(querywork()));
     connect(mdthread->md,&QMd::sendData,this,&CreateDlg::ReceiveHQ);
     connect(mdthread->md,&QMd::sendData,this,&CreateDlg::ReceiveAutoHQ);
     ui->HqTable->setColumnCount(11);
@@ -203,7 +203,7 @@ void CreateDlg::ReceiveCJ(QString CJData)
         qDebug() << "receive before";
 
     QStringList strlist =CJData.split(",");
-    if (strlist.at(0) == "")
+    if (strlist.at(1) == "")
         return;
 
     QString buysell="";
@@ -238,7 +238,7 @@ void CreateDlg::ReceiveCJ(QString CJData)
     ui->CjTable->setItem(row,5,new QTableWidgetItem(strlist.at(5)));
     ui->CjTable->setItem(row,6,new QTableWidgetItem(strlist.at(6)));
     ui->CjTable->setItem(row,7,new QTableWidgetItem(strlist.at(7)));
-    qDebug() << "receive good";
+    qDebug() << "receive good CJ";
 
 }
 
@@ -260,16 +260,16 @@ void CreateDlg::querywork()
 
         if(tdthread->td->HasOrder())
         {
-            qDebug() << "before do the work" ;
-            CThostFtdcOrderField* tord = tdthread->td->FwdOrdResp();
+            //qDebug() << "before do the work" ;
+            std::shared_ptr<CThostFtdcOrderField> tord = tdthread->td->FwdOrdResp();
             ParseWT(tord);
-            qDebug() << "After query order" ;
+            //qDebug() << "After query order" ;
             //qDebug() << QString(tord->UserID);
         }
         if(tdthread->td->HasTrade())
         {
-            qDebug() << "before do the work" ;
-            CThostFtdcTradeField* ttrade = tdthread->td->FwdTraResp();
+            qDebug() << "before query trade" ;
+            std::shared_ptr<CThostFtdcTradeField> ttrade = tdthread->td->FwdTraResp();
             ParseCJ(ttrade);
             qDebug() << "After query trade" ;
             //qDebug() << QString(tord->UserID);
@@ -279,6 +279,12 @@ void CreateDlg::querywork()
 }
 void CreateDlg::ClearInput()
 {
+    CThostFtdcTradeField a;
+    a.Volume = 123;
+    a.Price = 345;
+    CThostFtdcTradeField b{a};
+    qDebug() << "b data:" << QString::number(b.Volume);
+
     ui->le_symbol->clear();
     ui->le_price->clear();
 
@@ -350,9 +356,12 @@ void CreateDlg::on_pb_order_clicked()
 void CreateDlg::on_pb_reset_clicked()
 {
     ClearInput();
+    int imin = std::numeric_limits<int>::min(); // minimum value
+    int imax = std::numeric_limits<int>::max();
+    qDebug() << QString::number(imin) << "   " << QString::number(imax);
 }
 
-void CreateDlg::ParseWT(CThostFtdcOrderField* pOrder)
+void CreateDlg::ParseWT(std::shared_ptr<CThostFtdcOrderField> pOrder)
 {
     qDebug() << "Before get order return!" ;
     qDebug() << QString(pOrder->OrderStatus) ;
@@ -395,25 +404,39 @@ void CreateDlg::ParseWT(CThostFtdcOrderField* pOrder)
       QString jsy=pOrder->ExchangeID; //交易所
 
       QString WTData=wttime+","+dm+","+bs+","+kp+","+lots+","+price+","+zt+","+wth+","+jsy;
-      //qDebug() << WTData;
+      qDebug() << WTData;
 
       emit uisendWT(WTData);
       qDebug() << "emit signals";
 
 }
 
-void CreateDlg::ParseCJ(CThostFtdcTradeField *pTrade)
+void CreateDlg::ParseCJ(std::shared_ptr<CThostFtdcTradeField> pTrade)
 {
+    printf("dddvvv,%d\n", pTrade->Volume);
+    qDebug() << "parse CJ";
     QString cjtime=pTrade->TradeTime;  //成交时间
     QString dm = pTrade->InstrumentID; //合约代码
     QString bs = QChar::fromLatin1(pTrade->Direction); //买卖方向
     QString kp = QChar::fromLatin1(pTrade->OffsetFlag); //开平标志
+
+    int cno = 1;
+    if (pTrade)
+        qDebug() << "is not nullptr";
+
+    qDebug() << "ddd" << pTrade->Volume << " " << pTrade->Price ;
+    if (cno == pTrade->Volume)
+        qDebug() << "is 1";
+    else
+        qDebug() << "is not 1";
     QString lots = QString::number(pTrade->Volume); //合约数量
+    std::cout << "std price" << pTrade->Price <<"   " << pTrade->Volume << std::endl;
     QString price = QString::number(pTrade->Price);	//价格
     QString wth=pTrade->OrderSysID; //委托编号
     QString jys = pTrade->ExchangeID; //交易所
 
     QString CJData=cjtime+","+dm+","+bs+","+kp+","+lots+","+price+","+wth+","+jys;
+    qDebug() << CJData;
     emit uisendCJ(CJData);
 
 }
@@ -425,7 +448,7 @@ void CreateDlg::ReceiveWT(QString WTData)
 
      QStringList strlist = WTData.split(",");
      qDebug() << strlist;
-     if (strlist.at(8)=="")return;
+     if (strlist.at(7)=="")return;
 
      QString buysell="";
      QString openclose="";
@@ -455,7 +478,7 @@ void CreateDlg::ReceiveWT(QString WTData)
      for (int i=0;i<ui->WtTable->rowCount();i++)   //以 WTTable数量为边界
      {
          //the guy I refer use timestamp as key, should use order refer instead
-         if (ui->WtTable->item(i,0)->text()==strlist.at(0))
+         if (ui->WtTable->item(i,7)->text()==strlist.at(7))
          {
 
              ui->WtTable->setItem(i,0,new QTableWidgetItem(strlist.at(0)));	  //更新数据
@@ -486,7 +509,7 @@ void CreateDlg::ReceiveWT(QString WTData)
      ui->WtTable->setItem(row,7,new QTableWidgetItem(strlist.at(7)));
      ui->WtTable->setItem(row,8,new QTableWidgetItem(strlist.at(8)));
 
-     qDebug() << "After Receiving" ;
+     qDebug() << "After Receiving WT" ;
 
 }
 

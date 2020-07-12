@@ -407,17 +407,18 @@ void TradeWrapper::OnRtnOrder(CThostFtdcOrderField *pOrder)
 
     printf("OnRtnOrder\n");
     std::cout << pOrder->InstrumentID << "\t" << pOrder->OrderStatus << std::endl;
-    orderresp.push(pOrder);
+    std::shared_ptr<CThostFtdcOrderField> p = std::make_shared<CThostFtdcOrderField>(*pOrder);
+    orderresp.push(p);
 
 }
 
 
-CThostFtdcOrderField* TradeWrapper::GetOrderRet()
+std::shared_ptr<CThostFtdcOrderField> TradeWrapper::GetOrderRet()
 {
 
     if (!orderresp.empty())
     {
-        CThostFtdcOrderField* rsp = orderresp.front();
+        std::shared_ptr<CThostFtdcOrderField> rsp = orderresp.front();
         orderresp.pop();
         return rsp;
     }
@@ -432,17 +433,23 @@ void TradeWrapper::OnRtnTrade(CThostFtdcTradeField *pTrade)
 {
 
     printf("OnRtnTrade\n");
+    if (pTrade)
+    {printf("not null\n");printf("%s, %d\n",pTrade->InstrumentID,pTrade->Volume);}
+    else
+        printf("nullptr\n");
     std::cout << pTrade->InstrumentID << "\t"  << std::endl;
-    traderesp.push(pTrade);
+    std::cout << "trade no:" << pTrade->Volume << "\t"  << std::endl;
+    std::shared_ptr<CThostFtdcTradeField> p = std::make_shared<CThostFtdcTradeField>(*pTrade);
+    traderesp.push(p);
 
 }
 
-CThostFtdcTradeField* TradeWrapper::GetTradeRet()
+std::shared_ptr<CThostFtdcTradeField> TradeWrapper::GetTradeRet()
 {
 
     if (!traderesp.empty())
     {
-        CThostFtdcTradeField* rsp = traderesp.front();
+        std::shared_ptr<CThostFtdcTradeField> rsp = traderesp.front();
         traderesp.pop();
         return rsp;
     }

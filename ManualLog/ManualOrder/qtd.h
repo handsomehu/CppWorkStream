@@ -10,8 +10,8 @@ class QTd: public QObject , public TradeWrapper
     Q_OBJECT
 public:
     QTd(QObject *parent, const std::string &path);
-    CThostFtdcOrderField* FwdOrdResp();
-    CThostFtdcTradeField* FwdTraResp();
+    std::shared_ptr<CThostFtdcOrderField> FwdOrdResp();
+    std::shared_ptr<CThostFtdcTradeField> FwdTraResp();
     bool HasOrder();
     bool HasTrade();
     void testsig();

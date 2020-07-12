@@ -17,6 +17,7 @@
 #include "tdthread.h"
 #include "mdthread.h"
 #include <QContextMenuEvent>
+#include <limits>
 
 namespace Ui {
 class CreateDlg;
@@ -58,8 +59,8 @@ private slots:
 private:
     void ClearInput();
     void ConnActs();
-    void ParseWT(CThostFtdcOrderField* pOrder);
-    void ParseCJ(CThostFtdcTradeField* pTrade);
+    void ParseWT(std::shared_ptr<CThostFtdcOrderField> pOrder);
+    void ParseCJ(std::shared_ptr<CThostFtdcTradeField> pTrade);
     Ui::CreateDlg *ui;
     SqlHelper dbhelper;
     //QMd mktdata;

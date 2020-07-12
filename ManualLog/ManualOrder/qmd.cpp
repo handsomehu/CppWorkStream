@@ -17,7 +17,7 @@ QMd::QMd(QObject *parent,std::string path)
       cfgpath(path), brokerid(""),mdaddress(""),tdaddress(""),
       userid(""), password(""), appid(""),authcode(""),
       jfile(path),isconnected(false),goodorder(false),mktdata{},
-      dm{"IF2008"}
+      dm{"IF2008,rb2010"}
 
 {
     nlohmann::json j;
