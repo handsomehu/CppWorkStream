@@ -26,11 +26,12 @@ void inputtypes()
     cout << "Input a int:\n";
     cin >> oi;
     cout << "Input a double:\n";
-    cin >> od;
-    ws(cin);
+    cin >> od;    
     cout << "Input a string:\n";
+    ws(cin);
     getline( cin, ostr );
-
+    cout << "input new value for od:";
+    cin >> od;
     cout << ob << "\t" << oc << "\t" << oi << "\t" << od << "\n\r" ;
     cout << ostr << std::endl;
 }
