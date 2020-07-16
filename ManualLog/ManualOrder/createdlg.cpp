@@ -15,7 +15,10 @@ CreateDlg::CreateDlg(QWidget *parent) :
     ui->cb_Dir->addItem("空");
     ui->cb_offset->addItems({"开仓","平仓","平昨","平今"});
     //qDebug() << dbhelper. getMaxId();
-    ui->cb_strg->addItems({"DT_IntraDayCommonStrategy","TurtleUseCloseStrategy","JDualThrust_IntraDayStrategy"});
+    ui->cb_strg->addItems({"DT_IntraDayCommonStrategy","TurtleUseCloseStrategy","JDualThrust_IntraDayStrategy"
+                          ,"DT_IntraDayLongStrategy","DT_IntraDayShortStrategy","EmacSimpleLongStrategy",
+                          "EmacSimpleShortStrategy","KeltnerCommonStrategy","BreakoutCloseStrategy",
+                          "BreakoutAtrstopStrategy"});
     ui->cb_exch->addItems({"SHFE","DCE","CZCE","CFFEX","INE"});
     connect(this, SIGNAL(LogOrder(QString)), this, SLOT(onTrade(QString) ));
 
