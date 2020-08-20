@@ -12,14 +12,13 @@ class lzpersons
 {
 public:
     lzpersons();
-    readpersons();
-
+    std::vector<lzperson>& readpersons() const;
+    std::ostream& operator<<(std::ostream& os);
+    std::ostream& operator>>(std::ostream& os);
 private:
     std::vector<lzperson> psz;
 };
 
-std::ostream& operator<<(std::ostream& os, const lzpersons& p);
-{
-return os << "{\"" << e.name << "\", " << e.number << "}";
-}
+//std::ostream& operator<<(std::ostream& os, const lzpersons& p);
+
 #endif // LZPERSON_H
