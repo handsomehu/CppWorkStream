@@ -1,6 +1,7 @@
 #ifndef LZPERSON_H
 #define LZPERSON_H
 #include <iostream>
+#include <sstream>
 #include <vector>
 
 struct lzperson
@@ -12,13 +13,17 @@ class lzpersons
 {
 public:
     lzpersons();
-    std::vector<lzperson>& readpersons() const;
     std::ostream& operator<<(std::ostream& os);
-    std::ostream& operator>>(std::ostream& os);
+    std::istream& operator>>(std::istream& is);
+    lzperson split (const std::string &s, char delim);
+    void addps(lzperson & newps);
 private:
     std::vector<lzperson> psz;
-};
 
+
+friend std::ostream& operator<<(std::ostream& os, const lzpersons& p);
+friend std::istream& operator>>(std::istream& is, lzpersons& p);
+};
 //std::ostream& operator<<(std::ostream& os, const lzpersons& p);
 
 #endif // LZPERSON_H

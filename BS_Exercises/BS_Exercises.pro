@@ -5,9 +5,9 @@ CONFIG -= qt
 
 SOURCES += \
         funcbody.cpp \
-        lzperson.cpp \
+        lzpersons.cpp \
         main.cpp
 
 HEADERS += \
     funcheader.h \
-    lzperson.h
+    lzpersons.h
