@@ -50,3 +50,12 @@ void readint()
     while(ifile>>linecont)
         std::cout << linecont << std::endl;
 }
+
+
+void thw()
+{
+    //std::thread h{hello};
+    //std::thread w{world};
+    //h.join();
+    //w.join();
+}
