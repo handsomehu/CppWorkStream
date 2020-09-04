@@ -59,3 +59,10 @@ void thw()
     //h.join();
     //w.join();
 }
+
+void findnum()
+{
+    std::string fname{"./twothread.cpp"};
+
+
+}

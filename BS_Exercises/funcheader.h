@@ -6,12 +6,13 @@
 #include <vector>
 #include <algorithm>
 #include <fstream>
-
+#include <regex>
 
 void nameage();
 void vecint();
 void vecstr();
 void writeint();
 void readint();
+void findnum();
 
 
