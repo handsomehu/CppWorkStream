@@ -17,6 +17,9 @@ int main()
     writeint();
     readint();
     */
+    findnum();
+    charsign();
+    return 0;
     TwoThread tt1;
     TwoThread tt2;
     std::thread h{&TwoThread::hello, &tt1};

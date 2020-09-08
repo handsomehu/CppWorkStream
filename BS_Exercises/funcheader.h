@@ -7,6 +7,7 @@
 #include <algorithm>
 #include <fstream>
 #include <regex>
+#include <sstream>
 
 void nameage();
 void vecint();
@@ -14,5 +15,6 @@ void vecstr();
 void writeint();
 void readint();
 void findnum();
+void charsign();
 
 

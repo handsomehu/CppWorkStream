@@ -63,6 +63,33 @@ void thw()
 void findnum()
 {
     std::string fname{"./twothread.cpp"};
+    std::ifstream infile{fname};
+    std::string line;
+    std::string regstr{"[-+]?[0-9]*\\.?[0-9]+"};
+    std::regex r(regstr);
+    int i{0};
+    while (std::getline(infile, line))
+    {
+        //std::cout << ++i << std::endl;
+        std::smatch m;
+        std::regex_search(line, m, r);
 
+        for(auto v: m)
+            std::cout << v << std::endl;
+    }
 
+}
+
+void charsign()
+{
+    char c = 255;
+    int i = c;
+    if (i == 255)
+        std::cout << "Unsigned" << std::endl;
+    else if (i == -1)
+    {
+        std::cout << "signed" << std::endl;
+    }
+    else
+        std::cout << "what's the char?" << std::endl;
 }
