@@ -64,10 +64,15 @@ public:
     void OnRspError(CThostFtdcRspInfoField *pRspInfo, int nRequestID, bool bIsLast);
     void OnRtnTradingNotice(CThostFtdcTradingNoticeInfoField *pTradingNoticeInfo) ;
 
+    //process on response query instruments and save to jason file.
+    //void OnRspQryInstrument(CThostFtdcInstrumentField *pInstrument, CThostFtdcRspInfoField *pRspInfo, int nRequestID, bool bIsLast) ;
+
     void put_setmt(const std::vector<std::shared_ptr<char>>& val);
     void put_setmt(std::vector<std::shared_ptr<char>>&& val);
     void get_setmt(std::vector<std::shared_ptr<char>>& val);
     void apijoin();
+    void ReqActiveContract();
+    void ReadActiveContract();
 
 
 private:
@@ -88,6 +93,7 @@ private:
     //std::
     std::mutex mtx;
     std::condition_variable cond;
+    std::vector<std::shared_ptr<CThostFtdcInstrumentField>> rsp_contracts;
 };
 
 

@@ -39,7 +39,7 @@ int Utf8ToGbk(char *src_str, size_t src_len, char *dst_str, size_t dst_len)
 }
 void TradeWrapper::apijoin()
 {
-    ;//m_ptraderapi->join();
+    m_ptraderapi->Join();
 }
 TradeWrapper::TradeWrapper(const std::string &path):
   m_ptraderapi(nullptr),
@@ -441,8 +441,16 @@ void TradeWrapper::OnRspQryInstrument(CThostFtdcInstrumentField *pInstrument, CT
 
 {
 
-    printf("OnRspQryInstrument\n");
-    std::cout << pInstrument->InstrumentID << std::endl;
+    //printf("OnRspQryInstrument\n");
+    /*
+    std::cout << pInstrument->InstrumentID << "," << pInstrument->ExchangeID << ","
+              << pInstrument->ProductID << "," << pInstrument->VolumeMultiple << ","
+              << pInstrument->PriceTick << "," << pInstrument->IsTrading << std::endl;
+    */
+    std::shared_ptr<CThostFtdcInstrumentField> rsp = std::make_shared<CThostFtdcInstrumentField>(*pInstrument);
+    rsp_contracts.push_back(rsp);
+
+    //std::cout << std::endl;
 }
 wchar_t* TradeWrapper::MBCS2Unicode(wchar_t* buff, const char* str)
 {
@@ -546,4 +554,48 @@ void TradeWrapper::OnRspError(CThostFtdcRspInfoField *pRspInfo, int nRequestID, 
 void TradeWrapper::OnRtnTradingNotice(CThostFtdcTradingNoticeInfoField *pTradingNoticeInfo)
 {
     std::cout << pTradingNoticeInfo->FieldContent  << std::endl;
+}
+
+void TradeWrapper::ReadActiveContract()
+{
+
+
+    std::cout << "I am not query the data" << std::endl;
+    if (rsp_contracts.size() > 0)
+    {
+        std::ofstream myFile{"./contracts.csv"};
+        //myFile.open("./contracts.csv"); // Create file
+
+        myFile << "Symbol,Exchange,Product,VolMultiple,Tick,IsTrade" << std::endl; // Headers
+
+        // Now write to the file, you could open the file now if you wanted
+        for(auto instru:rsp_contracts)
+        {
+            std::cout << instru->InstrumentID << "," << instru->ExchangeID << ","
+                      << instru->ProductID << "," << instru->VolumeMultiple << ","
+                      << instru->PriceTick << "," << instru->IsTrading << std::endl;
+
+            myFile << instru->InstrumentID << "," << instru->ExchangeID << ","
+                      << instru->ProductID << "," << instru->VolumeMultiple << ","
+                      << instru->PriceTick << "," << instru->IsTrading << std::endl;
+
+        }
+
+
+    }
+
+
+
+
+}
+
+void TradeWrapper::ReqActiveContract()
+{
+    CThostFtdcQryInstrumentField a;// = { 0 };
+    memset(&a, 0, sizeof(a));
+    //strcpy_s(a.InstrumentID, "rb1809");
+    //strcpy_s(a.ExchangeID, "SHFE");
+    static int nrequestid_qinstr{0};// should I use static? sometimes error pronic
+    if (m_ptraderapi)
+        m_ptraderapi->ReqQryInstrument(&a, nrequestid_qinstr++);
 }

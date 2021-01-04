@@ -55,6 +55,7 @@ std::vector<std::string> getdate()
 }
 
 
+
 int main()
 {
 
@@ -73,6 +74,11 @@ int main()
         std::string t = a;
         std::cout << "aaa\t" << a << std::endl;
     }
+    api.ReqActiveContract();
+    std::this_thread::sleep_for(std::chrono::seconds(5));
+    api.ReadActiveContract();
+
+    return 0;//do not query settlement just yet.
 
 
     char resultsets[2000001]{0};
