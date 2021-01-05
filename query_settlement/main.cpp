@@ -26,8 +26,8 @@ std::vector<std::string> getdate()
     //std::ostringstream os;
     //os << std::put_time(&date, "%Y%m%d");
     //std::cout << os.str() << std::endl;
-    cdate.tm_mon = 9; // read until October 10
-    cdate.tm_mday = 10;
+    cdate.tm_mon = 11; // read until October 10
+    cdate.tm_mday = 31;
     cdate.tm_year = 2020-1900;
     cdate.tm_hour = 0;
     cdate.tm_min = 0;
@@ -78,7 +78,7 @@ int main()
     std::this_thread::sleep_for(std::chrono::seconds(5));
     api.ReadActiveContract();
 
-    return 0;//do not query settlement just yet.
+    //return 0;//do not query settlement just yet.
 
 
     char resultsets[2000001]{0};
