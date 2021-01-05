@@ -599,3 +599,4 @@ void TradeWrapper::ReqActiveContract()
     if (m_ptraderapi)
         m_ptraderapi->ReqQryInstrument(&a, nrequestid_qinstr++);
 }
+

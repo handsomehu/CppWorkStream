@@ -73,6 +73,10 @@ public:
     void apijoin();
     void ReqActiveContract();
     void ReadActiveContract();
+    //void ReqSymbolCommission();
+    //below is md api, not trade api, adapt later, or change it.
+    //void OnRspQryInstrumentCommissionRate(CThostFtdcInstrumentCommissionRateField *pInstrumentCommissionRate, CThostFtdcRspInfoField *pRspInfo, int nRequestID, bool bIsLast);
+
 
 
 private:
