@@ -16,8 +16,8 @@ std::vector<std::string> getdate()
     struct tm sdate;
     struct tm cdate;
 
-    sdate.tm_mon = 6;
-    sdate.tm_mday = 1;
+    sdate.tm_mon = 11;
+    sdate.tm_mday = 25;
     sdate.tm_year = 2020-1900;
     sdate.tm_hour = 0;
     sdate.tm_min = 0;
@@ -26,9 +26,9 @@ std::vector<std::string> getdate()
     //std::ostringstream os;
     //os << std::put_time(&date, "%Y%m%d");
     //std::cout << os.str() << std::endl;
-    cdate.tm_mon = 11; // read until October 10
+    cdate.tm_mon = 0; // read until October 10
     cdate.tm_mday = 31;
-    cdate.tm_year = 2020-1900;
+    cdate.tm_year = 2021-1900;
     cdate.tm_hour = 0;
     cdate.tm_min = 0;
     cdate.tm_sec = 0;
